@@ -70,9 +70,9 @@ class ApiPayment
 
         if (class_exists($payment)) {
             return new $payment($this->config);
+        } else {
+            throw new ParameterException(['msg' => 'Payment [{$method}] Not Exists']);
         }
-
-        throw new ParameterException(['msg' => 'Payment [{$method}] Not Exists']);
     }
 
 
