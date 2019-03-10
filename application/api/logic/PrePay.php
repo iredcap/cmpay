@@ -15,7 +15,7 @@ namespace app\api\logic;
 use app\common\library\exception\ParameterException;
 use app\common\library\exception\OrderException;
 use app\common\library\exception\UserException;
-use think\Log;
+use Log;
 
 /**
  * 下单处理

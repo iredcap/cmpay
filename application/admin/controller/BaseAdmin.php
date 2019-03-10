@@ -15,7 +15,7 @@ namespace app\admin\controller;
 
 use app\common\controller\Common;
 use app\common\library\enum\CodeEnum;
-use think\Request;
+use think\App;
 
 class BaseAdmin extends Common
 {
@@ -36,9 +36,9 @@ class BaseAdmin extends Common
     // 菜单视图
     protected $menuView         =   '';
 
-    public function __construct(Request $request = null)
+    public function __construct(App $app = null)
     {
-        parent::__construct($request);
+        parent::__construct($app);
 
         // 初始化后台模块信息
         $this->initAdminInfo();

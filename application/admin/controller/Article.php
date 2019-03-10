@@ -70,7 +70,7 @@ class Article extends BaseAdmin
 
         $count = $this->logicArticle->getArticleCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
                 [
                     'code' => CodeEnum::SUCCESS,
                     'msg'=> '',
@@ -110,7 +110,7 @@ class Article extends BaseAdmin
 
         $count = $this->logicArticle->getNoticeCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
                 [
                     'code' => CodeEnum::SUCCESS,
                     'msg'=> '',

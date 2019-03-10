@@ -56,7 +56,7 @@ class Admin extends BaseAdmin
 
         $count = $this->logicAdmin->getAdminCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -159,7 +159,7 @@ class Admin extends BaseAdmin
 
         $count = $this->logicAuthGroup->getAuthGroupCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -245,7 +245,7 @@ class Admin extends BaseAdmin
             'checked' => str2arr($this->logicAuthGroup->getGroupRules(['id'=>$this->request->param('id')],'rules')),
         ];
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

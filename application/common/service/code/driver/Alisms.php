@@ -18,7 +18,7 @@ use Aliyun\Sms\Core\Config;
 use Aliyun\Sms\Core\DefaultAcsClient;
 use Aliyun\Sms\Core\Profile\DefaultProfile;
 use app\common\service\code\Driver;
-use think\Log;
+use Log;
 
 // 加载区域结点配置
 Config::load();

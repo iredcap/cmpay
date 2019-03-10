@@ -19,7 +19,7 @@ use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 use think\Db;
-use think\Log;
+use Log;
 
 /**
  * 推送等待订单至队列   5分钟一次

@@ -18,7 +18,7 @@ namespace app\common\logic;
 use app\common\library\enum\CodeEnum;
 use app\common\library\exception\OrderException;
 use think\Db;
-use think\Log;
+use Log;
 
 class Orders extends BaseLogic
 {

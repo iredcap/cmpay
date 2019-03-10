@@ -18,7 +18,7 @@ namespace app\common\service;
 use think\App;
 use think\Config;
 use think\Exception;
-use think\Log;
+use Log;
 
 /**
  * Class Code
@@ -78,7 +78,7 @@ class Code
                 throw new Exception('This method is not supported.');
             }
             // 记录初始化信息
-            App::$debug && Log::record('[ Code ] INIT ' . $method, 'info');
+            config('app_debug') && Log::record('[ Code ] INIT ' . $method, 'info');
 
             if (true === $name) {
                 return new $class($options);

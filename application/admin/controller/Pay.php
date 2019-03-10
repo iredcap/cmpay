@@ -84,7 +84,7 @@ class Pay extends BaseAdmin
 
         $count = $this->logicPay->getCodeCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -119,7 +119,7 @@ class Pay extends BaseAdmin
 
         $count = $this->logicPay->getChannelCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -156,7 +156,7 @@ class Pay extends BaseAdmin
 
         $count = $this->logicPay->getAccountCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -187,7 +187,7 @@ class Pay extends BaseAdmin
 
         $count = $this->logicBanker->getBankerCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

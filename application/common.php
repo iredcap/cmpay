@@ -122,12 +122,11 @@ function action_log($name = '', $describe = '')
  */
 function get_sington_object($object_name = '', $class = null)
 {
+    $container = app();
 
-    $request = request();
+    $container->has($object_name) ?: $container->bindTo($object_name, $class);
 
-    $request->__isset($object_name) ?: $request->bind($object_name, new $class());
-
-    return $request->__get($object_name);
+    return $container->make($object_name);
 }
 
 /**

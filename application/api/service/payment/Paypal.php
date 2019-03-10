@@ -25,7 +25,7 @@ use PayPal\Auth\OAuthTokenCredential;
 
 use app\common\library\exception\OrderException;
 use app\api\service\ApiPayment;
-use think\Log;
+use Log;
 
 class Paypal extends ApiPayment
 {

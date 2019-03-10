@@ -49,7 +49,7 @@ class Balance extends BaseAdmin
 
         $count = $this->logicBalance->getBalanceCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -95,7 +95,7 @@ class Balance extends BaseAdmin
 
         $count = $this->logicBalanceChange->getBalanceChangeCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -143,7 +143,7 @@ class Balance extends BaseAdmin
 
         $count = $this->logicBalanceCash->getOrderCashCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

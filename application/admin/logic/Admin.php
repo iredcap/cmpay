@@ -16,7 +16,7 @@ namespace app\admin\logic;
 
 use app\common\library\enum\CodeEnum;
 use think\Db;
-use think\Log;
+use Log;
 use think\Validate;
 
 class Admin extends BaseAdmin

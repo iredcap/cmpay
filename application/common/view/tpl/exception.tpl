@@ -79,7 +79,7 @@ return implode(', ', $result);
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php echo \think\Lang::get('System Error'); ?></title>
+    <title><?php echo \Lang::get('System Error'); ?></title>
     <meta name="robots" content="noindex,nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <style>
@@ -313,7 +313,7 @@ return implode(', ', $result);
 <div class="echo">
     <?php echo $echo;?>
 </div>
-<?php if(\think\App::$debug) { ?>
+<?php if(config('app_debug')) { ?>
 <div class="exception">
     <div class="message">
 
@@ -492,7 +492,7 @@ return implode(', ', $result);
 </div>
 <?php } ?>
 
-<?php if(\think\App::$debug) { ?>
+<?php if(config('app_debug')) { ?>
 <script>
     var LINE = <?php echo $line; ?>;
 

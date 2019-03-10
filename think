@@ -10,18 +10,15 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-// 定义项目路径
-define('APP_PATH', __DIR__ . '/application/');
-// 定义数据目录
-define('DATA_PATH', __DIR__ . '/data/');
-// 定义配置目录
-define('CONF_PATH', DATA_PATH . 'conf/');
-// 定义证书目录
-define('CRET_PATH', DATA_PATH . 'cret/');
-// 定义EXTEND目录
-define('EXTEND_PATH', DATA_PATH . 'extend/');
-// 定义RUNTIME目录
-define('RUNTIME_PATH', DATA_PATH . 'runtime/');
+namespace think;
 
-// 加载框架引导文件
-require __DIR__.'/thinkphp/console.php';
+// 加载自定义常量
+require __DIR__ . '/constants.php';
+// 加载基础文件
+require __DIR__ . '/thinkphp/base.php';
+
+// 应用初始化
+Container::get('app')->path(__DIR__ . '/application/')->initialize();
+
+// 控制台初始化
+Console::init();

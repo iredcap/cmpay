@@ -26,6 +26,9 @@ use Endroid\QrCode\QrCode;
  */
 class QrcodeLib
 {
+    /**
+     * @var QrCode
+     */
     protected $_qr;
     protected $_encoding        = 'UTF-8';              // 编码类型
     protected $_size            = 300;                  // 二维码大小
@@ -63,9 +66,9 @@ class QrcodeLib
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param $content
+     *
      * @return array|string
      * @throws \Endroid\QrCode\Exception\InvalidPathException
-     * @throws \Endroid\QrCode\Exception\InvalidWriterException
      */
     public function createServer($content) {
         $this->_qr = new QrCode($content);
@@ -73,7 +76,7 @@ class QrcodeLib
         $this->_qr->setWriterByName(self::WRITE_NAME);
         $this->_qr->setMargin(self::MARGIN);
         $this->_qr->setEncoding($this->_encoding);
-        $this->_qr->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH);   // 容错率
+        $this->_qr->setErrorCorrectionLevel(new ErrorCorrectionLevel(ErrorCorrectionLevel::HIGH));   // 容错率
         $this->_qr->setForegroundColor(self::FOREGROUND_COLOR);
         $this->_qr->setBackgroundColor(self::BACKGROUND_COLOR);
         // 是否需要title

@@ -29,7 +29,9 @@ class User extends Base
      * @return mixed
      */
     public function index(){
-        $where = ['uid'=> is_login()];
+        $where = [
+            'uid' => is_login()
+        ];
         //资金 资产信息
         $this->assign('wallet', $this->logicBalance->getBalanceInfo($where));
 

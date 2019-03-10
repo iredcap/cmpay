@@ -16,7 +16,7 @@ namespace app\install\logic;
 use app\common\library\enum\CodeEnum;
 use app\common\logic\BaseLogic;
 use think\Db;
-use think\Log;
+use Log;
 
 /**
  * 安装逻辑

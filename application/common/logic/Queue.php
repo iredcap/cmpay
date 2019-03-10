@@ -15,7 +15,7 @@
 namespace app\common\logic;
 
 use think\Queue as Service;
-use think\Log;
+use Log;
 
 /**
  * 队列处理

@@ -17,7 +17,7 @@ namespace app\index\controller;
 use app\common\controller\Common;
 use app\common\library\Activation;
 use app\common\library\Geetest;
-use think\Log;
+use Log;
 use think\Request;
 
 class Login extends Common

@@ -16,7 +16,7 @@ namespace app\api\logic;
 use app\api\service\ApiPayment;
 use app\common\library\exception\OrderException;
 use think\Exception;
-use think\Log;
+use Log;
 
 /**
  * 支付处理类  （优化方案：提出单个支付类  抽象类对象处理方法 便于管理）

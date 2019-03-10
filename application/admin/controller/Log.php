@@ -55,7 +55,7 @@ class Log extends BaseAdmin
 
         $count = $this->logicLog->getLogCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

@@ -15,7 +15,7 @@
 namespace app\api\service\response;
 
 use app\common\library\HttpHeader;
-use think\Log;
+use Log;
 
 class BuildSign extends ApiSend
 {

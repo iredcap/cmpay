@@ -19,7 +19,7 @@ use app\common\model\Balance;
 use app\common\model\Orders;
 use app\common\library\exception\OrderException;
 use think\Db;
-use think\Log;
+use Log;
 use think\queue\Job;
 
 class AutoOrderClose

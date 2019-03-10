@@ -1,6 +1,6 @@
 .idea
-data/conf/database.php
 runtime
-install.lock
-composer.lock
+vendor
+thinkphp
 *.log
+.env

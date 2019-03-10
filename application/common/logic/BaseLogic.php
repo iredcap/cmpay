@@ -18,7 +18,7 @@ use app\common\library\enum\CodeEnum;
 use app\common\model\BaseModel;
 use app\common\service\Code;
 use think\Cache;
-use think\Log;
+use Log;
 
 class BaseLogic extends BaseModel
 {

@@ -14,7 +14,7 @@
 namespace app\admin\logic;
 use app\common\library\enum\CodeEnum;
 use think\Db;
-use think\Log;
+use Log;
 
 /**
  * 权限组逻辑

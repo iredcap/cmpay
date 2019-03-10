@@ -20,9 +20,8 @@ class CORS
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @param $params
      */
-    public function appInit(&$params)
+    public function appInit()
     {
 
         header('Access-Control-Allow-Origin: *');

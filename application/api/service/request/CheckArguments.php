@@ -20,7 +20,7 @@
 namespace app\api\service\request;
 use app\common\library\exception\ParameterException;
 use app\common\library\HttpHeader;
-use think\Log;
+use Log;
 use think\Request;
 
 

@@ -42,7 +42,7 @@ class Menu extends BaseAdmin
 
         $data = $this->logicMenu->getMenuList([],'id,pid,name,module,url');
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::ERROR,
                 'msg'=> '',

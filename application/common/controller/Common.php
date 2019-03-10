@@ -14,18 +14,18 @@
 
 namespace app\common\controller;
 
+use think\App;
 use think\Controller;
 use think\exception\HttpResponseException;
 use think\helper\Time;
-use think\Request;
 use think\Response;
 
 class Common extends Controller
 {
 
-    public function __construct(Request $request = null)
+    public function __construct(App $app = null)
     {
-        parent::__construct($request);
+        parent::__construct($app);
 
         $this->initSystemConf();
 

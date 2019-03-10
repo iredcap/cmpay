@@ -10,28 +10,21 @@
 // +----------------------------------------------------------------------
 
 // [ 应用入口文件 ]
+namespace think;
 
+// 加载自定义常量
+require __DIR__ . '/../constants.php';
+// 加载框架引导文件
+require __DIR__ . '/../thinkphp/base.php';
+
+// 支持事先使用静态方法设置Request对象和Config对象
 
 //检测安装
 if(!file_exists(__DIR__ . '/../data/install.lock')){
     // 绑定安装模块
-    define('BIND_MODULE', 'install');
+    Container::get('app')->bind('install')->run()->send();
+    exit;
 }
 
-// 定义项目路径
-define('APP_PATH', __DIR__ . '/../application/');
-// 定义上传路径
-define('UPLOAD_PATH', __DIR__ . '/uploads/');
-// 定义数据目录
-define('DATA_PATH', __DIR__ . '/../data/');
-// 定义配置目录
-define('CONF_PATH', DATA_PATH . 'conf/');
-// 定义证书目录
-define('CRET_PATH', DATA_PATH . 'cret/');
-// 定义EXTEND目录
-define('EXTEND_PATH', DATA_PATH . 'extend/');
-// 定义RUNTIME目录
-define('RUNTIME_PATH', DATA_PATH . 'runtime/');
-
-// 加载框架引导文件
-require __DIR__ . '/../thinkphp/start.php';
+// 执行应用并响应
+Container::get('app')->run()->send();

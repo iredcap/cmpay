@@ -16,7 +16,7 @@ namespace app\api\service\payment;
 use app\api\service\ApiPayment;
 use app\common\library\exception\OrderException;
 use app\common\library\exception\SignatureException;
-use think\Log;
+use Log;
 
 class Alipay extends ApiPayment
 {

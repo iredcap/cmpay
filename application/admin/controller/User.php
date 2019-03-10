@@ -60,7 +60,7 @@ class User extends BaseAdmin
 
         $count = $this->logicUser->getUserCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -171,7 +171,7 @@ class User extends BaseAdmin
 
         $count = $this->logicUser->getUserAuthCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

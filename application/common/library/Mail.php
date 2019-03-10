@@ -15,7 +15,7 @@ namespace app\common\library;
 
 use phpmailer\PHPMailer;
 use think\Exception;
-use think\Log;
+use Log;
 
 class Mail
 {

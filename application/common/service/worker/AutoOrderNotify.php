@@ -19,7 +19,7 @@ use app\common\model\OrdersNotify;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use think\Db;
-use think\Log;
+use Log;
 use think\queue\Job;
 
 class AutoOrderNotify

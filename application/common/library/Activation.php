@@ -15,7 +15,7 @@
 namespace app\common\library;
 
 use think\Cache;
-use think\Log;
+use Log;
 
 /**
  * Class Activation

@@ -14,7 +14,7 @@
 
 namespace app\common\library\exception;
 use think\exception\Handle;
-use think\Log;
+use Log;
 use Exception;
 
 /*
@@ -68,7 +68,7 @@ class ExceptionHandler extends Handle
     {
         Log::init([
             'type'  =>  'File',
-            'path'  =>  LOG_PATH,
+            'path'  =>  App::getRuntimePath() . 'log/',
             'level' => ['error']
         ]);
         Log::record($e->getMessage(),'error');

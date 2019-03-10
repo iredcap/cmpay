@@ -158,7 +158,7 @@ class BaseAdmin extends BaseLogic
         $system_info_mysql = $query->query("select version() as v;");
 
         // 系统信息
-        $data['think_version']  = THINK_VERSION;
+        $data['think_version']  = App::version();
         $data['os']             = PHP_OS;
         $data['software']       = $_SERVER['SERVER_SOFTWARE'];
         $data['mysql_version']  = $system_info_mysql[0]['v'];

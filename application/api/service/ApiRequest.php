@@ -19,7 +19,7 @@ use app\api\service\request\CheckAppkey;
 use app\api\service\request\CheckArguments;
 use app\api\service\request\CheckFrequent;
 use app\api\service\request\CheckSign;
-use think\Log;
+use Log;
 use think\Request;
 /**
  * 网关入口实体

@@ -74,7 +74,7 @@ class Index extends BaseAdmin
 
         $data = $this->logicOrders->getOrderList($where,true, 'create_time desc',false);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

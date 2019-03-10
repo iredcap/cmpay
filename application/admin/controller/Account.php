@@ -46,7 +46,7 @@ class Account extends BaseAdmin
 
         $count = $this->logicUserAccount->getAccountCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

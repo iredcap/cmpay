@@ -40,7 +40,7 @@ class Orders extends BaseAdmin
      *
      */
     public function getList(){
-
+        $where = [];
         //状态
         $where['status'] = ['eq', $this->request->param('status',OrderStatusEnum::PAID)];
 
@@ -61,7 +61,7 @@ class Orders extends BaseAdmin
 
         $count = $this->logicOrders->getOrdersCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -159,10 +159,10 @@ class Orders extends BaseAdmin
 
         $data = $this->logicOrders->getOrderUserStat($where);
 
-        //$this->result($data || !empty($data) ? [CodeEnum::SUCCESS,'',$data] : [CodeEnum::ERROR,'暂无数据','']);
+        //$this->result(!$data->isEmpty() ? [CodeEnum::SUCCESS,'',$data] : [CodeEnum::ERROR,'暂无数据','']);
         $count = count($data);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',
@@ -207,7 +207,7 @@ class Orders extends BaseAdmin
 
         $count = count($data);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

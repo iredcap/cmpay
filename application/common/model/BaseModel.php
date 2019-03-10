@@ -15,7 +15,7 @@
 namespace app\common\model;
 
 use think\Db;
-use think\Log;
+use Log;
 use think\Model;
 
 /**
@@ -41,6 +41,12 @@ class BaseModel extends Model
      * @var array
      */
     protected $join = [];
+    /**
+     * 配合join记录alias
+     *
+     * @var string|array
+     */
+    protected $alias = null;
 
     /**
      * 是否锁
@@ -68,7 +74,7 @@ class BaseModel extends Model
 
             $this->allowField(true)->save($data, $where);
 
-            return $this->getQuery()->getLastInsID();
+            return $this->buildQuery()->getLastInsID();
 
         } else {
 
@@ -236,6 +242,18 @@ class BaseModel extends Model
     }
 
     /**
+     * 记录alias和join一起拼装使用
+     *
+     * @param array|string $alias
+     *
+     * @return Model|void
+     */
+    final public function alias($alias)
+    {
+        $this->alias = $alias;
+    }
+
+    /**
      * 获取单条数据
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
@@ -251,12 +269,16 @@ class BaseModel extends Model
     {
         $query = !empty($this->join) ? $this->join($this->join) : $this;
 
+        !empty($this->alias) && $query->alias($this->alias);
+
         $info = $query->where($where)->field($field)->find();
 
-        $this->join = [];
+        $this->alias = null; $this->join = [];
 
         return $info;
     }
+
+
 
     /**
      * 获取列表数据
@@ -287,6 +309,9 @@ class BaseModel extends Model
         } else {
 
             $query = $this->join($this->join);
+
+            !empty($this->alias) && $query->alias($this->alias);
+
         }
 
         $query = $query->where($where)->order($order)->field($field);
@@ -305,7 +330,7 @@ class BaseModel extends Model
             $list = $query->paginate(input('list_rows', $list_rows), false, ['query' => request()->param()]);
         }
 
-        $this->join = []; $this->limit = []; $this->group = [];
+        $this->alias = null; $this->join = []; $this->limit = []; $this->group = [];
 
         return $list;
     }

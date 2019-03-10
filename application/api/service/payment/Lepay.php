@@ -5,7 +5,7 @@ namespace app\api\service\payment;
 
 
 use app\api\service\ApiPayment;
-use think\Log;
+use Log;
 
 class Lepay extends ApiPayment
 {

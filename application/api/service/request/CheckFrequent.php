@@ -16,7 +16,7 @@
 namespace app\api\service\request;
 use app\common\library\exception\ForbiddenException;
 use think\Cache;
-use think\Log;
+use Log;
 use think\Request;
 
 /**

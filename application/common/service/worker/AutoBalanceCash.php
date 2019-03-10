@@ -15,7 +15,7 @@ namespace app\common\service\worker;
 
 
 use app\common\model\BalanceCash;
-use think\Log;
+use Log;
 use think\queue\Job;
 
 class AutoBalanceCash

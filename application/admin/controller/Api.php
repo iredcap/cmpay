@@ -44,7 +44,7 @@ class Api extends BaseAdmin
 
         $count = $this->logicApi->getApiCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
                 'code' => CodeEnum::SUCCESS,
                 'msg'=> '',

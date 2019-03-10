@@ -19,7 +19,7 @@ use app\common\controller\BaseApi;
 use app\common\library\exception\ForbiddenException;
 use app\common\library\exception\OrderException;
 use app\common\model\Orders;
-use think\Log;
+use Log;
 
 class Notify extends BaseApi
 {

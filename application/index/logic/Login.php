@@ -19,7 +19,7 @@ use app\common\library\enum\CodeEnum;
 use app\common\library\enum\UserStatusEnum;
 use app\common\library\RsaUtils;
 use think\Db;
-use think\Log;
+use Log;
 
 class Login extends Base
 {

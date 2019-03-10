@@ -17,7 +17,7 @@ use app\common\library\exception\ParameterException;
 use app\common\library\exception\UserException;
 use app\common\service\Code;
 use app\common\model\User as UserModel;
-use think\Log;
+use Log;
 use think\Request;
 use think\Validate;
 

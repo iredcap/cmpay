@@ -15,7 +15,7 @@ namespace app\common\logic;
 
 use app\common\library\enum\CodeEnum;
 use think\Db;
-use think\Log;
+use Log;
 
 class Pay extends BaseLogic
 {

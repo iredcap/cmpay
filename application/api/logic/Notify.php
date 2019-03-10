@@ -17,7 +17,7 @@ namespace app\api\logic;
 
 use think\Db;
 use think\Exception;
-use think\Log;
+use Log;
 use app\common\library\enum\OrderStatusEnum;
 
 class Notify extends BaseApi

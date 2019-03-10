@@ -16,7 +16,7 @@ namespace app\common\service\worker;
 
 use app\common\library\Activation;
 use app\common\library\Mail;
-use think\Log;
+use Log;
 use think\queue\Job;
 
 class AutoEmailWork

@@ -15,7 +15,7 @@
 namespace app\api\service\response;
 use app\common\library\HttpHeader;
 use think\exception\HttpResponseException;
-use think\Log;
+use Log;
 use think\Response;
 
 class BuildResponse extends ApiSend
