@@ -29,7 +29,7 @@ class Common extends Controller
 
         $this->initSystemConf();
 
-        $this->assign('site', config('site'));
+        $this->assign('site', config('sys.config'));
     }
 
     /**
@@ -53,9 +53,8 @@ class Common extends Controller
                 ? parse_config_attr($info['extra'])[$info['value']] : $info['value'];
         }
         //写入配置  先这样吧  懒得写了
-        config('site' ,$config_array[0]);
-        config('email' ,$config_array[1]);
-
+        config('sys.config' ,$config_array[0]);
+        config('sys.email' ,$config_array[1]);
     }
 
     /**

@@ -1,4 +1,5 @@
-{__NOLAYOUT__}<!DOCTYPE html>
+<?php /*a:1:{s:73:"F:\phpStudy\PHPTutorial\WWW\cmpay\application\admin\view\login\index.html";i:1552315921;}*/ ?>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,9 +7,9 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
-    <link rel="stylesheet" href="__ADMIN__/style/login.css" media="all">
+    <link rel="stylesheet" href="/static/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/login.css" media="all">
 </head>
 <body>
 
@@ -17,7 +18,7 @@
     <div class="layadmin-user-login-main">
         <div class="layadmin-user-login-box layadmin-user-login-header">
             <h2>聚合 · 后台管理</h2>
-            <p>欢迎使用{$site.seo_title|default="草帽聚合支付"}系统</p>
+            <p>欢迎使用<?php echo htmlentities((isset($site['seo_title']) && ($site['seo_title'] !== '')?$site['seo_title']:"草帽聚合支付")); ?>系统</p>
         </div>
         <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
             <div class="layui-form-item">
@@ -36,7 +37,7 @@
                     </div>
                     <div class="layui-col-xs5">
                         <div style="margin-left: 10px;">
-                            <img src="{:captcha_src()}" class="layadmin-user-login-codeimg" id="app-user-get-vercode">
+                            <img src="<?php echo captcha_src(); ?>" class="layadmin-user-login-codeimg" id="app-user-get-vercode">
                         </div>
                     </div>
                 </div>
@@ -49,7 +50,7 @@
 
     <div class="layui-trans layadmin-user-login-footer">
 
-        <p>{$site.app_copyright|default="© 2018 Caomao. "} <a href="https://www.iredcap.cn" target="_blank">小红帽科技</a> · {$site.seo_title|default="草帽聚合支付"} · 桂ICP备180004251号</p>
+        <p><?php echo htmlentities((isset($site['app_copyright']) && ($site['app_copyright'] !== '')?$site['app_copyright']:"© 2018 Caomao. ")); ?> <a href="https://www.iredcap.cn" target="_blank">小红帽科技</a> · <?php echo htmlentities((isset($site['seo_title']) && ($site['seo_title'] !== '')?$site['seo_title']:"草帽聚合支付")); ?> · 桂ICP备180004251号</p>
     </div>
 
     <!--<div class="ladmin-user-login-theme">
@@ -67,10 +68,10 @@
 
 </div>
 
-<script src="__ADMIN__/layui/layui.js"></script>
+<script src="/static/admin/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '__ADMIN__/' //静态资源所在路径
+        base: '/static/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'login'], function(){
@@ -86,7 +87,7 @@
         //提交
         form.on('submit(app-user-login-submit)', function(obj){
             //请求登入接口
-            $.post("{:url('login')}",obj.field,function (res) {
+            $.post("<?php echo url('login'); ?>",obj.field,function (res) {
                     if (res.code == 200){
                         //请求成功后，写入 access_token
                         layui.data(setter.tableName, {
@@ -94,7 +95,7 @@
                             ,value: res.data.access_token
                         });
                         layer.msg('登入成功', {icon: 1,time: 1500}, function(){
-                            location.href = "{:url('admin/Index/index')}"; //后台主页
+                            location.href = "<?php echo url('admin/Index/index'); ?>"; //后台主页
                         });
                     }else {
                         $("#app-user-get-vercode").click();

@@ -20,7 +20,6 @@ Route::group('pay',function (){
     Route::post('/orderquery','api/Pay/orderquery');//查询订单
     Route::post('notify/:channel','api/Notify/notify');//官方异步通知
     Route::get('callback/:channel','api/Notify/callback');//官方同步通知
-    Route::rule('notify/person/:channel','api/Notify/person');//个人码异步通知
 });
 
 // 首页

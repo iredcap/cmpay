@@ -26,7 +26,7 @@ class UnifiedOrder extends BaseValidate
      * @var array
      */
     protected $rule = [
-        'mchid'         => 'require|isNotEmpty|checkId|isPositiveInteger',
+        'mch_id'         => 'require|isNotEmpty|checkId|isPositiveInteger',
         'subject'       => 'require|isNotEmpty',
         'amount'        => 'require|isNotEmpty',
         'body'          => 'require|isNotEmpty',

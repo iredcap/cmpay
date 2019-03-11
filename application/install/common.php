@@ -11,6 +11,7 @@
  *  +----------------------------------------------------------------------
  */
 
+use think\facade\App;
 /**
  * 系统环境检测
  *
@@ -51,7 +52,7 @@ function check_env()
 
     //磁盘空间检测
     if (function_exists('disk_free_space')) {
-        $items['disk'][3] = floor(disk_free_space(INSTALL_APP_PATH) / (1024*1024)).'M';
+        $items['disk'][3] = floor(disk_free_space(App::getRootPath()) / (1024*1024)).'M';
     }
 
     return $items;
@@ -75,7 +76,7 @@ function check_dirfile()
 
     foreach ($items as &$val) {
 
-        $item =	INSTALL_APP_PATH . $val[3];
+        $item =	App::getRootPath() . $val[3];
 
         if ('dir' == $val[0]) {
             if (!is_writable($item)) {

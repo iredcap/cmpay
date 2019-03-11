@@ -13,7 +13,6 @@
 
 namespace app\admin\logic;
 
-
 use enum\CodeEnum;
 
 class Login extends BaseAdmin

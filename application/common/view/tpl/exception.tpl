@@ -352,9 +352,6 @@ return implode(', ', $result);
                         <table width="600" style="background-color:#fff;margin:0 auto;" cellpadding="0" cellspacing="0">
                             <tbody>
                             <tr>
-                                <td colspan="3" style="height:40px;">&nbsp;</td>
-                            </tr>
-                            <tr>
                                 <td width="40">&nbsp;</td>
                                 <td width="520" style="line-height:20px;">
                                     <p style="text-align:center;margin:0;padding:0;">
