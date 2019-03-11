@@ -111,10 +111,10 @@
                             url:'logClean',
                             method:'POST',
                             success:function (res) {
-                                if (res.code == 1){
+                                if (res.code == 200){
                                     table.reload('app-admin-log-list');
                                 }
-                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                 layer.close(index); //关闭弹层
                             }
                         });

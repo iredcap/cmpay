@@ -16,5 +16,8 @@ namespace app\admin\model;
 
 class AuthGroupAccess extends BaseAdmin
 {
-
+    /**
+     * @var string
+     */
+    protected $pk = 'uid';
 }

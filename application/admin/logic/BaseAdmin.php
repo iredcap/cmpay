@@ -1,19 +1,19 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\logic;
 
-use app\common\library\enum\CodeEnum;
+use enum\CodeEnum;
 use app\common\logic\BaseLogic;
 
 class BaseAdmin extends BaseLogic
@@ -158,7 +158,7 @@ class BaseAdmin extends BaseLogic
         $system_info_mysql = $query->query("select version() as v;");
 
         // 系统信息
-        $data['think_version']  = THINK_VERSION;
+        $data['think_version']  = App::version();
         $data['os']             = PHP_OS;
         $data['software']       = $_SERVER['SERVER_SOFTWARE'];
         $data['mysql_version']  = $system_info_mysql[0]['v'];

@@ -1,20 +1,20 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
 
 
-use app\common\library\enum\CodeEnum;
+use enum\LayEnum;
 
 class Admin extends BaseAdmin
 {
@@ -56,14 +56,14 @@ class Admin extends BaseAdmin
 
         $count = $this->logicAdmin->getAdminCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -159,14 +159,14 @@ class Admin extends BaseAdmin
 
         $count = $this->logicAuthGroup->getAuthGroupCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -244,14 +244,13 @@ class Admin extends BaseAdmin
             'list' =>  $this->logicMenu->getMenuList([],'id,pid,name'),
             'checked' => str2arr($this->logicAuthGroup->getGroupRules(['id'=>$this->request->param('id')],'rules')),
         ];
-
-        $this->result($data || !empty($data) ?
+        $this->result(!empty($data) ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'data'=>$data
             ]

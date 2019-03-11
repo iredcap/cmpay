@@ -20,10 +20,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-admin-user-manage",
             url: "userList",
-            //自定义响应字段
-            response: {
-                statusCode: 1 //数据状态一切正常的状态码
-            },
             cols: [
                 [{
                     type: "checkbox",
@@ -79,10 +75,10 @@ layui.define(["table", "form"],
                                             url: 'userDel?id='+ e.data.id,
                                             method:'POST',
                                             success:function (res) {
-                                                if (res.code == 1){
+                                                if (res.code == 200){
                                                     e.del()
                                                 }
-                                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                                layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                                 layer.close(d); //关闭弹层
                                             }
                                         });
@@ -104,11 +100,11 @@ layui.define(["table", "form"],
                                 function(t) {
                                     var l = t.field;
                                     layui.$.post("userAuth",l,function (res) {
-                                        if (res.code == 1){
+                                        if (res.code == 200){
                                             i.render(),
                                                 layer.close(f)
                                         }
-                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                        layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     });
                                 }),
                                 n.trigger("click")
@@ -132,7 +128,7 @@ layui.define(["table", "form"],
                                 function(d) {
                                     var l = d.field;
                                     layui.$.post("userEdit",l,function (res) {
-                                        if (res.code == 1){
+                                        if (res.code == 200){
                                             //更新数据表
                                             e.update({
                                                 username: l.username,
@@ -142,7 +138,7 @@ layui.define(["table", "form"],
                                             }),i.render(),
                                                 layer.close(f)
                                         }
-                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                        layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     });
                                 }),
                                 n.trigger("click")
@@ -154,10 +150,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-admin-user-role",
             url: "groupList",
-            //自定义响应字段
-            response: {
-                statusCode: 1 //数据状态一切正常的状态码
-            },
             cols: [
                 [{
                     type: "checkbox",
@@ -196,10 +188,10 @@ layui.define(["table", "form"],
                             url: 'groupDel?id='+ e.data.id,
                             method:'POST',
                             success:function (res) {
-                                if (res.code == 1){
+                                if (res.code == 200){
                                     e.del()
                                 }
-                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                 layer.close(d); //关闭弹层
                             }
                         });
@@ -221,11 +213,11 @@ layui.define(["table", "form"],
                                     var l = t.field;
                                     console.log(l)
                                     layui.$.post("menuAuth",l,function (res) {
-                                        if (res.code == 1){
+                                        if (res.code == 200){
                                             i.render(),
                                                 layer.close(f)
                                         }
-                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                        layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     });
                                 }),
                                 n.trigger("click")
@@ -249,7 +241,7 @@ layui.define(["table", "form"],
                                 function(t) {
                                     var l = t.field;
                                     layui.$.post("groupEdit",l,function (res) {
-                                        if (res.code == 1){
+                                        if (res.code == 200){
                                             //更新数据表
                                             e.update({
                                                 name: l.name,
@@ -257,7 +249,7 @@ layui.define(["table", "form"],
                                             }),i.render(),
                                                 layer.close(f)
                                         }
-                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                        layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     });
                                 }),
                                 n.trigger("click")

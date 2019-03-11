@@ -12,14 +12,15 @@
  */
 
 namespace app\admin\logic;
-use app\common\library\enum\CodeEnum;
+
+use enum\CodeEnum;
 
 /**
  * 菜单逻辑
  */
 class Menu extends BaseAdmin
 {
-    
+
     // 面包屑
     public static $crumbs       = [];
 
@@ -39,12 +40,12 @@ class Menu extends BaseAdmin
     {
 
         $menu_view = '';
-        
+
         //遍历菜单列表
         foreach ($menu_list as $menu_info) {
-            
+
             if (!empty($menu_info[$child])) {
-             
+
                 $icon = empty($menu_info['icon']) ? 'home' : $menu_info['icon'];
 
                 $menu_view.= "<li data-id='".$menu_info['id']."' class='layui-nav-item'>
@@ -56,7 +57,7 @@ class Menu extends BaseAdmin
                                   ".$this->menuToView($menu_info[$child],  $child)."
                                   </dl>
                                 </li>";
-                
+
             } else {
                 $url = url($menu_info['url']);
 
@@ -76,9 +77,9 @@ class Menu extends BaseAdmin
                                    </dd>";
                 }
             }
-       }
-       
-       return $menu_view;
+        }
+
+        return $menu_view;
     }
 
     /**
@@ -105,9 +106,9 @@ class Menu extends BaseAdmin
             if (!array_key_exists($child, $info)) {
                 array_push($this->menuSelect, $info);
             } else {
-               // dump($info);
+                // dump($info);
                 $tmp_ary = $info[$child];
-               // unset($info[$child]);
+                // unset($info[$child]);
 
                 array_push($this->menuSelect, $info);
 
@@ -122,47 +123,47 @@ class Menu extends BaseAdmin
      */
     public function menuToCheckboxView($menu_list = [], $child = 'child')
     {
-        
+
         $menu_view = '';
-        
+
         $id = input('id');
-        
+
         $auth_group_info = $this->logicAuthGroup->getGroupInfo(['id' => $id], 'rules');
-        
+
         $rules_array = str2arr($auth_group_info['rules']);
         //遍历菜单列表
         foreach ($menu_list as $menu_info) {
 
             $checkbox_select = in_array($menu_info['id'], $rules_array) ? "checked='checked'" : '';
-            
+
             if (!empty($menu_info[$child])) {
-                
+
                 $menu_view.=  "<div class='layui-card-body layui-row layui-col-space12'>
                                   <div class='layui-col-md12'>
                                     <input lay-filter='checkbox-parent' lay-skin='primary'  type='checkbox' data-pid='".$menu_info['pid']."' data-id='".$menu_info['id']."' name='rules[]' value='".$menu_info['id']."' $checkbox_select title=' ".$menu_info['name']." '>
                                         <div class='layui-card-body layui-row layui-col-space10'>".$this->menuToCheckboxView($menu_info[$child],  $child)." </div>
                                   </div>
                                 </div>";
-                
+
             } else {
-                
+
                 $menu_view.= "<div class='layui-col-md12 checkbox-child'><input lay-filter='checkbox-child' type='checkbox' data-pid='".$menu_info['pid']."' data-id='".$menu_info['id']."' lay-skin='primary' name='rules[]' value='".$menu_info['id']."'  $checkbox_select title=' ".$menu_info['name']." '></div>";
             }
-       }
+        }
 
 
-       return $menu_view;
+        return $menu_view;
     }
-    
+
     /**
      * 菜单选择
      */
     public function selectMenu($menu_view = '')
     {
-        
+
         $map['url']    = request()->url();
         $map['module'] = request()->module();
-                
+
         $menu_info = $this->getMenuInfo($map);
 
         // 获取自己及父菜单列表
@@ -173,11 +174,11 @@ class Menu extends BaseAdmin
         foreach (self::$crumbs as $menu_info) {
 
             $replace_data = "menu_id='".$menu_info['id']."'";
-            
+
             $menu_view = str_replace($replace_data, " class='active' ", $menu_view);
         }
-        
-       return $menu_view;
+
+        return $menu_view;
     }
 
     /**
@@ -192,27 +193,27 @@ class Menu extends BaseAdmin
         $menu_info = $this->getMenuInfo(['id' => $menu_id]);
 
         !empty($menu_info['pid']) && $this->getParentMenuList($menu_info['pid']);
-        
+
         self::$crumbs [] = $menu_info;
     }
-    
+
     /**
      * 获取面包屑
      */
     public function getCrumbsView()
     {
-        
+
         $crumbs_view = "<ol class='breadcrumb'>";
-      
+
         foreach (self::$crumbs as $menu_info) {
-            
+
             $icon = empty($menu_info['icon']) ? 'fa-circle-o' : $menu_info['icon'];
-            
+
             $crumbs_view .= "<li><a><i class='fa $icon'></i> ".$menu_info['name']."</a></li>";
         }
-        
+
         $crumbs_view .= "</ol>";
-        
+
         return $crumbs_view;
     }
 
@@ -225,12 +226,15 @@ class Menu extends BaseAdmin
      * @param bool $field
      * @param string $order
      * @param bool $paginate
-     * @return mixed
+     *
+     * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getMenuList($where = [], $field = true, $order = '', $paginate = false)
     {
-        
-        return $this->modelMenu->getList($where, $field, $order, $paginate);
+        return $this->getList($where, $field, $order, $paginate);
     }
 
     /**
@@ -240,12 +244,16 @@ class Menu extends BaseAdmin
      *
      * @param array $where
      * @param bool $field
-     * @return mixed
+     *
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getMenuInfo($where = [], $field = true)
     {
-        
-        return $this->modelMenu->getInfo($where, $field);
+
+        return $this->getInfo($where, $field);
     }
 
     /**
@@ -256,6 +264,7 @@ class Menu extends BaseAdmin
      * @return array
      */
     public function seveMenuInfo($data){
+
         $validate = $this->validateMenu->scene($data['scene'])->check($data);
 
         if (!$validate) {
@@ -263,7 +272,7 @@ class Menu extends BaseAdmin
             return ['code' => CodeEnum::ERROR, 'msg' =>  $this->validateMenu->getError()];
         }
 
-        $result = $this->modelMenu->setInfo($data);
+        $result = $this->setInfo($data);
 
         $action = isset($data['id']) ? '编辑' : '新增';
 
@@ -282,8 +291,8 @@ class Menu extends BaseAdmin
      */
     public function menuDel($where = [])
     {
-        
-        $result = $this->modelMenu->deleteInfo($where);
+
+        $result = $this->deleteInfo($where);
         action_log('删除', '删除菜单,where:' . http_build_query($where));
         return $result ? ['code' => CodeEnum::SUCCESS, 'msg' =>  '菜单删除成功'] : ['code' => CodeEnum::ERROR, 'msg' =>  $this->modelMenu->getError()];
     }
@@ -297,7 +306,6 @@ class Menu extends BaseAdmin
      */
     public function getDefaultTitle()
     {
-        
-        return $this->modelMenu->getValue(['module' => request()->module(), 'url' => request()->url()], 'name');
+        return $this->getValue(['module' => request()->module(), 'url' => request()->url()], 'name','后台管理');
     }
 }

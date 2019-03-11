@@ -1,10 +1,10 @@
-Cmpay_v20181220(测试版本)
+CMPAY_v1.1.0.190311_beta
 ===============
 
 ### 项目介绍
 ***
 
-- `Cmpay聚合支付` Cmpay草帽聚合支付使用ThinkPHP框架开发，已接入微信、支付宝等主流支付渠道。
+- `CMPAY聚合支付` 使用ThinkPHP框架开发，已接入微信、支付宝等主流支付渠道。
 
 - 目前已经接入支付渠道：微信(扫码支付)、支付宝(电脑网站支付、手机网站支付)；
 
@@ -29,23 +29,31 @@ project                             应用部署目录
 │  ├─index                          前端模块目录
 │  ├─command.php                    命令行工具配置文件
 │  ├─common.php                     应用公共（函数）文件
-│  ├─config.php                     应用（公共）配置文件
-│  ├─database.php                   数据库配置文件
 │  ├─tags.php                       应用行为扩展定义文件
-│  ├─route.php                      路由配置文件
 │  └─...
-├─data                              数据存储目录
-│  ├─cret                           证书文件
-│  ├─crond                          Cron定时文件
-│  ├─extend                         拓展类库
-│  ├─runtime                        系统运行runtime目录
-│  ├─supervisord                    supervisord配置目录
+├─config                            配置目录
+│  ├─app.php                        应用配置文件
+│  ├─database.php                   数据库配置文件
+│  └─...
+├─extend                            拓展类库
+│  ├─tool                           工具类库
 │  └─...
 ├─public                            Web 部署目录（对外访问目录）
 │  ├─static                         静态资源存放目录(css,js,image)
-│  ├─upload                         系统文件上传存放目录
+│  ├─uploads                        系统文件上传存放目录
 │  ├─index.php                      入口文件
 │  ├─.htaccess                      用于 apache 的重写
+│  └─...
+├─resource                          资源存储目录
+│  ├─cret                           证书文件
+│  ├─crond                          Cron定时文件
+│  ├─runtime                        系统运行runtime目录
+│  ├─supervisord                    supervisord配置目录
+│  └─...
+├─route                             路由目录
+│  └─route.php                      系统路由文件
+├─runtime                           系统运行runtime目录
+│  ├─log                            日志目录
 │  └─...
 ├─build.php                         自动生成定义文件（参考）
 ├─composer.json                     composer 定义文件
@@ -81,6 +89,7 @@ project                             应用部署目录
 
 版本 |日期 |描述
 ------- | ------- | -------
+V1.1.0 | 2018-3-11 | 提升ThinkPHP为5.1版本
 V1.0.3 | 2018-12-22 | 更改支付接入方式，修复部分BUG
 V1.0.2 | 2018-12-15 | 更新SDK接入，修复部分BUG
 V1.0.1 | 2018-12-10 | 更新部分，修复BUG
@@ -90,6 +99,7 @@ V1.0.0 |2018-10-23 |最初版本
 
 接下来的开源版本开发计划：
 ```html
++ 持续完善V1.1.0版本；
 + 持续完善V1.0.0版本；
 + 增加渠道对接，API接口完善；
 + 完善支付核心，便于第三/四方渠道对接；
@@ -103,7 +113,7 @@ V1.0.0 |2018-10-23 |最初版本
 
 在使用中有任何问题，请使用以下联系方式联系我们
 
-QQ群: [939417065](//shang.qq.com/wpa/qunwpa?idkey=0227fdd4ca96fb4feb57aad9542824ab76189089eb4f4fa0f8e3bd96dbf504f6) ![加入QQ群](http://pub.idqqimg.com/wpa/images/group.png) (交流群 暗号：Cmpay)
+QQ群: [973413297](https://dwz.cn/2fMw89Zm) ![加入QQ群](http://pub.idqqimg.com/wpa/images/group.png) (交流群 暗号：Cmpay)
 
 Email: me@iredcap.cn
 
@@ -124,11 +134,11 @@ OneBase： https://www.onebase.org
 
 ## **版权信息**
 
-`Cmpay聚合支付`遵循Apache2开源协议发布，并提供免费使用。
+`CMPAY聚合支付`遵循Apache2开源协议发布，并提供免费使用。
 
 本项目包含的第三方源码和二进制文件之版权信息另行标注。
 
-版权所有Copyright © 2017-2018 by Iredcap (https://www.iredcap.cn)
+版权所有Copyright © 2017-2019 by Iredcap (https://www.iredcap.cn)
 
 All rights reserved。
 

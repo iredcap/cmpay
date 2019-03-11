@@ -1,21 +1,21 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
 
 use app\common\controller\Common;
-use app\common\library\enum\CodeEnum;
-use think\Request;
+use enum\CodeEnum;
+use think\App;
 
 class BaseAdmin extends Common
 {
@@ -36,9 +36,9 @@ class BaseAdmin extends Common
     // 菜单视图
     protected $menuView         =   '';
 
-    public function __construct(Request $request = null)
+    public function __construct(App $app = null)
     {
-        parent::__construct($request);
+        parent::__construct($app);
 
         // 初始化后台模块信息
         $this->initAdminInfo();
@@ -55,7 +55,7 @@ class BaseAdmin extends Common
     {
 
         // 验证登录
-        !is_admin_login() && $this->redirect('login/index');
+        !is_admin_login() && $this->redirect(url('admin/login/index'));
 
         // 获取授权菜单列表
         $this->authMenuList = $this->logicAuthGroupAccess->getAuthMenuList(is_admin_login());
@@ -71,7 +71,7 @@ class BaseAdmin extends Common
         );
 
         // 权限验证不通过则跳转提示
-        CodeEnum::SUCCESS == $jump_type ?:$this->result($jump_type, $message);
+        CodeEnum::SUCCESS == $jump_type ? : $this->error($message);
 
         // 初始化基础数据
        $this->initBaseInfo();

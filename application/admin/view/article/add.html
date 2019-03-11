@@ -108,7 +108,7 @@
             //提交 Ajax 成功后，关闭当前弹层并重载表格
             //这里是提交
             $.post("/article/add",field,function (res) {
-                if (res.code == 1){
+                if (res.code == 200){
                     parent.layui.table.reload('app-article-list'); //重载表格
                     parent.layer.close(index); //再执行关闭
                 }else {

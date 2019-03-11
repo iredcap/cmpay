@@ -13,7 +13,7 @@
 
 namespace app\api\service;
 
-use app\common\library\exception\ParameterException;
+use app\common\exception\ParameterException;
 use app\common\logic\Orders;
 
 class ApiPayment

@@ -65,7 +65,7 @@ layui.define(function(e) {
             n = function(d) {
                 var orders = [], fees = [];
                 l[d] = a.init(i[d], layui.echartsTheme), e.get('getOrderStat').done(function(res) {
-                    if (res.code == 1) {
+                    if (res.code == 0) {
                         for (var i = 1; i <= 12; i++) {
                             orders.push(res.data.orders[i]);
                             fees.push(res.data.fees[i]);

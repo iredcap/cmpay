@@ -18,13 +18,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-article-list",
             url: "getList",
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[{
                 type: "checkbox",
                 fixed: "left"
@@ -91,10 +84,10 @@ layui.define(["table", "form"],
                             url: 'delArticle?id='+ e.id,
                             method:'POST',
                             success:function (res) {
-                                if (res.code == 1){
+                                if (res.code == 200){
                                     t.del()
                                 }
-                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                 layer.close(d); //关闭弹层
                             }
                         });
@@ -112,7 +105,7 @@ layui.define(["table", "form"],
                             function(i) {
                                 var l = i.field;
                                 layui.$.post("edit",l,function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         //更新数据表
                                         t.update({
                                             label: l.label,
@@ -123,7 +116,7 @@ layui.define(["table", "form"],
                                             n.render(),
                                                 layer.close(e)
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                 });
                             }),
                             a.trigger("click")
@@ -133,13 +126,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-notice-list",
             url: "getNoticeList",
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[{
                 type: "checkbox",
                 fixed: "left"
@@ -202,10 +188,10 @@ layui.define(["table", "form"],
                                 url: 'delNotice?id='+ e.id,
                                 method:'POST',
                                 success:function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         t.del()
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     layer.close(d); //关闭弹层
                                 }
                             });
@@ -223,7 +209,7 @@ layui.define(["table", "form"],
                                 function(i) {
                                     var l = i.field;
                                     layui.$.post("editNotice",l,function (res) {
-                                        if (res.code == 1){
+                                        if (res.code == 200){
                                             //更新数据表
                                             t.update({
                                                 label: l.label,
@@ -234,7 +220,7 @@ layui.define(["table", "form"],
                                                 n.render(),
                                                 layer.close(e)
                                         }
-                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                        layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     });
                                 }),
                                 a.trigger("click")

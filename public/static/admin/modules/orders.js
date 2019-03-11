@@ -18,13 +18,6 @@ layui.define(["table", "form", "element"],
         i.render({
             elem: "#app-order-list",
             url: 'getList',
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[{
                 type: "checkbox",
                 fixed: "left"

@@ -19,13 +19,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-api-list",
             url: "getList",
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[{
                 type: "checkbox",
                 fixed: "left"
@@ -127,7 +120,7 @@ layui.define(["table", "form"],
                                         console.log(l);
 
                                         layui.$.post("edit",l,function (res) {
-                                            if (res.code == 1){
+                                            if (res.code == 200){
                                                 //更新数据表
                                                 e.update({
                                                     sitename: l.sitename,
@@ -140,7 +133,7 @@ layui.define(["table", "form"],
                                                     i.render(),
                                                         layer.close(f)
                                             }
-                                            layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                            layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                         });
                                     }),
                                     n.trigger("click")

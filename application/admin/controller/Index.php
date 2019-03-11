@@ -1,19 +1,19 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
 
-use app\common\library\enum\CodeEnum;
+use enum\LayEnum;
 use think\helper\Time;
 
 class Index extends BaseAdmin
@@ -56,7 +56,7 @@ class Index extends BaseAdmin
             'orders' => get_order_month_stat($res,'total_orders'),
             'fees' => get_order_month_stat($res,'total_amount'),
         ];
-        $this->result(CodeEnum::SUCCESS,'',$data);
+        $this->result(LayEnum::SUCCESS,'',$data);
     }
 
     /**
@@ -74,13 +74,13 @@ class Index extends BaseAdmin
 
         $data = $this->logicOrders->getOrderList($where,true, 'create_time desc',false);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'data'=>$data
             ]

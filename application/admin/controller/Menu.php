@@ -1,21 +1,19 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
 
-
-use app\common\library\enum\CodeEnum;
-use think\Request;
+use enum\LayEnum;
 
 class Menu extends BaseAdmin
 {
@@ -42,13 +40,13 @@ class Menu extends BaseAdmin
 
         $data = $this->logicMenu->getMenuList([],'id,pid,name,module,url');
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'data'=>$data
             ]

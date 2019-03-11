@@ -1,31 +1,31 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\common\controller;
 
+
+use think\App;
 use think\Controller;
 use think\exception\HttpResponseException;
 use think\helper\Time;
-use think\Request;
 use think\Response;
 
 class Common extends Controller
 {
-
-    public function __construct(Request $request = null)
+    public function __construct(App $app = null)
     {
-        parent::__construct($request);
+        parent::__construct($app);
 
         $this->initSystemConf();
 

@@ -1,4 +1,16 @@
 <!DOCTYPE html>
+<!--
+  ~ +----------------------------------------------------------------------
+  ~  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
+  ~ +----------------------------------------------------------------------
+  ~  | Copyright (c) 2019 知行信息科技. All rights reserved.
+  ~ +----------------------------------------------------------------------
+  ~  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
+  ~ +----------------------------------------------------------------------
+  ~  | Author: Brian Waring <BrianWaring98@gmail.com>
+  ~ +----------------------------------------------------------------------
+  -->
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -106,18 +118,18 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="{:url('index/Login/logout')}">
+                        <a href="{:url('index/Auth/logout')}">
                             退出
                         </a>
                     </li>
                     {else /}
                     <li class="">
                         {if $Request.action == 'login'}
-                        <a href="{:url('index/login/register')}">
+                        <a href="{:url('index/Auth/register')}">
                             注册
                         </a>
                         {else /}
-                        <a href="{:url('index/Login/login')}">
+                        <a href="{:url('index/Auth/login')}">
                             登录
                         </a>
                         {/if}
@@ -236,7 +248,7 @@
 </div>
 <div class="copyright">
     <div class="wrapper">
-        {$site.app_copyright|default="© 2018 Caomao. "} <a href="https://www.iredcap.cn" style="color: #fff;" target="_blank">小红帽科技</a> · {$site.seo_title|default="草帽聚合支付"} · 桂ICP备180004251号
+        {$site.app_copyright|default="© 2018 CMPAY. "} <a href="https://www.iredcap.cn" style="color: #fff;" target="_blank">小红帽科技</a> · {$site.seo_title|default="草帽聚合支付"} · 桂ICP备180004251号
     </div>
 </div>
 <div class="sidebar">

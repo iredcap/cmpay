@@ -1,20 +1,21 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\api\service\request;
-use app\common\library\exception\SignatureException;
-use app\common\library\HttpHeader;
+
+use app\common\exception\SignatureException;
+use tool\HttpHeader;
 use think\Request;
 
 /**
@@ -34,7 +35,7 @@ class CheckSign extends ApiCheck
      *
      * @return mixed|void
      * @throws SignatureException
-     * @throws \app\common\library\exception\ParameterException
+     * @throws \app\common\exception\ParameterException
      */
     public function doCheck(Request $request)
     {
@@ -57,7 +58,7 @@ class CheckSign extends ApiCheck
             ."\n".utf8_encode($request->getContent());
 
         //商户提交支付数据验签
-        $verify_result = self::verify(base64_encode($_to_verify_data), $header['x-ca-signature'],self::get(HttpHeader::X_CA_AUTH));
+        $verify_result = $this->verify(base64_encode($_to_verify_data), $header['x-ca-signature'],self::get(HttpHeader::X_CA_AUTH));
 
         if(empty($verify_result) || intval($verify_result) != 1){
             throw new SignatureException([

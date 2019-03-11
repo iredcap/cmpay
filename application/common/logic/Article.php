@@ -1,21 +1,22 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\common\logic;
+
 use think\Db;
-use think\Log;
-use app\common\library\enum\CodeEnum;
+use think\facade\Log;
+use enum\CodeEnum;
 
 class Article extends BaseLogic
 {
@@ -28,28 +29,15 @@ class Article extends BaseLogic
      * @param bool $field
      * @param string $order
      * @param int $paginate
-     * @return mixed
+     *
+     * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getArticleList($where = [], $field = true, $order = 'create_time desc',$paginate = 15)
     {
-        return $this->modelArticle->getList($where, $field, $order,$paginate);
-    }
-
-    /**
-     * 获取通知列表
-     *
-     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     * @param array $where
-     * @param bool $field
-     * @param string $order
-     * @param int $paginate
-     *
-     * @return mixed
-     */
-    public function getNoticeList($where = [], $field = true, $order = 'create_time desc',$paginate = 15)
-    {
-        return $this->modelNotice->getList($where, $field, $order,$paginate);
+        return $this->getList($where, $field, $order,$paginate);
     }
 
     /**
@@ -61,19 +49,7 @@ class Article extends BaseLogic
      * @return mixed
      */
     public function getArticleCount($where = []){
-        return $this->modelArticle->getCount($where);
-    }
-
-    /**
-     * 获取知总数
-     *
-     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     * @param $where
-     * @return mixed
-     */
-    public function getNoticeCount($where = []){
-        return $this->modelNotice->getCount($where);
+        return $this->getCount($where);
     }
 
     /**
@@ -83,25 +59,15 @@ class Article extends BaseLogic
      *
      * @param array $where
      * @param bool $field
-     * @return mixed
+     *
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getArticleInfo($where = [], $field = true)
     {
-        return $this->modelArticle->getInfo($where, $field);
-    }
-
-    /**
-     * 获取通知信息
-     *
-     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     * @param array $where
-     * @param bool $field
-     * @return mixed
-     */
-    public function getNoticeInfo($where = [], $field = true)
-    {
-        return $this->modelNotice->getInfo($where, $field);
+        return $this->getInfo($where, $field);
     }
 
     /**

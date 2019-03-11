@@ -69,8 +69,8 @@ function check_dirfile()
 {
     $items = array(
         array('dir',  '可写', 'check', '/uploads'),
-        array('dir',  '可写', 'check', '../data'),
-        array('dir',  '可写', 'check', '../data/runtime'),
+        array('dir',  '可写', 'check', '../resource'),
+        array('dir',  '可写', 'check', '../runtime'),
     );
 
     foreach ($items as &$val) {
@@ -261,10 +261,10 @@ function write_config($config)
         $conf = str_replace("[{$name}]", $value, $conf);
     }
 
-    if (file_put_contents(CONF_PATH .'database.php', $conf)) {
+    if (file_put_contents(App::getConfigPath() .'database.php', $conf)) {
 
         // 写入安装锁定文件(只能在最后一步写入锁定文件，因为锁定文件写入后安装模块将无法访问)
-        file_put_contents(DATA_PATH . 'install.lock',  ' install lock');
+        file_put_contents(RES_PATH . 'install.lock',  ' install lock');
 
         return true;
     }

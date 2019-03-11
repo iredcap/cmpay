@@ -1,22 +1,22 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\common\logic;
 
 
-use app\common\library\enum\CodeEnum;
+use enum\CodeEnum;
 use think\Db;
-use think\Log;
+use think\facade\Log;
 
 class UserAccount extends BaseLogic
 {
@@ -26,23 +26,28 @@ class UserAccount extends BaseLogic
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param array $where
-     * @param string|bool $field
+     * @param bool $field
      * @param string $order
      * @param int $paginate
-     * @return mixed
+     *
+     * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getAccountList($where = [], $field = true, $order = '', $paginate = 20)
     {
-        $this->modelUserAccount->limit = !$paginate;
+        $this->limit = !$paginate;
 
-        $this->modelUserAccount->alias('a');
+        $this->alias('a');
 
         $join = [
             ['banker b', 'a.bank_id = b.id'],
         ];
 
-        $this->modelUserAccount->join = $join;
-        return $this->modelUserAccount->getList($where, $field, $order, $paginate);
+        $this->join = $join;
+
+        return $this->getList($where, $field, $order, $paginate);
     }
 
     /**
@@ -54,7 +59,7 @@ class UserAccount extends BaseLogic
      * @return mixed
      */
     public function getAccountCount($where = []){
-        return $this->modelUserAccount->getCount($where);
+        return $this->getCount($where);
     }
 
     /**
@@ -64,11 +69,15 @@ class UserAccount extends BaseLogic
      *
      * @param array $where
      * @param bool $field
-     * @return mixed
+     *
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getAccountInfo($where = [], $field = true){
 
-        return $this->modelUserAccount->getInfo($where, $field);
+        return $this->getInfo($where, $field);
     }
 
     /**
@@ -82,17 +91,17 @@ class UserAccount extends BaseLogic
     public function saveUserAccount($data){
 
         //TODO  验证数据
-        $validate = $this->validateAccountValidate->scene($data['scene'])->check($data);
+        $validate = $this->validateAccount->scene($data['scene'])->check($data);
 
         if (!$validate) {
 
-            return [ 'code' => CodeEnum::ERROR, 'msg' => $this->validateAccountValidate->getError()];
+            return [ 'code' => CodeEnum::ERROR, 'msg' => $this->validateAccount->getError()];
         }
         //TODO 修改数据
         Db::startTrans();
         try{
 
-            $this->modelUserAccount->setInfo($data);
+            $this->setInfo($data);
 
             $action = isset($data['id']) ? '编辑' : '新增';
 
@@ -121,7 +130,7 @@ class UserAccount extends BaseLogic
         Db::startTrans();
         try{
 
-            $this->modelUserAccount->deleteInfo($where);
+            $this->deleteInfo($where);
 
             action_log('删除', '删除账户，ID：'. $where['id']);
 
