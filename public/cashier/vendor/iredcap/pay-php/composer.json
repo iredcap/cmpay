@@ -1,0 +1,24 @@
+{
+    "name": "iredcap/pay-php",
+    "description": "Payment SDK",
+    "license": "MTI",
+    "authors": [
+        {
+            "name": "Brian Waring",
+            "email": "brianwaring98@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "IredCap\\Pay\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IredCap\\Pay\\Tests\\": "example"
+        }
+    }
+}
