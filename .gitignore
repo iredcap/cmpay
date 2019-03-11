@@ -1,8 +1,9 @@
 .idea
 .vscode
-gitroot
+runtime/*
 thinkphp
 vendor
 *.log
+*.lock
 .env
 .DS_Store
