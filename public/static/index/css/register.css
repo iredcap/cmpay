@@ -1,197 +1,42 @@
-/*
- * +---------------------------------------------------------------------+
- * | Yubei         | [ WE CAN DO IT JUST THINK ]
- * +---------------------------------------------------------------------+
- * | Licensed    | http://www.apache.org/licenses/LICENSE-2.0 )
- * +---------------------------------------------------------------------+
- * | Author       | Brian Waring <BrianWaring98@gmail.com>
- * +---------------------------------------------------------------------+
- * | Company   | 小红帽科技      <Iredcap. Inc.>
- * +---------------------------------------------------------------------+
- * | Repository | https://github.com/BrianWaring/Yubei
- * +---------------------------------------------------------------------+
- */
 
-.account-header {
-  position: relative;
-  height: 56px;
-  padding: 20px 0;
+
+.hide {
+    display: none;
 }
-
-.account-header .c-logo {
-    width: 120px;
-    height: 56px;
-    float: left;
-}
-
-.account-login-btn {
-    position: absolute;
-    right: 0;
-    width: 66px;
-    height: 28px;
-    border: 1px solid #E5E5E5;
-    border-radius: 100px;
-    color: #999;
-    line-height: 28px;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 12px;
-    cursor: pointer;
-}
-
-.account-login-btn:hover {
-    border: 1px solid #00B374;
-    color: #00B374;
-}
-
-.account-main {
-    width: 480px;
-}
-
-.account-title {
-    text-align: center;
-    font-size: 28px;
-    line-height: 40px;
-    margin-top: 60px;
-    margin-bottom: 20px;
-}
-
-.account-tel {
-    width: 282px;
-    height: 50px;
-    border-radius: 0 4px 4px 0;
-    border: 1px solid #AAA;
-    font-size: 22px;
-    padding: 0px 20px;
-    float: left;
-    border-left: none;
-}
-
-.account-tel:focus {
-    border-left: none;
-}
-
-.account-tel-error {
-    border: 1px solid #FF5B5B;
-    border-left: none;
-}
-
-.account-input {
-    width: 438px;
-    height: 50px;
-    border-radius: 4px;
-    border: 1px solid #AAA;
-    font-size: 22px;
-    padding: 0px 20px;
-}
-
-.account-input-error {
-    border: 1px solid #FF5B5B;
-}
-
-.account-free-btn {
-    width: 154px;
-    height: 50px;
-    border: 1px solid #00B374;
-    border-radius: 4px 0 0 4px;
-    float: left;
-    text-align: center;
-    line-height: 50px;
-    color: #00B374;
-    font-size: 16px;
-}
-
-.account-tel-cont {
-    position: relative;
-    padding: 20px 0 10px 0;
-    height: 52px;
-}
-
-.account-regist-btn {
-    width: 480px;
-    height: 60px;
-    font-size: 24px;
-    color: #FFF;
-    text-align: center;
-    line-height: 60px;
-    background-color: #00c8f8;
-    border-radius: 100px;
-    margin-top: 40px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    display: block;
-}
-
-.account-regist-btn:hover {
-    box-shadow: 0 2px 2px 0 #00ceff;
-}
-
-.account-regist-btn-disabled {
+.account-regist-btn-disabled{
     background-color: #CCC !important;
     cursor: default !important;
-    box-shadow: none !important;
 }
-
-.account-protocol {
-    font-size: 14px;
-    color: #999;
-    padding-top: 20px;
-}
-
-.account-protocol span {
-    color: #00B374;
-    cursor: pointer;
-}
-
-.account-protocol span:hover {
-    text-decoration: underline;
-}
-
-.account-protocol-tip-cont {
-    height: 19px;
-}
-
-.account-input-cont {
-    padding: 20px 0 10px 0;
-}
-
 .account-tip-cont {
     height: 19px;
 }
-
-.account-verify-btn {
-    width: 309px;
-    height: 52px;
-    color: #FFF;
-    background-color: #00ceff;
-    text-align: center;
-    line-height: 52px;
-    font-size: 22px;
-    border-radius: 4px;
+.c-error-icon {
+    background: url('../images/error-icon.png') no-repeat;
+    background-size: cover;
+    margin: 0 5px;
+    width: 18px;
+    height: 18px;
     float: left;
-    cursor: pointer;
+}
+.c-tip-text {
+    font-size: 14px;
+    color: #999;
+    float: left;
 }
 
-.account-verify-btn-disable {
-    background-color: #CCC !important;
-    cursor: default !important;
+.c-hide {
+    display: none;
 }
-
-.account-verify-input {
-    width: 108px;
+.account-input-cont {
+    padding: 20px 0 10px 0;
+}
+.account-input {
+    width: 100%;
     height: 50px;
-    border: 1px solid #AAA;
     border-radius: 4px;
-    float: left;
-    margin-right: 20px;
-    padding: 0 20px;
+    border: 1px solid #AAA;
     font-size: 22px;
-}
-
-.account-verify-cont {
-    margin-top: 20px;
-    height: 52px;
-    margin-bottom: 10px;
+    padding: 0px 20px;
 }
 
 .account-register-success-image {
@@ -208,340 +53,6 @@
     width: 110px;
     height: 110px;
     margin: 0 auto;
-}
-
-.account-success-img {
-    padding-top: 20px;
-    padding-bottom: 40px;
-}
-
-.account-email-show {
-    text-align: center;
-    font-size: 28px;
-    color: #000;
-}
-
-.acount-paper-icon {
-    background: url("../images/paper-icon.png") no-repeat;
-    background-size: cover;
-    width: 26px;
-    height: 32px;
-    margin-left: 14px;
-    margin-top: 5px;
-    display: inline-block;
-    vertical-align: text-bottom;
-    cursor: pointer;
-}
-
-.account-email-cont {
-    margin-bottom: 20px;
-}
-
-.account-email-retry {
-    font-size: 14px;
-    color: #000;
-    text-align: center;
-    margin-top: 30px;
-}
-
-.account-retry-text {
-    color: #00B374;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.account-retry-text:hover {
-    text-decoration: underline;
-}
-
-.account-iden-send {
-    font-size: 14px;
-    text-align: center;
-    padding: 20px 0;
-    color: #000;
-}
-
-.account-verify-tel {
-    margin-top: 10px;
-    height: 52px;
-}
-
-.account-forger-text {
-    font-size: 14px;
-    color: #999;
-    float: right;
-    padding: 0 5px;
-}
-
-.account-forger-text:hover {
-    color: #00B374;
-    text-decoration: underline;
-}
-
-.account-login-mg {
-    margin-top: 68px;
-}
-
-.account-info-mg {
-    margin-top: 0px;
-}
-
-.account-verify-image {
-    width: 238px;
-    height: 50px;
-    border-radius: 4px;
-    border: 1px solid #AAA;
-    font-size: 22px;
-    padding: 0px 20px;
-    float: left;
-}
-
-.account-verify-image-btn {
-    width: 178px;
-    height: 50px;
-    border: 1px solid #AAA;
-    font-size: 22px;
-    color: #000;
-    text-align: center;
-    line-height: 50px;
-    cursor: pointer;
-    border-radius: 4px;
-    float: left;
-    margin-left: 20px;
-}
-
-.account-referrer {
-    position: absolute;
-    width: 100%;
-    font-size: 20px;
-    color: #000;
-    text-align: center;
-    top: 35px;
-}
-
-.account-referrer-text {
-    color: #00B374;
-}
-
-.plugin-bg {
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.08);
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1000;
-}
-
-.plugin-main {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 50%;
-    margin-left: -200px;
-    width: 340px;
-    background-color: #FFF;
-    border-radius: 8px;
-    padding: 20px 30px 40px 30px;
-    z-index: 1000;
-}
-
-.plugin-head {
-    height: 37px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #E5E5E5;
-    margin-bottom: 10px;
-}
-
-.plugin-head-text {
-    font-size: 26px;
-    color: #333;
-    line-height: 37px;
-}
-
-.plugin-head-tip {
-    font-size: 14px;
-    color: #CCC;
-    margin-left: 10px;
-}
-
-.plugin-head-link {
-    color: #00B374;
-    cursor: pointer;
-}
-
-.plugin-head-link:hover {
-    text-decoration: underline;
-}
-
-.plugin-close-icon {
-    position: absolute;
-    right: 30px;
-    top: 30px;
-    cursor: pointer;
-}
-
-.plugin-input {
-    width: 300px;
-}
-
-.plugin-regist-btn {
-    width: 340px;
-    height: 52px;
-    font-size: 24px;
-    color: #FFF;
-    text-align: center;
-    line-height: 52px;
-    background-color: #00B374;
-    border-radius: 100px;
-    margin-top: 40px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    display: block;
-}
-
-.plugin-free-btn {
-    width: 119px;
-    height: 50px;
-    border: 1px solid #00B374;
-    border-radius: 4px 0 0 4px;
-    float: left;
-    text-align: center;
-    line-height: 50px;
-    color: #00B374;
-    font-size: 14px;
-}
-
-.plugin-tel {
-    width: 178px;
-    height: 50px;
-    border-radius: 0 4px 4px 0;
-    border: 1px solid #AAA;
-    font-size: 22px;
-    padding: 0px 20px;
-    float: left;
-    border-left: none;
-}
-
-.plugin-verify-input {
-    width: 108px;
-    height: 50px;
-    border: 1px solid #AAA;
-    border-radius: 4px;
-    float: left;
-    margin-right: 20px;
-    padding: 0 15px;
-    font-size: 22px;
-}
-
-.plugin-verify-btn {
-    width: 180px;
-    height: 52px;
-    color: #FFF;
-    background-color: #00B374;
-    text-align: center;
-    line-height: 52px;
-    font-size: 22px;
-    border-radius: 4px;
-    float: left;
-    cursor: pointer;
-}
-
-.password-type-con {
-    margin-bottom: 10px;
-    overflow: hidden;
-    display: none;
-}
-
-.password-type-btn {
-    width: 70px;
-    height: 4px;
-    background: #EEE;
-    border-radius: 100px;
-    margin-right: 5px;
-    margin-top: 8px;
-    float: left;
-}
-
-.password-type-text {
-    font-size: 14px;
-    color: #CCC;
-    float: left;
-    margin-left: 5px;
-}
-
-body {
-    margin: 0;
-    color: #000;
-    font-family: "Open Sans", tahoma, arial, "\5FAE\8F6F\96C5\9ED1", "Microsoft Yahei", "Hiragino Sans GB", "\5B8B\4F53" !important;
-}
-
-::-webkit-input-placeholder { /* WebKit browsers */
-    color: #CCC;
-    font-size: 22px;
-    font-weight: 300;
-}
-
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: #CCC;
-    font-size: 22px;
-    font-weight: 300;
-}
-
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: #CCC;
-    font-size: 22px;
-    font-weight: 300;
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color: #CCC;
-    font-size: 22px;
-    font-weight: 300;
-}
-
-input {
-    font-family: "Open Sans", tahoma, arial, "\5FAE\8F6F\96C5\9ED1", "Microsoft Yahei", "Hiragino Sans GB", "\5B8B\4F53" !important;
-}
-
-input:focus {
-    border: 1px solid #00B374;
-    outline: none;
-}
-
-a {
-    text-decoration: none;
-    color: #000;
-    display: block;
-}
-
-.c-relative {
-    position: relative;
-}
-
-.c-tip {
-    width: 100%;
-    height: 37px;
-    text-align: center;
-    font-size: 12px;
-    color: #CCC;
-    background-color: #000;
-    line-height: 37px;
-}
-
-.c-main-cont {
-    min-width: 990px;
-    max-width: 1190px;
-    margin: 0 auto;
-}
-
-.c-center {
-    margin: 0 auto;
-}
-
-.c-t-center {
-    text-align: center;
 }
 
 .c-error-icon {
@@ -610,50 +121,55 @@ a {
     top: 38px;
     right: 14px;
 }
-
-
-
-
-.c-tip-text {
-    font-size: 14px;
-    color: #999;
-    float: left;
-}
-
 .c-tip-text-black {
     font-size: 14px;
     color: #000;
     float: left;
 }
 
-.c-error-text {
-    color: #FF5B5B;
+.account-tel-cont {
+    position: relative;
+    height: 52px;
 }
 
-
-.c-clear {
-    clear: both;
-}
-
-.c-float-none {
-    float: none;
-}
-
-.c-left {
+.account-free-btn {
+    width: 30%;
+    height: 50px;
+    border: 1px solid #00B374;
+    border-radius: 4px 0 0 4px;
     float: left;
+    text-align: center;
+    line-height: 50px;
+    color: #00B374;
+    font-size: 16px;
 }
 
-.c-hide {
-    display: none;
+.account-tel {
+    width: 70%;
+    height: 50px;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #AAA;
+    font-size: 22px;
+    padding: 0px 20px;
+    float: left;
+    border-left: none;
 }
 
-.c-disabled {
-    background-color: #CCC;
-    cursor: default;
+.account-verify-cont {
+    margin-top: 20px;
+    height: 52px;
+    margin-bottom: 10px;
 }
 
-.c-inline {
-    display: inline;
+.account-verify-input {
+    width: 50%;
+    height: 50px;
+    border: 1px solid #AAA;
+    border-radius: 4px;
+    float: left;
+    margin-right: 20px;
+    padding: 0 20px;
+    font-size: 16px;
 }
 
 .c-btn-primary {
@@ -663,48 +179,32 @@ a {
     transition: all 0.2s;
 }
 
-.c-btn-primary:hover {
-    background-color: #00c8f8;
+.account-verify-btn-disable {
+    background-color: #CCC !important;
+    cursor: default !important;
+}
+
+.account-verify-btn {
+    width: 38%;
+    height: 52px;
     color: #FFF;
-}
-
-.c-copyright {
-    width: 100%;
-    font-size: 12px;
-    color: #9F9F9F;
+    background-color: #00ceff;
     text-align: center;
-    padding: 60px 0 20px 0;
+    line-height: 52px;
+    font-size: 18px;
+    border-radius: 4px;
+    float: left;
+    cursor: pointer;
 }
 
-.c-main-cont {
-    width: 480px;
-    margin: 0 auto;
+.account-protocol-tip-cont {
+    height: 19px;
 }
-
-.c-tip-text {
+.account-protocol {
     font-size: 14px;
     color: #999;
-    float: left;
+    padding-top: 20px;
 }
-
-.c-tip-text-black {
-    font-size: 14px;
-    color: #000;
-    float: left;
-}
-
-#reg{
-    height: 0px;
-}
-#checked{
-    margin-top: -3px;
-}
-.line{
-    padding-top: 10px;
-}
-.account-forger-text {
-    font-size: 14px;
-    color: #999;
-    float: right;
-    padding: 0 5px;
+#checked {
+ margin-top: -3px;
 }

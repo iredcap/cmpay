@@ -15,6 +15,7 @@
 namespace app\admin\controller;
 
 use app\common\library\enum\CodeEnum;
+use app\common\library\enum\UserStatusEnum;
 
 class User extends BaseAdmin
 {
@@ -50,7 +51,7 @@ class User extends BaseAdmin
         !empty($this->request->param('email')) && $where['account']
             = ['like', '%'.$this->request->param('email').'%'];
 
-        $where['status'] = ['eq', $this->request->get('status','1')];
+        $where['status'] = ['eq', $this->request->get('status',UserStatusEnum::ENABLE)];
 
         //时间搜索  时间戳搜素
         $where['create_time'] = $this->parseRequestDate();
@@ -137,4 +138,129 @@ class User extends BaseAdmin
         $this->error([ CodeEnum::ERROR,'未知错误']);
     }
 
+    /**
+     * 认证信息
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @return mixed
+     */
+    public function auth(){
+        return $this->fetch();
+    }
+
+    /**
+     * 商户认证信息列表
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     */
+    public function getAuthList(){
+        $where = [];
+
+        //组合搜索
+        !empty($this->request->param('uid')) && $where['uid']
+            = ['eq', $this->request->param('uid')];
+
+        $where['status'] = ['eq', $this->request->get('status','1')];
+
+        //时间搜索  时间戳搜素
+        $where['create_time'] = $this->parseRequestDate();
+
+        $data = $this->logicUser->getUserAuthList($where, true, 'create_time desc', false);
+
+        $count = $this->logicUser->getUserAuthCount($where);
+
+        $this->result($data || !empty($data) ?
+            [
+                'code' => CodeEnum::SUCCESS,
+                'msg'=> '',
+                'count'=>$count,
+                'data'=>$data
+            ] : [
+                'code' => CodeEnum::ERROR,
+                'msg'=> '暂无数据',
+                'count'=>$count,
+                'data'=>$data
+            ]
+        );
+    }
+
+    /**
+     * 认证详细信息
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @return mixed
+     */
+    public function userAuthInfo(){
+        // post 是提交数据
+        $this->request->isPost() && $this->result($this->logicUser->saveUserAuth($this->request->post()));
+        //获取认证详细信息
+        $auth = $this->logicUser->getUserAuthInfo(['uid' =>$this->request->param('id')]);
+        $auth['card'] = json_decode($auth['card'],true);
+
+        $this->assign('auth',$auth);
+
+        return $this->fetch();
+    }
+
+    /**
+     * 分润设置
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     *
+     * @return mixed
+     */
+    public function profit(){
+        // post 是提交数据
+        if ($this->request->isPost()){
+            $data = $this->request->post('r/a');
+            foreach ($data as $key => $item) {
+                //查
+                $profit = $this->logicUser->getUserProfitInfo(['uid' => $item['uid'], 'cnl_id' => $item['cnl_id']]);
+                if ($profit) {
+                    $data_update[] = [
+                        'id' => $profit['id'],
+                        'uid' => $item['uid'],
+                        'cnl_id' => $item['cnl_id'],
+                        'urate' => $item['urate'],
+                        'grate' => $item['grate']
+                    ];
+                } else {
+                    $data_update[] = [
+                        'uid' => $item['uid'],
+                        'cnl_id' => $item['cnl_id'],
+                        'urate' => $item['urate'],
+                        'grate' => $item['grate']
+                    ];
+                }
+
+            }
+            $this->result($this->logicUser->saveUserProfit($data_update));
+        };
+        //所有渠道列表
+        $channel = $this->logicPay->getAccountList([],true, 'create_time desc',false);
+
+        //获取商户分润详细信息
+        $userProfit = $this->logicUser->getUserProfitList(['uid' =>$this->request->param('id')]);
+        if ($userProfit) {
+            foreach ($userProfit as $item) {
+                $_tmpData[$item['cnl_id']] = $item;
+            }
+        }
+
+        //重组渠道列表
+        if ($channel) {
+            foreach ($channel as $key => $item) {
+                //dump($item);
+                $channel[$key]['urate']    = isset($_tmpData[$item['id']]['urate']) ? $_tmpData[$item['id']]['urate'] : $item['urate'];
+                $channel[$key]['grate'] = isset($_tmpData[$item['id']]['grate']) ? $_tmpData[$item['id']]['grate'] : $item['grate'];
+            }
+        }
+        $this->assign('list', $channel);;
+
+        return $this->fetch();
+    }
 }

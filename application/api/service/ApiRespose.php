@@ -18,6 +18,7 @@ use app\api\service\response\BuildEncrypt;
 use app\api\service\response\BuildHeader;
 use app\api\service\response\BuildResponse;
 use app\api\service\response\BuildSign;
+use think\Log;
 
 /**
  * API响应

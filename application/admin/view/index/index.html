@@ -6,8 +6,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="__STATIC__/common/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="__STATIC__/common/style/admin.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
 </head>
 <body class="layui-layout-body">
 <div id="LAY_app">
@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a href="https://www.iredcap.cn/" target="_blank" title="前台">
+                    <a href="/" target="_blank" title="前台">
                         <i class="layui-icon layui-icon-website"></i>
                     </a>
                 </li>
@@ -46,13 +46,18 @@
                         <i class="layui-icon layui-icon-theme"></i>
                     </a>
                 </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="clearcache">
+                        <i class="layui-icon layui-icon-fonts-clear"></i>
+                    </a>
+                </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
                         <cite>{$admin_info.nickname}</cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                        <dd><a lay-href="{:url('admin/System/profile')}">基本资料</a></dd>
+                        <dd><a lay-href="{:url('admin/System/changepwd')}">修改密码</a></dd>
                         <hr>
                         <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
                     </dl>
@@ -70,8 +75,8 @@
         <!-- 侧边菜单 -->
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
-                <div class="layui-logo" lay-href="/">
-                    <span>{$site.seo_title|default="草帽聚合支付"} · 后台管理</span>
+                <div class="layui-logo" layadmin-event="refresh" title="刷新">
+                    <span>{$site.seo_title|default="草帽聚合支付"}</span>
                 </div>
                 <!--/菜单列表-->
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -108,7 +113,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="{:url('admin/index/welcome')}" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="{:url('admin/Index/welcome')}" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 
@@ -117,10 +122,10 @@
     </div>
 </div>
 
-<script src="__STATIC__/common/layui/layui.js"></script>
+<script src="__ADMIN__/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '__STATIC__/common/' //静态资源所在路径
+        base: '__ADMIN__/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use('index')

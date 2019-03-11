@@ -1,14 +1,14 @@
 <?php
 /**
- * +----------------------------------------------------------------------
- *   | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- * +----------------------------------------------------------------------
- *   | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- * +----------------------------------------------------------------------
- *   | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- * +----------------------------------------------------------------------
- *   | Author: Brian Waring <BrianWaring98@gmail.com>
- * +----------------------------------------------------------------------
+ *  +----------------------------------------------------------------------
+ *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
+ *  +----------------------------------------------------------------------
+ *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
+ *  +----------------------------------------------------------------------
+ *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
+ *  +----------------------------------------------------------------------
+ *  | Author: Brian Waring <BrianWaring98@gmail.com>
+ *  +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
@@ -68,6 +68,22 @@ class Log extends BaseAdmin
                 'data'=>$data
             ]
         );
+    }
+
+    /**
+     * 日志删除
+     */
+    public function logDel($id = 0)
+    {
+        $this->result($this->logicLog->logDel(['id' => $id]));
+    }
+
+    /**
+     * 日志清空
+     */
+    public function logClean()
+    {
+        $this->result($this->logicLog->logDel(['status' => '1']));
     }
 
 }

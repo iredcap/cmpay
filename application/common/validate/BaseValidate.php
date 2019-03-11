@@ -99,7 +99,9 @@ class BaseValidate extends Validate
      * @throws \think\Exception
      */
     protected function checkCode($value, $rule='', $data = [], $field=''){
-        if (Code::valid($data['phone'],$value)) {
+        $phone = !empty($data['phone']) ? $data['phone']
+            : session('user_info')['phone'];
+        if ( Code::valid($phone, $value) ) {
             return true;
         } else {
             return false;

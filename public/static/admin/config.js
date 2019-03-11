@@ -32,7 +32,11 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     //扩展的第三方模块
     ,extend: [
       'echarts', //echarts 核心包
-      'echartsTheme' //echarts 主题
+      'echartsTheme', //echarts 主题
+      'authtree', //权限树
+      'treeGrid', //树形列表
+      'tableSelect', //列表选择框
+      'treeSelect' //树形选择框
     ]
     
     //主题配置

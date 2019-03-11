@@ -1,0 +1,40 @@
+/* Dropdowns */
+.dropdown-menu {
+  font-size: $default-font-size;
+
+  .dropdown-item {
+    &:active {
+      background: initial;
+    }
+  }
+}
+
+.dropdown-toggle {
+  &:after {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    font-family: 'simple-line-icons';
+    content: "\e604"; 
+    font-size: .625rem;
+    vertical-align: initial;
+    display: initial;
+  }
+}
+
+.dropup {
+  .dropdown-toggle {
+    &:after {
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+      border-bottom: 0;
+      font-family: 'simple-line-icons';
+      content: "\e607";  
+      font-size: .625rem;
+      vertical-align: initial;
+      display: initial;
+    }
+  }
+}

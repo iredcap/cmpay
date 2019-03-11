@@ -13,8 +13,10 @@
  */
 
 namespace app\api\logic;
-
 use app\api\service\ApiPayment;
+use app\common\library\exception\OrderException;
+use think\Exception;
+use think\Log;
 
 /**
  * 支付处理类  （优化方案：提出单个支付类  抽象类对象处理方法 便于管理）
@@ -29,6 +31,7 @@ class DoPay extends BaseApi
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param $orderNo
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -38,30 +41,33 @@ class DoPay extends BaseApi
         $order = $this->modelOrders->checkOrderValid($orderNo);
 
         //创建支付预订单
-        return $this->preOrder($order);
+        return $this->prePayOrder($order);
     }
 
+
     /**
-     * 指定网关   [***应该分出来做成service***]
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param $order
-     * @return array
+     *
+     * @return mixed
+     * @throws OrderException
      */
-    private function preOrder($order){
-        //随机支付渠道 -- 返回支付方式ID
-        //传入支付方式ID
-        $config = $this->modelPayChannel->getChannelMap($this->modelPayCode->getCodeId($order['channel']));
+    private function prePayOrder($order){
+        //渠道和参数获取
+        $appChannel = $this->logicPay->getAllowedAccount($order);
+        if (isset($appChannel['errorCode'])){
+            Log::error($appChannel['msg']);
+            throw new OrderException($appChannel);
+        }
 
-        //添加订单支付通道ID
-        $this->logicOrders->setValue(['trade_no'=>$order['trade_no']],$config['id']);
-        //处理类名称
-        $payment = uncamelize($config['action']);
-        //TODO  分发支付网关
-        $result = ApiPayment::$payment($config['param'])->pay($order);
+        //取出数据
+        list($payment,$action,$config) = array_values($appChannel);
+
+        //支付分发
+        $result = ApiPayment::$payment($config)->$action($order);
 
         return $result;
     }
-
 }

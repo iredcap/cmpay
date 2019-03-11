@@ -27,14 +27,35 @@ class Common extends Controller
     {
         parent::__construct($request);
 
-        $config_array = [];
+        $this->initSystemConf();
 
-        foreach ($this->logicConfig->getConfigList() as $info) {
+        $this->assign('site', config('site'));
+    }
 
-            $config_array[$info['name']] = $info['value'];
+    /**
+     * 初始化配置信息
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     *
+     */
+    private function initSystemConf()
+    {
+
+        $model = model('app\common\model\Config');
+
+        $config_list = auto_cache('config_list', create_closure($model, 'all'));
+
+        $config_array =[];
+        foreach ($config_list as $info) {
+
+            $config_array[$info['group']][$info['name']] = is_numeric($info['value'])
+                ? parse_config_attr($info['extra'])[$info['value']] : $info['value'];
         }
+        //写入配置  先这样吧  懒得写了
+        config('site' ,$config_array[0]);
+        config('email' ,$config_array[1]);
 
-        $this->assign('site',$config_array);
     }
 
     /**
@@ -79,12 +100,10 @@ class Common extends Controller
      */
     protected function parseRequestDate(){
 
-        list($start,$end) = !empty($this->request->param('date'))
-            ? str2arr($this->request->param('date'),'-')
-            : Time::month();
+        list($start,$end) = Time::month();
         return [
-            'between',!empty($this->request->param('date'))
-                ? [strtotime($start), strtotime($end)]
+            'between',!empty($this->request->param('end'))
+                ? [strtotime($this->request->param('start')), bcadd(strtotime($this->request->param('end')), 86400)]
                 : [$start, $end]
         ];
     }

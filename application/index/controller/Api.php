@@ -15,6 +15,8 @@
 namespace app\index\controller;
 
 
+use app\common\library\RsaUtils;
+
 class Api extends Base
 {
 
@@ -38,8 +40,11 @@ class Api extends Base
      * @return mixed
      */
     public function channel(){
+        $channel = $this->logicPay->getCodeList(['status' => '1'], true, 'create_time desc', 10);
+        $this->assign('list',$channel);
         return $this->fetch();
     }
+
 
     /**
      * API公共
@@ -48,13 +53,15 @@ class Api extends Base
      *
      */
     public function apiCommon(){
-        $this->request->isPost() && $this->result(
-            $this->logicApi->editApi(
-                $this->request->post(),
-                ['uid' => is_login()]
-            )
-        );
+        if($this->request->isPost()){
+            if ($this->request->post('u/a')['uid'] == is_login()){
+                $this->result($this->logicApi->editApi($this->request->post('u/a')));
+            }else{
+                $this->result(0,'非法操作，请重试！');
+            }
+        }
         $this->assign('api',$this->logicApi->getApiInfo(['uid' => is_login()]));
-    }
 
+        $this->assign('rsa',$this->logicConfig->getConfigInfo(['name' => 'rsa_public_key'],'value'));
+    }
 }

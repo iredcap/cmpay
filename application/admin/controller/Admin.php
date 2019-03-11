@@ -49,7 +49,7 @@ class Admin extends BaseAdmin
         !empty($this->request->param('email')) && $where['email']
             = ['like', '%'.$this->request->param('email').'%'];
 
-        !empty($this->request->param('role')) && $where['b.id']
+        !empty($this->request->param('role')) && $where['id']
             = ['eq', $this->request->param('role')];
 
         $data = $this->logicAdmin->getAdminList($where,true,'id asc',false);
@@ -116,6 +116,7 @@ class Admin extends BaseAdmin
         $this->request->isPost() && $this->result($this->logicAdmin->userAuth($this->request->post()));
 
         $this->assign('id', $this->request->param('id'));
+
 
         return $this->fetch();
     }

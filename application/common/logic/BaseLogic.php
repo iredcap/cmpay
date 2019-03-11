@@ -29,25 +29,27 @@ class BaseLogic extends BaseModel
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param string $key
-     * @return false|int
+     * @param int $num
+     *
+     * @return bool|false|int
      */
-    public function checkFrequent($key= ''){
+    public function checkFrequent($key= '',$num = 5){
         //API 访问限制
         $name = !empty($key) ? $key : 'client-ip:' . request()->ip();
-        $redis = new Cache();
-        $value = $redis->get($name);
+        $cache = Cache::store('redis');
+        $value = $cache->get($name);
         //没有数据
         if (!$value) {
             // 写入ip
-            $redis->set($name, 0, 36000);
+            $cache->set($name, 0, 36000);
         }
-        //一天内 次数超过 10 次 停止本次请求
-        if ($value >= 10) {
+        //一天内 次数超过 $num 次 停止本次请求
+        if ($value >= $num) {
             Log::error("Trigger restriction and flow control");
             return false;
         }
         //正常范围跟 自增一次
-        return $redis->inc($name);
+        return $cache->inc($name);
     }
 
     /**
@@ -63,7 +65,7 @@ class BaseLogic extends BaseModel
     public function sendCode($whom,$drive = ''){
         //请求限制
         if (!$this->checkFrequent($whom)){
-            return [ CodeEnum::ERROR, "发送失败，验证码接口请求限制 10次天"];
+            return [ 'code' => CodeEnum::ERROR,  'msg' => "发送失败，接口请求限制"];
         };
         //邮件附加参数
         $param = [
@@ -75,7 +77,9 @@ class BaseLogic extends BaseModel
         }
         //2.发送验证码
         $res = Code::send($whom, $param);
-        return $res ? [ CodeEnum::SUCCESS, "发送成功"]:[ CodeEnum::ERROR, "发送失败"];
+
+        return $res ? [  'code' =>  CodeEnum::SUCCESS,  'msg' => "发送成功"]
+            : [ 'code' =>  CodeEnum::ERROR,  'msg' => "发送失败"];
     }
 
     /**

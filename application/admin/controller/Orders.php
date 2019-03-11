@@ -14,6 +14,7 @@
 namespace app\admin\controller;
 
 use app\common\library\enum\CodeEnum;
+use app\common\library\enum\OrderStatusEnum;
 
 class Orders extends BaseAdmin
 {
@@ -28,6 +29,7 @@ class Orders extends BaseAdmin
     public function index(){
 
         $this->assign($this->logicOrders->getOrdersAllStat());
+        $this->assign('code', $this->logicPay->getCodeList());
         return $this->fetch();
     }
 
@@ -40,7 +42,7 @@ class Orders extends BaseAdmin
     public function getList(){
 
         //状态
-        $where['status'] = ['eq', $this->request->param('status','0')];
+        $where['status'] = ['eq', $this->request->param('status',OrderStatusEnum::PAID)];
 
         //组合搜索
         !empty($this->request->param('trade_no|out_trade_no')) && $where['trade_no|out_trade_no']
@@ -87,10 +89,19 @@ class Orders extends BaseAdmin
      */
     public function details(){
         $where['id'] = $this->request->param('id','0');
-        //时间搜索  时间戳搜素
-        $where['create_time'] = $this->parseRequestDate();
 
-        $this->assign('order', $this->logicOrders->getOrderList($where));
+        //订单
+        $order = $this->logicOrders->getOrderInfo($where);
+
+        $notify = [];
+        //当支付成功的时候才会看有没有回调成功
+        if ($order['status'] == '2'){
+            //回调
+            $notify = $this->logicOrders->getOrderNotify(['order_id'=> $where['id']]);
+        }
+
+        $this->assign('order', $order);
+        $this->assign('notify', $notify);
 
         return $this->fetch();
     }
@@ -173,6 +184,7 @@ class Orders extends BaseAdmin
      *
      */
     public function channel(){
+        $this->assign('channel', $this->logicPay->getChannelList());
         return $this->fetch();
     }
 
@@ -208,5 +220,16 @@ class Orders extends BaseAdmin
                 'data'=>$data
             ]
         );
+    }
+
+    /**
+     * 这里还是写入队列
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     *
+     */
+    public function subnotify(){
+        $this->result($this->logicOrders->pushOrderNotify($this->request->param('order_id')));
     }
 }

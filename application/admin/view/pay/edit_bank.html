@@ -1,4 +1,16 @@
 <!DOCTYPE html>
+<!--
+  ~  +----------------------------------------------------------------------
+  ~  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
+  ~  +----------------------------------------------------------------------
+  ~  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
+  ~  +----------------------------------------------------------------------
+  ~  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
+  ~  +----------------------------------------------------------------------
+  ~  | Author: Brian Waring <BrianWaring98@gmail.com>
+  ~  +----------------------------------------------------------------------
+  -->
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,7 +18,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="__STATIC__/common/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
 </head>
 <body>
 
@@ -14,7 +26,7 @@
     <input type="text" name="id" hidden disabled value="{$bank.id}">
     <div class="layui-form-item">
         <label class="layui-form-label">银行名称：</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-block">
             <input type="text" name="name" required lay-verify="required" placeholder="请输入银行名称" autocomplete="off" class="layui-input" value="{$bank.name}">
         </div>
     </div>
@@ -26,20 +38,16 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">默认：</label>
-        <div class="layui-input-inline">
-            <div class="layui-input-inline">
-                <input type="radio" name="default" value="1" title="启用" {$bank.default == 1?'checked':''}>
-                <input type="radio" name="default" value="0" title="禁用" {$bank.default == 0?'checked':''}>
-            </div>
+        <div class="layui-input-block">
+            <input type="radio" name="default" value="1" title="启用" {$bank.default == 1?'checked':''}>
+            <input type="radio" name="default" value="0" title="禁用" {$bank.default == 0?'checked':''}>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">状态：</label>
-        <div class="layui-input-inline">
-            <div class="layui-input-inline">
-                <input type="radio" name="status" value="1" title="启用" {$bank.status == 1?'checked':''}>
-                <input type="radio" name="status" value="0" title="禁用" {$bank.status == 0?'checked':''}>
-            </div>
+        <div class="layui-input-block">
+            <input type="radio" name="status" value="1" title="启用" {$bank.status == 1?'checked':''}>
+            <input type="radio" name="status" value="0" title="禁用" {$bank.status == 0?'checked':''}>
         </div>
     </div>
     <div class="layui-form-item layui-hide">
@@ -47,10 +55,10 @@
     </div>
 </div>
 
-<script src="__STATIC__/common/layui/layui.js"></script>
+<script src="__ADMIN__/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '__STATIC__/common/' //静态资源所在路径
+        base: '__ADMIN__/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'form'], function(){

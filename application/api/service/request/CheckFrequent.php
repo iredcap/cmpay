@@ -14,7 +14,7 @@
 
 
 namespace app\api\service\request;
-use app\common\library\exception\ParameterException;
+use app\common\library\exception\ForbiddenException;
 use think\Cache;
 use think\Log;
 use think\Request;
@@ -53,25 +53,23 @@ class CheckFrequent extends ApiCheck
      *
      * @param Request $request
      * @return mixed|void
-     * @throws ParameterException
+     * @throws ForbiddenException
      */
     public function doCheck(Request $request)
     {
-        Log::notice("Request:".json_encode($request->param()));
-        $key = 'Gateways-client-ip:' . $request->ip();
-        $redis = new Cache();
-        $value = $redis->get($key);
-
+        $key = 'ClientIp:' . $request->ip();
+        $cache = Cache::store('redis');
+        $value = $cache->get($key);
         if (!$value) {
-            $redis->set($key, 0,$this->timeScope);
+            $cache->set($key, 0, $this->timeScope);
         }
         if ($value >= $this->times) {
-            Log::error($key);
-            throw new ParameterException([
-                'msg'=>"Invalid Request.[ Trigger Restriction And Flow Control.]",
-                'errorCode'=>100000
+            Log::error($key . '[ Trigger Restriction And Flow Control.]');
+            throw new ForbiddenException([
+                'msg' => "Invalid Request.[ Trigger Restriction And Flow Control.]",
+                'errorCode' => 100003
             ]);
         }
-        $redis->inc($key);
+        $cache->inc($key);
     }
 }

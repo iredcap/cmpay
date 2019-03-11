@@ -42,7 +42,7 @@ class Login extends Base
         'username.require'    => '登录名不能为空',
         'username.email'      => '登录名必须是邮箱',
         'password.require'    => '登录密码不能为空',
-        'password.length'     => '登陆密码长度不足'
+        'password.length'     => '登陆密码长度6-12'
     ];
 
 }

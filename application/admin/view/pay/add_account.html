@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>小红帽科技|草帽聚合支付 - 后台管理 - 支付渠道账户添加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="layui-form" style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">账户名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" required lay-verify="required" placeholder="请输入账户名称" autocomplete="off" class="layui-input" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支持方式：</label>
+        <div class="layui-input-block">
+            {volist name="codes" id="vo"}
+            <input type="checkbox" name="co_id[]" value="{$vo.id}" title="{$vo.name}" lay-skin="primary">
+            {/volist}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付渠道：</label>
+        <div class="layui-input-block">
+            <select name="cnl_id" disabled="disabled">
+                <option value="">请选择支付渠道</option>
+                {volist name="channel" id="vo"}
+                <option {$cnl_id == $vo.id ? 'selected' : ''} value="{$vo.id}">{$vo.name}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">账户费率：</label>
+        <div class="layui-input-block">
+            <input type="text" name="rate" required lay-verify="required" placeholder="请输入账户费率" autocomplete="off" class="layui-input" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">代理分成：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="urate" required lay-verify="required" placeholder="请输入代理分成" autocomplete="off" class="layui-input" value="">
+        </div>
+        <label class="layui-form-label">用户分成：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="urate" required lay-verify="required" placeholder="请输入用户分成" autocomplete="off" class="layui-input" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单笔限额：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="single" required lay-verify="required" placeholder="请输入单笔限额" autocomplete="off" class="layui-input" value="">
+        </div>
+        <label class="layui-form-label">当日限额：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="daily" required lay-verify="required" placeholder="请输入当日限额" autocomplete="off" class="layui-input" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开始时间：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="timeslot[start]" id="channel-timeslot-start" lay-verify="time" value="" placeholder="H:m" autocomplete="off" class="layui-input" lay-key="start">
+        </div>
+        <label class="layui-form-label">结束时间：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="timeslot[end]" id="channel-timeslot-end" lay-verify="time" value="" placeholder="H:m" autocomplete="off" class="layui-input" lay-key="end">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">配置参数：</label>
+        <div class="layui-input-block">
+            <textarea name="param" placeholder="请输入支付请求参数" class="layui-textarea"></textarea>
+            <div class="layui-form-mid layui-word-aux">微信/QQ:{"mch_id":"商户支付号","mch_key":"商户支付KEY","app_id":"商户应用号","app_key":"应用KEY"}</div>
+            <div class="layui-form-mid layui-word-aux">支付宝：{"app_id":"应用号","private_key":"私钥","public_key":"公钥"}</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态：</label>
+        <div class="layui-input-block">
+            <input type="radio" name="status" value="1" title="启用" checked>
+            <input type="radio" name="status" value="0" title="禁用" >
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注：</label>
+        <div class="layui-input-block">
+            <textarea name="remarks" placeholder="请输入备注" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="app-pay-account-submit" id="app-pay-account-submit" value="确认">
+    </div>
+</div>
+
+<script src="__ADMIN__/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '__ADMIN__/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','laydate', 'form'], function(){
+        var $ = layui.$
+            ,laydate = layui.laydate
+            ,form = layui.form;
+
+        //时间选择器
+        laydate.render({
+            elem: '#channel-timeslot-start'
+            ,type: 'time'
+            ,format: 'H:m'
+        });
+        laydate.render({
+            elem: '#channel-timeslot-end'
+            ,type: 'time'
+            ,format: 'H:m'
+        });
+
+
+    })
+</script>
+</body>
+</html>

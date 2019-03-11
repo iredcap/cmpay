@@ -29,6 +29,7 @@ layui.define(["laytpl", "layer"],
                 e && e()
             },
             i.req = function(e) {
+            console.log(e)
                 var n = e.success,
                     a = (e.error, r.request),
                     o = r.response,
@@ -37,7 +38,6 @@ layui.define(["laytpl", "layer"],
                     };
                 return e.data = e.data || {},
                     e.headers = e.headers || {},
-                //a.tokenName && (e.data[a.tokenName] = a.tokenName in e.data ? e.data[a.tokenName] : layui.data(r.tableName)[a.tokenName] || "", e.headers[a.tokenName] = a.tokenName in e.headers ? e.headers[a.tokenName] : layui.data(r.tableName)[a.tokenName] || ""),
                     delete e.success,
                     delete e.error,
                     t.ajax(t.extend({

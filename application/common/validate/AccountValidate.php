@@ -18,17 +18,22 @@ class AccountValidate extends BaseValidate
 {
     // 验证规则
     protected $rule = [
-        'bank'      => 'require',
+        'banker'      => 'require',
         'account'   => 'require',
         'address'   => 'require',
-        'status'    => 'require'
+        'vercode'   => 'require|checkCode'
     ];
 
     // 验证提示
     protected $message = [
-        'bank.require'      => '银行不能为空',
+        'banker.require'      => '银行不能为空',
         'account.require'   => '账号不能为空',
         'address.require'   => '地址不能为空',
-        'status.require'    => '状态不能为空'
+        'vercode.require'   => '验证码不能为空',
+        'vercode.checkCode'   => '验证码不正确'
+    ];
+
+    protected $scene = [
+       'edit' => ['banker','account','address']
     ];
 }

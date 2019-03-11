@@ -19,6 +19,8 @@
 
 namespace app\api\service\request;
 use app\common\library\exception\ParameterException;
+use app\common\library\HttpHeader;
+use think\Log;
 use think\Request;
 
 
@@ -38,15 +40,15 @@ class CheckArguments extends ApiCheck
      */
     private $commonArgus = [
         // 授权API KEY
-        'authentication',
+        'x-ca-auth',
         // 数据签名
-        'signature',
+        'x-ca-signature',
         // 32位随机字符串
-        'noncestr',
+        'x-ca-noncestr',
         // 请求时间戳
-        'timestamp',
+        'x-ca-timestamp',
         // 请求网关
-        'resturl'
+        'x-ca-resturl'
     ];
 
 
@@ -63,10 +65,11 @@ class CheckArguments extends ApiCheck
      */
     public function doCheck(Request $request)
     {
+
         // 创建上下文
         self::createContext();
-        self::set('authentication',$request->header('authentication'));
-        self::set('payload',$request->param());
+        self::set(HttpHeader::X_CA_AUTH,$request->header('x-ca-auth'));
+        self::set('payload', $request->param());
 
         // 获取所有参数
         $header = $request->header();

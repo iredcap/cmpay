@@ -66,11 +66,10 @@ class Qsms extends Driver
             $result = $this->handler->sendWithParam("86", $whom, $this->options['template_id'],
                 [self::buildCache($whom)], $this->options['sign_name'], "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
             $response = json_decode($result,true);
-            Log::notice("Qsms Send:" . $response);
         }catch (\Exception $e){
             Log::error("Qsms Send Fail:" . $e->getMessage());
         }
-        return $response && $response['result'] == 0 && $response['errmsg'] == 'OK' ? $response : false;
+        return $response && $response['result'] == 0 && $response['errmsg'] == 'OK' ? true : false;
 
     }
 

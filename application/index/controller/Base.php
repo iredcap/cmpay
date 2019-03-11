@@ -28,7 +28,22 @@ class Base extends Common
         !is_login() && $this->redirect(url('index/Login/login'));
 
         // 登录信息
-        $this->assign('user_info', session('user_info'));
+        $this->assign('user_info', $this->logicUser->getUserInfo(['uid' => is_login()]));
+
+    }
+
+    /**
+     * 是否本人操作
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     */
+    public function checkAuth(){
+        if($this->request->isPost()){
+            if ($this->request->post('i/a')['uid'] != is_login()){
+                $this->result(0,'非法操作，请重试！');
+            }
+        }
     }
 
     /**

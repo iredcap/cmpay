@@ -70,13 +70,15 @@ class AuthGroup extends BaseAdmin
         }
         Db::startTrans();
         try{
-            //$data['uid'] = is_admin_login();
+
             $this->modelAuthGroup->setInfo($data);
 
-            action_log('编辑', '权限组' . $data['id']);
+            $action = isset($data['id']) ? '编辑' : '新增';
+
+            action_log($action, $action . '权限组,name => ' . $data['name']);
 
             Db::commit();
-            return ['code' => CodeEnum::SUCCESS, 'msg' =>  '权限组编辑成功'];
+            return ['code' => CodeEnum::SUCCESS, 'msg' =>  $action . '权限组成功'];
         }catch (\Exception $e){
             Db::rollback();
             Log::error($e->getMessage());
@@ -84,16 +86,22 @@ class AuthGroup extends BaseAdmin
         }
 
     }
-    
+
     /**
      * 权限组删除
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param array $where
+     *
+     * @return array
      */
     public function groupDel($where = [])
     {
         
         $result = $this->modelAuthGroup->deleteInfo($where);
 
-        action_log('删除', '权限组');
+        action_log('删除', '权限组删除');
 
         return $result ? ['code' => CodeEnum::SUCCESS, 'msg' =>  '权限组删除成功'] : ['code' => CodeEnum::ERROR, 'msg' => $this->modelAuthGroup->getError()];
     }

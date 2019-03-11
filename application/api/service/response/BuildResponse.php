@@ -13,6 +13,7 @@
  */
 
 namespace app\api\service\response;
+use app\common\library\HttpHeader;
 use think\exception\HttpResponseException;
 use think\Log;
 use think\Response;
@@ -32,17 +33,16 @@ class BuildResponse extends ApiSend
     {
         http_response_code(200);    //设置返回头部
         $return['result_code'] = 'OK';
-        $return['result_msg'] = 'SUCCESS';
+        $return['result_msg'] = empty($chargeRespose) ? 'FAIL' : 'SUCCESS';
         $return['charge'] =  self::get('ApiResposeData');
 
-        Log::notice('Response Data:'.json_encode($return));
+        Log::notice('Response Data :' . json_encode($return));
 
         //签名及数据返回
         $response = Response::create(json_encode($return))->header(self::get('header'));
         // 销毁请求上下文
         self::destoryContext();
-        Log::notice("结束时间：".microtime());
-        // 抛数据
+        // 数据响应
         throw new HttpResponseException($response);
     }
 

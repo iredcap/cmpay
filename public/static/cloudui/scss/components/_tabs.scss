@@ -1,0 +1,150 @@
+/* Tabs */
+// Basic Styles
+
+.nav-pills,
+.nav-tabs {
+	.nav-item {
+		.nav-link {
+			font-family: $type-1;
+			line-height: 1;
+			font-size: $default-font-size;
+			color: $black;
+			text-align: center;
+			@include display-flex;
+
+			i {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.tab-content {
+	font-family: $type-1;
+	font-size: $default-font-size;
+	line-height: 1.71;
+}
+
+.tab-basic {
+	border-bottom: none;
+	margin-bottom: 20px;
+
+	.nav-item {
+		margin-right: 7%;
+
+		.nav-link {
+			font-weight: 600;
+			color: $text-muted;
+			padding: 0 0 7px;
+			border-top: none;
+			border-right: none;
+			border-left: none;
+			border-bottom: 2px solid $white;
+
+			&.active {
+				border-top: none;
+				border-right: none;
+				border-left: none;
+				border-bottom: 2px solid theme-color(success);
+				color: theme-color(success);
+			}
+		}
+	}
+}
+
+.tab-content-basic {}
+
+.tab-solid {
+	border: none;
+	margin-bottom: 30px;
+
+	.nav-item {
+		.nav-link {
+			border: none;
+			padding: 10px 16px;
+			font-weight: 500;
+			@include border-radius(4px);
+
+			&:nth(fist-child) {
+				padding-left: 0;
+			}
+
+			&.active {
+				border: none;
+				color: $white;
+				font-weight: 600;
+			}
+		}
+	}
+}
+
+.tab-content-solid {
+	border: none;
+	padding-left: 0;
+	padding-right: 0;
+}
+@each $color, $value in $theme-colors {
+	.tab-solid-#{$color} {
+		@include tab-solid-variant($value);
+	}
+}
+
+.tab-minimal {
+	.nav-tabs {
+		border: none;
+
+		.nav-item {
+			.nav-link {
+				border: none;
+				font-size: 14px;
+				font-weight: 500;
+
+				&.active {
+					font-weight: 600;
+				}
+
+				&:first-child {
+					padding-left: 0;
+				}
+			}
+		}
+	}
+
+	.tab-content {}
+}
+
+.tab-simple-styled {
+	border-bottom: none;
+	margin-top: 30px;
+	margin-bottom: 30px;
+
+	.nav-item {
+		margin-right: 30px;
+
+		.nav-link {
+			border: none;
+			font-weight: 600;
+			padding: 0;
+			color: $text-muted;
+
+			&.active {
+				color: theme-color(info);
+			}
+		}
+	}
+}
+
+.vertical-tab {
+	@include display-flex;
+	.nav-tabs {
+		@include flex-direction(column);
+		margin-bottom: 0;
+		@include media-breakpoint-down(sm) {
+			@include flex-direction(row);
+		}
+	}
+
+	.tab-content {
+		margin-bottom: 0;
+	}
+}

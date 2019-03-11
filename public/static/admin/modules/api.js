@@ -18,7 +18,7 @@ layui.define(["table", "form"],
             n = layui.form;
         i.render({
             elem: "#app-api-list",
-            url: "/api/getList",
+            url: "getList",
             //自定义响应字段
             response: {
                 statusName: 'code' //数据状态的字段名称
@@ -108,26 +108,14 @@ layui.define(["table", "form"],
         }),
             i.on("tool(app-api-list)",
                 function(e) {
-                    if ("del" === e.event) layer.prompt({
-                            formType: 1,
-                            title: "敏感操作，请验证口令"
-                        },
-                        function(t, i) {
-                            layer.close(i),
-                                layer.confirm("真的删除行么",
-                                    function(t) {
-                                        e.del(),
-                                            layer.close(t)
-                                    })
-                        });
-                    else if ("edit" === e.event) {
+                     if ("edit" === e.event) {
                         t(e.tr);
                         layer.open({
                             type: 2,
                             title: "编辑账号",
-                            content: "/api/edit.html?id=" + e.data.id,
+                            content: "edit.html?id=" + e.data.id,
                             maxmin: !0,
-                            area: ['600px', '600px'],
+                            maxmin: !0,area: ['80%', '60%'],
                             btn: ["确定", "取消"],
                             yes: function(f, t) {
                                 var l = window["layui-layer-iframe" + f],
@@ -138,7 +126,7 @@ layui.define(["table", "form"],
                                         var l = t.field;
                                         console.log(l);
 
-                                        layui.$.post("/api/edit",l,function (res) {
+                                        layui.$.post("edit",l,function (res) {
                                             if (res.code == 1){
                                                 //更新数据表
                                                 e.update({

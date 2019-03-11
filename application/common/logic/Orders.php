@@ -15,6 +15,7 @@
 namespace app\common\logic;
 
 
+use app\common\library\enum\CodeEnum;
 use app\common\library\exception\OrderException;
 use think\Db;
 use think\Log;
@@ -39,6 +40,33 @@ class Orders extends BaseLogic
         return $this->modelOrders->getList($where, $field, $order, $paginate);
     }
 
+    /**
+     * 获取订单信息
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param array $where
+     * @param bool|string $field
+     *
+     * @return mixed
+     */
+    public function getOrderInfo($where = [], $field = true){
+        return $this->modelOrders->getInfo($where, $field);
+    }
+
+    /**
+     * 获取订单异步信息
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param array $where
+     * @param bool $field
+     *
+     * @return mixed
+     */
+    public function getOrderNotify($where = [], $field = true){
+        return $this->modelOrdersNotify->getInfo($where, $field);
+    }
 
     /**
      * 获取单总数
@@ -53,32 +81,16 @@ class Orders extends BaseLogic
     }
 
     /**
-     *
-     * 获取结算订单列表
-     *
-     * @author 勇敢的小笨羊
-     * @param array $where
-     * @param bool $field
-     * @param string $order
-     * @param int $paginate
-     * @return mixed
-     */
-    public function getOrderSettleList($where = [], $field = true, $order = 'create_time desc', $paginate = 15)
-    {
-        return $this->modelBalanceSettle->getList($where, $field, $order, $paginate);
-    }
-
-    /**
      * 订单统计
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
+     * @param array $where
      * @return array
      */
-    public function getOrdersAllStat(){
-        $order = 'create_time desc';
+    public function getOrdersAllStat($where = []){
         return [
-            'fees' => $this->modelOrders->getInfo([],"sum(amount) as total,sum(if(status=2,amount,0)) as paid", $order, $paginate = false)
+            'fees' => $this->modelOrders->getInfo($where,"COALESCE(sum(amount),0) as total,COALESCE(sum(if(status=2,amount,0)),0) as paid,COALESCE(sum(user_in),0) as user,COALESCE(sum(agent_in),0) as agent,COALESCE(sum(platform_in),0) as platform")
         ];
     }
 
@@ -87,14 +99,16 @@ class Orders extends BaseLogic
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
+     * @param array $where
      * @return array
      */
-    public function getWelcomeStat(){
+    public function getWelcomeStat($where = []){
         $order = 'create_time desc';
         return [
-            'order' => $this->modelOrders->getInfo([],"count(id) as total,count(if(status=2,true,null)) as success,count(if(status=1,true,null)) as wait,count(if(status=0,true,null)) as failed,sum(amount) as fees,sum(if(status=1,amount,0)) as unpaid,sum(if(status=2,amount,0)) as paid", $order, $paginate = false),
-            'user'  => $this->modelUser->getInfo([],"count(uid) as total,count(if(is_verify=0,true,null)) as failed", $order, $paginate = false),
-            'cash' => $this->modelBalanceCash->getInfo([],'count(id) as total,count(if(status=1,true,null)) as success,count(if(status=0,true,null)) as failed', $order, $paginate = false)
+            'order' => $this->modelOrders->getInfo($where,"count(id) as total,count(if(status=2,true,null)) as success,count(if(status=1,true,null)) as wait,count(if(status=0,true,null)) as failed,COALESCE(sum(amount),0) as fees,COALESCE(sum(if(status=1,amount,0)),0) as unpaid,COALESCE(sum(if(status=2,amount,0)),0) as paid", $order, $paginate = false),
+            'user'  => $this->modelUser->getInfo($where,"count(uid) as total,count(if(is_verify=0,true,null)) as failed", $order, $paginate = false),
+            'cash' => $this->modelBalanceCash->getInfo($where,'count(id) as total,count(if(status=2,true,null)) as success,count(if(status=1,true,null)) as wait,COALESCE(sum(if(status=0,amount,0)),0) as failed', $order, $paginate = false),
+            'fees' => $this->modelOrders->getInfo($where,"COALESCE(sum(amount),0) as total,COALESCE(sum(if(status=2,amount,0)),0) as paid")
         ];
     }
 
@@ -103,10 +117,12 @@ class Orders extends BaseLogic
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
+     * @param array $where
+     * @return array|mixed
      */
-    public function getOrdersMonthStat(){
+    public function getOrdersMonthStat($where = []){
         $this->modelOrders->group = 'month';
-        return $this->modelOrders->getList([],"count(id) as total_orders,sum(`amount`) as total_amount,FROM_UNIXTIME(create_time,'%m') as month",false,false);
+        return $this->modelOrders->getList($where,"count(id) as total_orders,COALESCE(sum(`amount`),0) as total_amount,FROM_UNIXTIME(create_time,'%m') as month",false,false);
     }
 
     /**
@@ -120,7 +136,7 @@ class Orders extends BaseLogic
      * @param int $paginate
      * @return mixed
      */
-    public function getOrderUserStat($where = [],$field = "uid,count(uid) as total_orders,sum(amount) as total_fee_all,sum(if(status=1,amount,0)) as total_fee_dis,sum(if(status=2,amount,0)) as total_fee_paid",$order = 'create_time desc', $paginate = 15){
+    public function getOrderUserStat($where = [],$field = "uid,count(uid) as total_orders,COALESCE(sum(amount),0) as total_fee_all,COALESCE(sum(if(status=1,amount,0)),0) as total_fee_dis,COALESCE(sum(if(status=2,amount,0)),0) as total_fee_paid",$order = 'create_time desc', $paginate = 15){
         $this->modelOrders->group = 'uid';
         return $this->modelOrders->getList($where,$field, $order, $paginate = false);
     }
@@ -136,12 +152,12 @@ class Orders extends BaseLogic
      * @param int $paginate
      * @return mixed
      */
-    public function getOrderChannelStat($where = [],$field = "a.cnl_id,count(a.cnl_id) as total_orders,sum(a.amount) as total_fee_all,sum(if(a.status = 1,a.amount,0)) as total_fee_dis,sum(if(a.status = 2,a.amount,0)) as total_fee_paid,b.id,b.name,b.remarks,b.daily,b.rate",$order = 'a.create_time desc', $paginate = 15){
+    public function getOrderChannelStat($where = [],$field = "a.cnl_id,count(a.cnl_id) as total_orders,COALESCE(sum(a.amount),0) as total_fee_all,COALESCE(sum(if(a.status = 1,a.amount,0)),0) as total_fee_dis,COALESCE(sum(if(a.status = 2,a.amount,0)),0) as total_fee_paid,b.id,b.name,b.remarks,b.daily,b.rate",$order = 'a.create_time desc', $paginate = 15){
         $this->modelOrders->group = 'a.cnl_id';
         $this->modelOrders->alias('a');
 
         $join = [
-            ['pay_channel b', ' b.id = a.cnl_id'],
+            ['pay_account b', ' b.id = a.cnl_id'],
         ];
 
         $this->modelOrders->join = $join;
@@ -157,14 +173,34 @@ class Orders extends BaseLogic
      * @return mixed
      */
     public function getOrderPayConfig($order_no){
-        return $this->logicPay->getChannelParam(
-            $this->modelOrders->getValue(
-                ['trade_no'=>$order_no],
-                'cnl_id'
-            )
-        )[1];
+
+        return $this->logicPay->getAccountInfo([
+            'id'    => $this->modelOrders->getValue(['trade_no'=>$order_no], 'cnl_id')
+        ]
+        );
     }
 
+    /**
+     * 推送队列
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param $order_id
+     * @return array
+     */
+    public function pushOrderNotify($order_id = ''){
+        //订单
+        $order = $this->getOrderInfo(['id' => $order_id]);
+        //加入队列
+        $result = $this->logicQueue->pushJobDataToQueue('AutoOrderNotify' , $order , 'AutoOrderNotify');
+        if ($result){
+            $returnmsg = [ 'code' =>  CodeEnum::SUCCESS, 'msg'  => '推送队列成功'];
+        }else{
+            $returnmsg = [ 'code' =>  CodeEnum::SUCCESS, 'msg'  => '推送队列成功'];
+        }
+        action_log('推送','推送异步订单通知，单号：' . $order['out_trade_no']);
+        return $returnmsg;
+    }
     /**
      * 创建支付订单
      *
@@ -197,8 +233,8 @@ class Orders extends BaseLogic
             Db::commit();
             //  余额 = 可用余额（可提现金额） + 冻结余额（待结算金额） =》 未支付金额每日清算
             //   可用余额是从冻结余额转入的
-            //写入待支付金额 creatBalanceChange($uid,$amount,$remarks = '未知变动记录',$enable = false,$setDec = false)
-            $this->logicBalanceChange->creatBalanceChange($order->uid,$order->amount,'商户号'.$orderData['out_trade_no'].'预下单支付金额');
+            //写入待支付金额 creatBalanceChange('100001','100',$remarks = '记录资金变动测试','字段',$setDec = true);
+            $this->logicBalanceChange->creatBalanceChange($order->uid,$order->amount,'单号'.$orderData['out_trade_no'].'预下单支付金额','disable');
 
             return $order;
 
@@ -220,9 +256,10 @@ class Orders extends BaseLogic
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param array $where
+     * @param string $field
      * @param string $value
      */
-    public function setValue($where = [],$value = ''){
-        $this->modelOrders->setFieldValue($where, 'cnl_id', $value);
+    public function setOrderValue($where = [], $field = 'cnl_id', $value = ''){
+        $this->modelOrders->setFieldValue($where, $field, $value);
     }
 }

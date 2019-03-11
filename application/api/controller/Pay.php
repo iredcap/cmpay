@@ -14,8 +14,8 @@
 
 namespace app\api\controller;
 
-use app\api\service\ApiPayment;
 use app\api\service\ApiRespose;
+use app\common\controller\BaseApi;
 use app\common\library\exception\ForbiddenException;
 
 
@@ -25,7 +25,7 @@ use app\common\library\exception\ForbiddenException;
 　　● 验证账户状态。交易主体、交易对手等账户的状态是处于可交易的状态。
 　　● 验证订单：如果涉及到预单，还需要验证订单号的有效性，订单状态是未支付。为了避免用户缓存某个URL地址，还需要校验下单时间和支付时间是否超过预定的间隔。
 　　● 验证签名。签名也是为了防止支付接口被伪造。 一般签名是使用分发给商户的key来对输入参数拼接成的字符串做MD5 Hash或者RSA加密，然后作为一个参数随其他参数一起提交到服务器端。
- * @package app\api\controller
+ *
  */
 class Pay extends BaseApi
 {
@@ -35,14 +35,15 @@ class Pay extends BaseApi
     ];
 
     /**
-     * 收银台
+     * 收银台跳转支付
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
+     *
      * @throws ForbiddenException
      */
-    public function gateway(){
-        throw new ForbiddenException();
+    public function cashier(){
+        throw new ForbiddenException(['msg' => '等待开发...']);
     }
 
     /**
@@ -64,7 +65,7 @@ class Pay extends BaseApi
      */
     public function orderquery(){
         //传入预支付订单信息 => 支付对象返回
-        ApiRespose::send($this->logicPrePay->orderQuery($this->request->get()));
+        ApiRespose::send($this->logicPrePay->orderQuery($this->request->post()));
     }
 
 }

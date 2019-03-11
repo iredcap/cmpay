@@ -17,6 +17,7 @@ namespace app\index\logic;
 use app\common\library\Activation;
 use app\common\library\enum\CodeEnum;
 use app\common\library\enum\UserStatusEnum;
+use app\common\library\RsaUtils;
 use think\Db;
 use think\Log;
 
@@ -45,7 +46,8 @@ class Login extends Base
         //密码判断
         if (!empty($user['password']) && data_md5_key($password) == $user['password']) {
             //激活判断
-            if ($user['is_verify'] == UserStatusEnum::DISABLE){
+            if ($user['status'] == UserStatusEnum::WAIT){
+                action_log('登录', '商户'. $username . '账号未激活');
                 return [ 'code' => CodeEnum::ERROR, 'msg' =>  '账号未激活,<span onclick="page(\'发送激活邮件\',\'/active/sendActive\',this,\'440px\',\'180px\')">点击发送激活邮件</span>'];
             }
             //禁用判断
@@ -86,34 +88,38 @@ class Login extends Base
 
             return [ 'code' => CodeEnum::ERROR, 'msg' => $this->validateRegister->getError()];
         }
+
         //TODO 添加数据
         Db::startTrans();
         try{
-            //创建基本  是否修改
-            if (empty($data['password'])){
-                unset($data['password']);
-            }else{
-                $data['password'] = data_md5_key($data['password']);
-            }
-            $user = $this->modelUser->setInfo($data);
-            //创建账号
-            $this->modelUserAccount->setInfo(['uid'  => $user ]);
-            //创建账户
-            $this->modelBalance->setInfo(['uid'  => $user ]);
-            //创建API
-            $this->modelApi->setInfo(['uid'  => $user]);
+            //密码
+            $data['password'] = data_md5_key($data['password']);
+            //基本信息
+            $uid = $this->modelUser->setInfo($data);
+            //账户记录
+            $this->modelUserAccount->setInfo(['uid'  => $uid ]);
+            //资金记录
+            $this->modelBalance->setInfo(['uid'  => $uid ]);
+            //生成API记录
+            $this->modelApi->setInfo(['uid'  => $uid]);
 
             //加入邮件队列
-            $jobData = $this->logicUser->getUserInfo(['uid'=>$user],'uid,account,username');
+            $jobData = $this->logicUser->getUserInfo(['uid'=>$uid],'uid,account,username');
+
             //邮件场景
             $jobData['scene']   = 'register';
             $this->logicQueue->pushJobDataToQueue('AutoEmailWork' , $jobData , 'AutoEmailWork');
 
+            action_log('新增', '新增商户。UID:'. $uid);
+
             Db::commit();
+
             return ['code' => CodeEnum::SUCCESS, 'msg' => '注册成功'];
         }catch (\Exception $ex){
             Db::rollback();
-            return [ 'code' => CodeEnum::ERROR, 'msg' =>$ex->getMessage()];
+            Log::error($ex->getMessage());
+            return ['code' => CodeEnum::ERROR, 'msg' => config('app_debug') ? $ex->getMessage()
+                : '哎呀！注册发生异常了~'];
         }
     }
     /**
@@ -184,16 +190,26 @@ class Login extends Base
             return ['code' => CodeEnum::ERROR, 'msg' =>'商户不存在！'];
         } else {
             //是否已经激活
-            if(($user['status'] && $user['is_verify'] ) == UserStatusEnum::ENABLE){
+            if(($user['status'] == UserStatusEnum::ENABLE && $user['is_verify'] ) == UserStatusEnum::ENABLE){
                 return ['code' => CodeEnum::SUCCESS, 'msg'=>'商户已经激活过了 :-)'];
             }else{
+                ///生成随机安全码
+                $auth_code = getRandChar(8,'NUM');
+                //加入注册成功邮件  发送安全码
+                $jobData = $user;
+                $jobData ['auth_code'] = $auth_code;
+                //邮件场景
+                $jobData['scene']   = 'regcallback';
+                $this->logicQueue->pushJobDataToQueue('AutoEmailWork' , $jobData , 'AutoEmailWork');
+                //数据处理
                 $this->modelUser->updateInfo(
                     ['uid'=>$Verification->uid],
                     [
+                        'is_verify_phone' => UserStatusEnum::ENABLE,
                         'status' => UserStatusEnum::ENABLE,
-                        'is_verify' => UserStatusEnum::ENABLE,
-                        'is_verify_phone' => UserStatusEnum::ENABLE
+                        'auth_code' => data_md5($auth_code)
                     ]);
+
                 return ['code' => CodeEnum::SUCCESS, 'msg'=>'商户激活成功！'];
             }
 

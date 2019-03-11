@@ -1,0 +1,40 @@
+/* Badges */
+.badge {
+  border-radius: 0.125rem;
+  font-size: 0.75rem;
+  font-weight: initial;
+  line-height: 1.5;
+  padding: .25rem .5625rem;
+  font-family: $type-1;
+  font-weight: 300;
+
+  &.badge-pill {
+    border-radius: 10rem;
+  }
+
+  &.badge-fw {
+    min-width: 70px;
+  }
+
+  &.badge-lg {
+    padding: 0.4rem 0.5rem;
+  }
+}
+/*Badge variations*/
+@each $color, $value in $theme-colors {
+  .badge-#{$color} {
+    @include badge-variations($value);
+  }
+}
+/*Badge inverse variations*/
+@each $color, $value in $theme-colors {
+  .badge-inverse-#{$color} {
+    @include badge-inverse-variations($value);
+  }
+}
+/*Badge outlined variations*/
+@each $color, $value in $theme-colors {
+  .badge-outline-#{$color} {
+    @include badge-outline-variations($value);
+  }
+}

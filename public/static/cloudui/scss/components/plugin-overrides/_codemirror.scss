@@ -1,0 +1,10 @@
+/* CodeMirror */
+.CodeMirror {
+  font-size: 1rem;
+  height: auto;
+  min-height: auto;
+  text-align: left;
+  .CodeMirror-scroll{
+    min-height: auto;
+  }
+}

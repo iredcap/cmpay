@@ -92,6 +92,21 @@ class Menu extends BaseAdmin
     }
 
     /**
+     * 删除菜单
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function menuDel($id = 0)
+    {
+
+        $this->result($this->logicMenu->menuDel(['id' => $id]));
+    }
+
+    /**
      * 获取菜单Select结构数据
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>

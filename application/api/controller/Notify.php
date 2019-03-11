@@ -15,55 +15,65 @@
 namespace app\api\controller;;
 
 use app\api\service\ApiPayment;
+use app\common\controller\BaseApi;
+use app\common\library\exception\ForbiddenException;
+use app\common\library\exception\OrderException;
+use app\common\model\Orders;
 use think\Log;
 
 class Notify extends BaseApi
 {
+
     /**
-     * wxScan Notify
+     * 个人收款配置 【等待开发】
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @throws \Exception
      */
-    public function wxScan()
-    {
-        //TODO  分发支付网关
-        $wxScan = ApiPayment::wx_scan(self::getWxOrderPayConfig());
-        $this->logicNotify->handle($wxScan->notify());
-        return $wxScan->success();
+    public function person($channel = 'wxpay'){
+
+        $apiurl = $this->request->request("apiurl");
+        $sign = $this->request->request("sign");
+
+        //验证签名
+        if ($sign != md5(md5($apiurl))) {
+            $this->result("签名密钥不正确");
+        }
+        $this->result("配置成功");
+        echo $channel;
     }
 
     /**
-     * qqScan Notify
+     * 同步回调 【不做数据处理 获取商户回调地址返回就行了】
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @throws \Exception
+     * @param string $channel
+     *
      */
-    public function qqScan()
-    {
-        //TODO  分发支付网关
-        $wxScan = ApiPayment::qq_scan(self::getWxOrderPayConfig());
-        $this->logicNotify->handle($wxScan->notify());
-        return $wxScan->success();
+    public function callback($channel = 'wxpay'){
+        //默认跳转
+        $result['return_url'] = "https://www.iredcap.cn";
+        //支付分发
+        $result = ApiPayment::$channel()->callback();
+
+        $this->redirect($result['return_url']);
     }
 
     /**
-     * 获取此订单对应支付通道配置
+     * 统一异步通知
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @return array
+     * @param string $channel
+     *
      */
-    private function getWxOrderPayConfig()
-    {
+    public function notify($channel = 'wxpay'){
 
-        libxml_disable_entity_loader(true);
-        //Object  对象
-        $response = json_decode(json_encode(simplexml_load_string(file_get_contents("php://input"), 'SimpleXMLElement', LIBXML_NOCDATA), JSON_UNESCAPED_UNICODE));
-        Log::notice("Notify:" . json_encode($response));
-        return  json_decode($this->logicOrders->getOrderPayConfig($response->out_trade_no), true);
+         //支付分发
+        $result = ApiPayment::$channel()->notify();
+
+        $this->logicNotify->handle($result);
 
     }
 }

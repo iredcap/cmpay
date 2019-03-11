@@ -20,7 +20,7 @@ layui.define(["table", "form"],
             n = layui.form;
         i.render({
             elem: "#app-user-account",
-            url: "/account/getList",
+            url: "getList",
             //自定义响应字段
             response: {
                 statusName: 'code' //数据状态的字段名称
@@ -83,7 +83,7 @@ layui.define(["table", "form"],
                     title: "创建时间",
                     width: 180,
                     sort: !0,
-                    templet: function(d) {return util.toDateString(d.create_time*1000); }
+                    templet: function(d) {return u.toDateString(d.create_time*1000); }
                 },
                 {
                     field: "update_time",
@@ -110,21 +110,30 @@ layui.define(["table", "form"],
                             formType: 1,
                             title: "敏感操作，请验证口令"
                         },
-                        function(t, i) {
+                        function(d, i) {
                             layer.close(i),
-                                layer.confirm("真的删除行么", function(t) {
-                                    e.del(),
-                                        layer.close(t)
-                                })
+                                layer.confirm("真的删除此账户？", function(d) {
+                                        t.ajax({
+                                            url: 'del?id='+ e.data.id,
+                                            method:'POST',
+                                            success:function (res) {
+                                                if (res.code == 1){
+                                                    e.del()
+                                                }
+                                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                                layer.close(d); //关闭弹层
+                                            }
+                                        });
+                                    })
                         });
                     else if ("edit" === e.event) {
                         t(e.tr);
                         layer.open({
                             type: 2,
                             title: "编辑账号",
-                            content: "/account/edit.html?id=" + e.data.id,
+                            content: "edit.html?id=" + e.data.id,
                             maxmin: !0,
-                            area: ['480px', '520px'],
+                            area:  ['80%', '60%'],
                             btn: ["确定", "取消"],
                             yes: function(f, t) {
                                 var l = window["layui-layer-iframe" + f],
@@ -133,7 +142,7 @@ layui.define(["table", "form"],
                                 l.layui.form.on("submit(" + r + ")",
                                     function(t) {
                                         var l = t.field;
-                                        layui.$.post("/account/edit",l,function (res) {
+                                        layui.$.post("edit",l,function (res) {
                                             if (res.code == 1){
                                                 //更新数据表
                                                 e.update({

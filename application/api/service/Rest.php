@@ -14,11 +14,15 @@
 
 namespace app\api\service;
 
-use app\common\controller\Common;
+use app\common\controller\BaseApi;
 use app\common\library\exception\ParameterException;
+use app\common\library\exception\SignatureException;
 use app\common\library\RsaUtils;
+use app\common\model\Api;
+use app\common\model\Config;
+use think\Db;
 
-class Rest extends Common
+class Rest extends BaseApi
 {
     /**
      * 请求参数
@@ -83,13 +87,15 @@ class Rest extends Common
      *
      * @param $name
      * @param null $default
+     *
      * @return null
+     * @throws ParameterException
      */
     public static function get($name, $default = null)
     {
         if(!isset(self::$context[self::$conId]))
         {
-            throw new \RuntimeException('get context data failed, current context is not found');
+            throw new ParameterException(['msg'=>'get context data failed, current context is not found']);
         }
         if(isset(self::$context[self::$conId][$name]))
         {
@@ -108,12 +114,14 @@ class Rest extends Common
      *
      * @param $name
      * @param $value
+     *
+     * @throws ParameterException
      */
     public static function set($name, $value)
     {
         if(!isset(self::$context[self::$conId]))
         {
-            throw new \RuntimeException('set context data failed, current context is not found');
+            throw new ParameterException(['msg'=>'set context data failed, current context is not found']);
         }
         self::$context[self::$conId][$name] = $value;
     }
@@ -123,13 +131,15 @@ class Rest extends Common
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
+     *
      * @return mixed
+     * @throws ParameterException
      */
     public static function getContext()
     {
         if(!isset(self::$context[self::$conId]))
         {
-            throw new \RuntimeException('get context failed, current context is not found');
+            throw new ParameterException(['msg'=>'get context failed, current context is not found']);
         }
         return self::$context[self::$conId];
     }
@@ -200,18 +210,31 @@ class Rest extends Common
     }
 
     /**
-     * 生成签名字符串
+     * 生成平台签名字符串
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param $to_sign_data
+     *
      * @return string
+     * @throws SignatureException
      */
-    protected static function sign($to_sign_data){
-        $Rsa = new RsaUtils();
-        //平台私钥生成签名
-        $Rsa->setPrivateKey(CRET_PATH . 'rsa_private_key.pem');
-        return $Rsa->sign($to_sign_data);
+    public static function sign($to_sign_data){
+        if (is_array($to_sign_data)){
+            $to_sign_data = json_encode($to_sign_data);
+        }
+        //读取平台数据私钥
+        $certificate = (new Config())->where(['name'  => 'rsa_private_key'])
+            ->cache('rsa_private_key','300')->value('value');
+        if(!empty($certificate)){
+            $rsaUtils = new RsaUtils('', $certificate);
+            $sign =  $rsaUtils->sign($to_sign_data);
+            //返回
+            return $sign;
+        }
+        throw new SignatureException([
+            'msg'   => 'Sign Build Failure.[ Platform Sign Key Incorrectly.]'
+        ]);
     }
 
     /**
@@ -219,15 +242,29 @@ class Rest extends Common
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @param string $data 验签数据
-     * @param string $sign 签名串
-     * @param string $key  请求key
+     * @param $data
+     * @param $sign
+     * @param $key
+     *
      * @return bool
+     * @throws SignatureException
      */
-    protected static function verify($data, $sign, $key){
-        $Rsa = new RsaUtils();
-        //指定商户公钥验证签名
-        $Rsa->setPublicKey(CRET_PATH . $key . DS .'rsa_public_key.pem');
-        return $Rsa->verify($data, $sign, $code = 'base64');
+    public static function verify($data, $sign, $key){
+        if (is_array($data)){
+            $data = json_encode($data);
+        }
+
+        //读取用户数据公钥
+        $certificate = (new Api())->where(['key'  => $key])
+            ->cache($key,'300')->value('secretkey');
+        //没有数据
+        if(!empty($certificate)){
+            //验签
+            $rsaUtils = new RsaUtils($certificate);
+            return $rsaUtils->verify($data, $sign, $code = 'base64');
+        }
+        throw new SignatureException([
+            'msg'   => 'Sign Verify Failure.[ Merchant Sign Key Incorrectly.]'
+        ]);
     }
 }

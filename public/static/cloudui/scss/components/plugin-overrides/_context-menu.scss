@@ -1,0 +1,64 @@
+/* Context Menu */
+.context-menu-icon {
+  &:before {
+    color: $black;
+    font-family: "simple-line-icons";
+  }
+
+  &.context-menu-icon-cut {
+    &:before {
+      content: "\e024";
+    }
+  }
+
+  &.context-menu-icon-edit {
+    &:before {
+      content: "\e05f";
+    }
+  }
+
+  &.context-menu-icon-copy {
+    &:before {
+      content: "\e040";
+    }
+  }
+
+  &.context-menu-icon-paste {
+    &:before {
+      content: "\e085";
+    }
+  }
+
+  &.context-menu-icon-delete {
+    &:before {
+      content: "\e082";
+    }
+  }
+
+  &.context-menu-icon-quit {
+    &:before {
+      content: "\e605";
+    }
+  }
+}
+
+.context-menu-list {
+  box-shadow: none;
+  border: 1px solid $border-color;
+
+  .context-menu-item {
+    span {
+      color: $black;
+      font-size: 0.75rem;
+      font-family: $type-1;
+    }
+
+    &.context-menu-hover {
+      background: $black;
+
+      span {
+        color: $white;
+      }
+    }
+  }
+}

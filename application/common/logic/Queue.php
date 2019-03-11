@@ -37,6 +37,8 @@ class Queue extends BaseLogic
      * @param $jobClassName
      * @param $jobData
      * @param $jobQueueName
+     *
+     * @return mixed
      */
     public function pushJobDataToQueue($jobClassName , $jobData , $jobQueueName){
         // 消费者实现类
@@ -49,6 +51,7 @@ class Queue extends BaseLogic
         }else{
             Log::error( 'Oops, something went wrong.');
         }
+        return $isPushed;
     }
 
 }

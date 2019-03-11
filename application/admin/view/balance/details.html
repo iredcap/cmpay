@@ -6,24 +6,27 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="__STATIC__/common/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="__STATIC__/common/style/admin.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
 </head>
 <body>
 
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-            <input name="uid" disabled hidden value="{$uid}">
             <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">日期范围</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="date" class="layui-input" id="app-laydate-range-date" placeholder=" - ">
-                    </div>
+                <!--//隐藏请求用户UID-->
+                <input name="uid" value="{$uid}" hidden>
+                <label class="layui-form-label">开始时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="start" class="layui-input app-laydate-item" placeholder="yyyy-MM-dd">
+                </div>
+                <label class="layui-form-label">结束时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="end" class="layui-input app-laydate-item" placeholder="yyyy-MM-dd">
                 </div>
                 <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="app-balance-list-search">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="app-balance-details-list-search">
                         <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
                     </button>
                 </div>
@@ -31,7 +34,7 @@
         </div>
 
         <div class="layui-card-body">
-            <table id="app-balance-list" lay-filter="app-balance-list"></table>
+            <table id="app-balance-details-list" lay-filter="app-balance-details-list"></table>
             <script type="text/html" id="buttonType">
                 {{#  if(d.type == 'enable'){ }}
                 <span>可用余额</span>
@@ -48,102 +51,41 @@
                 <button class="layui-btn layui-btn-danger layui-btn-xs">禁止操作</button>
                 {{#  } }}
             </script>
-            <script type="text/html" id="table-balance-list">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="details"><i class="layui-icon layui-icon-edit"></i>查看明细</a>
-            </script>
         </div>
     </div>
 </div>
 
-<script src="__STATIC__/common/layui/layui.js"></script>
+<script src="__ADMIN__/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '__STATIC__/common/' //静态资源所在路径
+        base: '__ADMIN__/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index','form','laydate', 'table'], function(){
+    }).use(['index','laydate', 'balance'], function(){
         var $ = layui.$
             ,form = layui.form
-            ,util = layui.util
             ,laydate = layui.laydate
             ,table = layui.table;
 
-        laydate.render({
-            elem: '#app-laydate-range-date'
-            ,range: '-'
-            ,trigger: 'click'
-            ,format: 'yyyy/MM/dd'
-            ,btns: ['confirm']
+        //同时绑定多个日期
+        lay('.app-laydate-item').each(function(){
+            laydate.render({
+                elem: this
+                ,value: new Date()
+                ,trigger: 'click'
+            });
         });
 
-
         //监听搜索
-        form.on('submit(app-balance-list-search)', function(data){
+        form.on('submit(app-balance-details-list-search)', function(data){
             var field = data.field;
 
             //执行重载
-            table.reload('app-balance-list', {
+            table.reload('app-balance-details-list', {
                 where: field
             });
         });
 
-        //初始化表格
-        table.render({
-            elem: "#app-balance-list",
-            url: '/balance/getDetails',
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
-            cols: [[{
-                field: "type",
-                templet: "#buttonType",
-                width: 100,
-                title: "资金类型"
-            },
-                {
-                    field: "preinc",
-                    width: 100,
-                    title: "变动前金额",
-                    style: "color:red"
-                },
-                {
-                    field: "increase",
-                    width: 100,
-                    title: "增加金额",
-                    style: "color:red"
-                },
-                {
-                    field: "reduce",
-                    width: 100,
-                    title: "减少金额",
-                    style: "color:red"
-                },
-                {
-                    field: "suffixred",
-                    width: 100,
-                    title: "变动后金额",
-                    style: "color:red"
-                },
-                {
-                    field: "remarks",
-                    title: "变动备注"
-                },
-                {
-                    field: "update_time",
-                    width: 200,
-                    title: "更新时间",
-                    templet: function(d) {return util.toDateString(d.update_time*1000); }
-                }]],
-            page: {
-                limit: 10,
-                limits: [10, 15, 20, 25, 30]
-            },
-            text: "对不起，加载出现异常！"
-        })
     });
 </script>
 </body>

@@ -16,40 +16,31 @@ layui.define(["form", "upload"], function(t) {
         }
     }), n.on("submit(set_website)", function(t) {
         //这里是基本信息
-        i.post("/system/website",t.field,function (res) {
+        i.post("website",t.field,function (res) {
             return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
                 window.location.reload()
             })
         });
     }), n.on("submit(set_system_email)", function(t) {
-        //这里是邮件信息
-        n.reload()
-    }), n.on("submit(setmyinfo)", function(t) {
-        return e.msg(JSON.stringify(t.field)), !1
-    });
-    var r = i("#LAY_avatarSrc");
-    s.render({
-        url: "/api/upload/",
-        elem: "#LAY_avatarUpload",
-        done: function(t) {
-            0 == t.status ? r.val(t.url) : e.msg(t.msg, {
-                icon: 5
+        //这里是基本信息
+        i.post("email",t.field,function (res) {
+            return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
+                window.location.reload()
             })
-        }
-    }), a.events.avartatPreview = function(t) {
-        var i = r.val();
-        e.photos({
-            photos: {
-                title: "查看头像",
-                data: [{
-                    src: i
-                }]
-            },
-            shade: .01,
-            closeBtn: 1,
-            anim: 5
-        })
-    }, n.on("submit(setmypass)", function(t) {
-        return e.msg(JSON.stringify(t.field)), !1
+        });
+    }), n.on("submit(setmyinfo)", function(t) {
+        //这里是基本信息
+        i.post("profile",t.field,function (res) {
+            return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
+                window.location.reload()
+            })
+        });
+    }),n.on("submit(setmypass)", function(t) {
+        //修改管理密码
+        i.post("changePwd",t.field,function (res) {
+            return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
+                window.location.reload()
+            })
+        });
     }), t("set", {})
 });

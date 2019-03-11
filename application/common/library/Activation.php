@@ -13,8 +13,8 @@
  */
 
 namespace app\common\library;
+
 use think\Cache;
-use think\Env;
 use think\Log;
 
 /**
@@ -25,105 +25,56 @@ use think\Log;
  */
 class Activation
 {
-
     /**
      * 发送激活码链接   用户激活后在发送商户信息
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param object $user
-     * @return bool|string
+     * @return bool
      */
     public function sendActiveCode($user){
+
         //收件人邮箱
         $toemail    =   $user->account;
         //发件人昵称
-        $name       =   !empty($user->nickname)? $user->nickname:'小余';
+        $name       =   !empty($user->nickname)? $user->nickname:'Cmpay';
         //邮件标题
-        $subject    =   "感谢您申请余呗聚合支付";
-        //生成code
-        $activecode = urlencode($this->createActiveCode($user));
-        //激活地址
-        $activeUrl = "https://www.". Env::get('app.domain_root','iredcap.com')
-            ."/active/{$activecode}";
+        $subject    =   "【聚合支付】用户注册 - 注册邮箱验证";
         //邮件主体  也可以使用邮件模板文件
-        $content    =   "<div style=\"margin: -15px; padding: 8vh 0 2vh;color: #a6aeb3; background-color: #f7f9fa; text-align: center; font-family:NotoSansHans-Regular,'Microsoft YaHei',Arial,sans-serif; -webkit-font-smoothing: antialiased;\">
-                            <div style=\"width: 750px; margin: 0 auto; background-color: #fff;\">
-                                <div style=\"padding: 20px 10%; text-align: center; font-size: 16px;line-height: 16px;\">
-                                    <a href=\"https://www.98imo.com\" style=\"vertical-align: top;\" target=\"_blank\"> <img style=\"margin:32px auto; max-width: 95%; color: #0e2026;\" src=\"https://www.98imo.com/assets/logo-black.png\" /> </a>
-                                </div>
-                                <table width=\"600\" style=\"background-color:#fff;margin:0 auto;\" cellpadding=\"0\" cellspacing=\"0\">
-                                    <tbody><tr>
-                                        <td>
-                                            <table width=\"600\" style=\"background-color:#fff;margin:0 auto;\" cellpadding=\"0\" cellspacing=\"0\">
-                                                <tbody>
-                                                <tr>
-                                                    <td colspan=\"3\" style=\"height:40px;\">&nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td width=\"40\">&nbsp;</td>
-                                                    <td width=\"520\" style=\"line-height:20px;\">
-                                                        <p style=\"text-align:center;margin:0;padding:0;\">
-                                                            <img src=\"https://img.alicdn.com/tfs/TB1yM1Pb4GYBuNjy0FnXXX5lpXa-64-64.png\" width=\"32\" height=\"32\" style=\"margin:0 12px;vertical-align:top;\">
-                                                            <span style=\"font-size:24px;line-height:32px;color:#35B34A;\">注册申请成功！</span>
-                                                        </p>
-                                                        <p style=\"color:#7d7d7d;margin:10px 0px 24px 0px;font-size:14px;line-height:22px;padding:0 40px;text-align:center\">欢迎{$name}加入,在开始使用之前，请确认你的邮箱账号
-                                                        </p>
-                                                      
-                                                        <p style=\"margin:0;padding:0;\">&nbsp;</p>
-                                                        <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"height:44px; width:200px\">
-                                                            <tbody>
-                                                            <tr>
-                                                                <td style=\"background-color:#00c1de; height:44px; line-height:44px;text-align:center; width:200px\">
-                                                                    <a href=\"{$activeUrl}\" style=\"display:block;text-decoration: none;color: #ffffff;font-size:16px;\" target=\"_blank\">激活账户
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td width=\"40\">&nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan=\"3\" style=\"height:40px;\">
-                                                        <div style=\"width: 500px; max-width: 90%;margin: 10px auto; font-size: 14px;\">
-                                                            <div style=\"color:#7d7d7d;margin: 8px 0;\">
-                                                                如果按钮无效，请将以下链接复制到浏览器地址栏完成激活。
-                                                            </div>
-                                                            <div>
-                                                                <a href=\"{$activeUrl}\" style=\"color: #35c8e6; word-break: break-all\" target=\"_blank\">{$activeUrl}</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    </tbody></table>
-                                <div style=\"padding-bottom: 40px;font-size: 14px;\">
-                                    <div style=\"padding-bottom: 40px;font-size: 14px;\">
-                                        <div style=\"width: 420px; max-width: 90%;margin: 10px auto;\">
-                                            彻底告别繁琐的支付接入流程 一次接入所有主流支付渠道，99% 系统可用性，满足你丰富的交易场景需求,为你的用户提供完美支付体验。
-                                        </div>
-                                        <div style=\"margin: 30px 0 0 0;\">
-                                            扫码关注 了解最新动态
-                                        </div>
-                                        <div style=\"margin: 16px 0 32px;\">
-                                            <img height=\"119\" src=\"data:image/jpeg;base64,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\" width=\"119\" />
-                                        </div>
-                                        <div>
-                                            <span style=\"color: #76858c;\">服务咨询请联系：</span>
-                                            <a href=\"mailto:me@iredcap.cn\" style=\"color:#35c8e6; text-decoration: none;\" target=\"_blank\"> me@iredcap.cn </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>";
+        $content =  self::getRegActiveContent($user);
+        //读数据库配置
+        $config = config();
         //发送激活邮件
         try{
-            Mail::getInstance(config('code.Email'))->send($toemail,$name,$subject,$content);
-            return $activecode;
+            return Mail::getInstance(config('code.Email'))->send($toemail,$name,$subject,$content);
+        }catch (\Exception $exception){
+            Log::error("Active Code Error:".$exception->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 激活成功返回
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param $user
+     *
+     * @return bool
+     */
+    public function sendRegCallback($user){
+        //收件人邮箱
+        $toemail    =   $user->account;
+        //发件人昵称
+        $name       =   !empty($user->nickname)? $user->nickname:'Cmpay';
+        //邮件标题
+        $subject    =   "【聚合支付】用户注册 - 注册成功通知";
+        //邮件主体  也可以使用邮件模板文件
+        $content = self::getRegCallbackContent($user);
+        //发送激活邮件
+        try{
+           return Mail::getInstance(config('code.Email'))->send($toemail,$name,$subject,$content);
         }catch (\Exception $exception){
             Log::error("Active Code Error:".$exception->getMessage());
             return false;
@@ -148,7 +99,7 @@ class Activation
         //2.用code解密取到ActiveCode的数据
         //3.比对cache
         //4.完成激活
-        $encryptData = (new Aes($code))->encrypt(json_encode(obj2arr($userInfo))); //用户信息
+        $encryptData = (new CryptAes($code))->encrypt(json_encode(obj2arr($userInfo))); //用户信息
         //存入cache 2H内验证时间 2*60*60 7200秒
         Cache::set('avtive_code_'.$code,$encryptData,7200);
         return $code;
@@ -170,8 +121,206 @@ class Activation
         }else{
             //删除Cache
             //Cache::rm($build);
-            $user = (new Aes($code))->decrypt($activeCode);
+            $user = (new CryptAes($code))->decrypt($activeCode);
             return json_decode($user);
         }
+    }
+
+    /**
+     * 注册邮件发送
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param $user
+     *
+     * @return string
+     */
+    private function getRegActiveContent($user){
+
+        //生成code
+        $activecode = urlencode($this->createActiveCode($user));
+        //激活地址
+        $activeUrl = "https://pay.iredcap.cn/active/{$activecode}";
+
+        return "<div style=\"margin: -15px; padding: 8vh 0 2vh;color: #a6aeb3; background-color: #f7f9fa; text-align: center; font-family:NotoSansHans-Regular,'Microsoft YaHei',Arial,sans-serif; -webkit-font-smoothing: antialiased;\">
+            <div style=\"width: 750px; margin: 0 auto; background-color: #fff;\">
+                <div style=\"padding: 20px 10%; text-align: center; font-size: 16px;line-height: 16px;\">
+                    <a href=\"https://www.caomao.com\" style=\"vertical-align: top;\" target=\"_blank\" rel=\"noopener\"> 
+                    <img style=\"margin:32px auto; max-width: 95%; color: #0e2026;\" src=\"https://pay.iredcap.cn/static/logo-color.png\">
+                     </a>
+                </div>
+                <table width=\"600\" style=\"background-color:#fff;margin:0 auto;\" cellpadding=\"0\" cellspacing=\"0\">
+                    <tbody><tr>
+                        <td>
+                            <table width=\"600\" style=\"background-color:#fff;margin:0 auto;\" cellpadding=\"0\" cellspacing=\"0\">
+                                <tbody>
+                                <tr>
+                                    <td colspan=\"3\" style=\"height:40px;\">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td width=\"40\">&nbsp;</td>
+                                    <td width=\"520\" style=\"line-height:20px;\">
+                                        <p style=\"text-align:center;margin:0;padding:0;\">
+                                            
+                                            <span style=\"font-size:24px;line-height:32px;color:#35B34A;\">注册申请成功！</span>
+                                        </p>
+                                        <p style=\"color:#7d7d7d;margin:10px 0px 24px 0px;font-size:14px;line-height:22px;padding:0 40px;text-align:center\">欢迎{$user->username}加入,在开始使用之前，请确认你的邮箱账号
+                                        </p>
+                                      
+                                        <p style=\"margin:0;padding:0;\">&nbsp;</p>
+                                        <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"height:44px; width:200px\">
+                                            <tbody>
+                                            <tr>
+                                                <td style=\"background-color:#00c1de; height:44px; line-height:44px;text-align:center; width:200px\">
+                                                    <a href=\"{$activeUrl}\" style=\"display:block;text-decoration: none;color: #ffffff;font-size:16px;\" target=\"_blank\" rel=\"noopener\">激活账户
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td width=\"40\">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan=\"3\" style=\"height:40px;\">
+                                        <div style=\"width: 500px; max-width: 90%;margin: 10px auto; font-size: 14px;\">
+                                            <div style=\"color:#7d7d7d;margin: 8px 0;\">
+                                                如果按钮无效，请将以下链接复制到浏览器地址栏完成激活。
+                                            </div>
+                                            <div>
+                                                <a href=\"{$activeUrl}\" style=\"color: #35c8e6; word-break: break-all\" target=\"_blank\" rel=\"noopener\">{$activeUrl}</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+                <div style=\"padding-bottom: 40px;font-size: 14px;\">
+                    <div style=\"padding-bottom: 40px;font-size: 14px;\">
+                        <div style=\"width: 430px; max-width: 90%;margin: 10px auto;\">
+                            彻底告别繁琐的支付接入流程 一次接入所有主流支付渠道，99% 系统可用性，满足你丰富的交易场景需求,为你的用户提供完美支付体验。
+                        </div>
+                        <div>
+                            <span style=\"color: #76858c;\">服务咨询请联系：</span>
+                            <a href=\"mailto:me@iredcap.cn\" style=\"color:#35c8e6; text-decoration: none;\" target=\"_blank\" rel=\"noopener\"> me@iredcap.cn </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>";
+    }
+    /**
+     * 注册成功内容
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     *
+     * @return string
+     */
+    private function getRegCallbackContent($user){
+        return '<div id="mailContentContainer" class="qmbox qm_con_body_content qqmail_webmail_only" style="">
+
+<style type="text/css">
+       .qmbox .ExternalClass,.qmbox .ExternalClass div,.qmbox .ExternalClass font,.qmbox .ExternalClass p,.qmbox .ExternalClass span,.qmbox .ExternalClass td,.qmbox h1,.qmbox img{line-height:100%;}.qmbox h1,.qmbox h2{display:block;font-family:Helvetica;font-style:normal;font-weight:700;}.qmbox #outlook a{padding:0;}.qmbox .ExternalClass,.qmbox .ReadMsgBody{width:100%;}.qmbox a,.qmbox blockquote,.qmbox body,.qmbox li,.qmbox p,.qmbox table,.qmbox td{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}.qmbox table,.qmbox td{mso-table-lspace:0;mso-table-rspace:0;}.qmbox img{-ms-interpolation-mode:bicubic;border:0;height:auto;outline:0;text-decoration:none;}.qmbox table{border-collapse:collapse!important;}.qmbox #bodyCell,.qmbox #bodyTable,.qmbox body{height:100%!important;margin:0;padding:0;width:100%!important;}.qmbox #bodyCell{padding:20px;}.qmbox #templateContainer{width:600px;border:1px solid #ddd;background-color:#fff;}.qmbox #bodyTable,.qmbox body{background-color:#FAFAFA;}.qmbox h1{color:#202020!important;font-size:26px;letter-spacing:normal;text-align:left;margin:0 0 10px;}.qmbox h2{color:#404040!important;font-size:20px;line-height:100%;letter-spacing:normal;text-align:left;margin:0 0 10px;}.qmbox h3,.qmbox h4{display:block;font-style:italic;font-weight:400;letter-spacing:normal;text-align:left;margin:0 0 10px;font-family:Helvetica;line-height:100%;}.qmbox h3{color:#606060!important;font-size:16px;}.qmbox h4{color:grey!important;font-size:14px;}.qmbox .headerContent{background-color:#f8f8f8;border-bottom:1px solid #ddd;color:#505050;font-family:Helvetica;font-size:20px;font-weight:700;line-height:100%;text-align:left;vertical-align:middle;padding:0;}.qmbox .bodyContent,.qmbox .footerContent{font-family:Helvetica;line-height:150%;text-align:left;}.qmbox .footerContent{text-align:center;}.qmbox .bodyContent pre{padding:15px;background-color:#444;color:#f8f8f8;border:0;}.qmbox .bodyContent pre code{white-space:pre;word-break:normal;word-wrap:normal;}.qmbox .bodyContent table{margin:10px 0;background-color:#fff;border:1px solid #ddd;}.qmbox .bodyContent table th{padding:4px 10px;background-color:#f8f8f8;border:1px solid #ddd;font-weight:700;text-align:center;}.qmbox .bodyContent table td{padding:3px 8px;border:1px solid #ddd;}.qmbox .table-responsive{border:0;}.qmbox .bodyContent a{word-break:break-all;}.qmbox .headerContent a .yshortcuts,.qmbox .headerContent a:link,.qmbox .headerContent a:visited{color:#1f5d8c;font-weight:400;text-decoration:underline;}.qmbox #headerImage{height:auto;max-width:600px;padding:20px;}.qmbox #templateBody{background-color:#fff;}.qmbox .bodyContent{color:#505050;font-size:14px;padding:20px;}.qmbox .bodyContent a .yshortcuts,.qmbox .bodyContent a:link,.qmbox .bodyContent a:visited{color:#1f5d8c;font-weight:400;text-decoration:underline;}.qmbox .bodyContent a:hover{text-decoration:none;}.qmbox .bodyContent img{display:inline;height:auto;max-width:560px;}.qmbox .footerContent{color:grey;font-size:12px;padding:20px;}.qmbox .footerContent a .yshortcuts,.qmbox .footerContent a span,.qmbox .footerContent a:link,.qmbox .footerContent a:visited{color:#606060;font-weight:400;text-decoration:underline;}@media only screen and (max-width:640px){.qmbox h1,.qmbox h2,.qmbox h3,.qmbox h4{line-height:100%!important;}.qmbox #templateContainer{max-width:600px!important;width:100%!important;}.qmbox #templateContainer,.qmbox body{width:100%!important;}.qmbox a,.qmbox blockquote,.qmbox body,.qmbox li,.qmbox p,.qmbox table,.qmbox td{-webkit-text-size-adjust:none!important;}.qmbox body{min-width:100%!important;}.qmbox #bodyCell{padding:10px!important;}.qmbox h1{font-size:24px!important;}.qmbox h2{font-size:20px!important;}.qmbox h3{font-size:18px!important;}.qmbox h4{font-size:16px!important;}.qmbox #templatePreheader{display:none!important;}.qmbox .headerContent{font-size:20px!important;line-height:125%!important;}.qmbox .footerContent{font-size:14px!important;line-height:115%!important;}.qmbox .footerContent a{display:block!important;}.qmbox .hide-mobile{display:none;}}
+</style>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+    <tbody>
+    <tr>
+        <td align="center" valign="top" id="bodyCell">
+            <table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
+                <tbody>
+                <tr>
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
+                            <tbody>
+                            <tr>
+                                <td valign="top" class="headerContent">
+                                    <a href="https://pay.iredcap.cn" rel="noopener" target="_blank">
+                                    </a>
+                                    <img src="https://pay.iredcap.cn/static/logo-color.png" style="max-width:600px;padding:20px"
+                                         id="headerImage">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody">
+                            <tbody>
+                            <tr>
+                                <td valign="top" class="bodyContent">
+                                    <p>
+                                        Dear '. $user->username . ',
+                                    </p>
+                                    <p>
+                                        欢迎加入,在开始使用之前，请确认你的账号
+                                    </p>
+                                    <p>
+                                        操作安全码:
+                                        <b>
+                                            <span style="border-bottom:1px dashed #ccc;z-index:1" t="7" onclick="return false;"
+                                                  data="'. $user->auth_code . '">
+                                                '. $user->auth_code . '
+                                            </span>
+                                        </b>
+                                    </p>
+                                    <p>
+                                        商户UID： '. $user->uid . '
+                                        <br>
+                                        注册邮箱： '. $user->account . '
+                                        <br>
+                                        商户名称： '. $user->username . '
+                                   
+                                    </p>
+                                    <p>
+                                        彻底告别繁琐的支付接入流程，一次接入所有主流支付渠道和分期渠道，99.99% 系统可用性，满足你丰富的交易场景需求，为你的用户提供完美支付体验。
+                                    </p>
+                                    <p>
+                                        <br>
+                                        小红帽科技
+                                        <br>
+                                        咨询邮箱: <a href="mailto:me@iredcap.cn" style="color:#35c8e6; text-decoration: none;" target="_blank" rel="noopener"> me@iredcap.cn </a>
+                                    </p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateFooter">
+                            <tbody>
+                            <tr>
+                                <td valign="top" class="footerContent">
+                                    <a href="https://pay.iredcap.cn/" rel="noopener" target="_blank">访问首页</a>
+                                    <span class="hide-mobile">|</span>
+                                    <a href="https://pay.iredcap.cn/login.html" rel="noopener" target="_blank">登录账户</a>
+                                    <span class="hide-mobile">|</span>
+                                    <a href="https://pay.iredcap.cn/cashier" rel="noopener" target="_blank">Demo测试</a>
+                                    <br>
+                                    Copyright &copy; Cmpay . All rights reserved.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<style type="text/css">.qmbox style, .qmbox script, .qmbox head, .qmbox link, .qmbox meta {display: none !important;}</style>
+</div>';
     }
 }

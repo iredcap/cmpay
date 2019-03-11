@@ -1,0 +1,22 @@
+.earning-report-legend {
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    li {
+      @extend .d-flex;
+      @extend .align-items-center;
+      font-weight: 400;
+      .legend-label {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border-radius: 100%;
+        margin-right: 10px;
+      }
+      .legend-percentage {
+        font-weight: 600;
+      }
+    }
+  }
+}

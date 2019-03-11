@@ -17,6 +17,21 @@ use app\common\library\enum\CodeEnum;
 
 class Config extends BaseLogic
 {
+
+    /**
+     * 获取配置信息
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param array $where
+     * @param bool $field
+     *
+     * @return mixed
+     */
+    public function getConfigInfo($where = [], $field = true){
+        return $this->modelConfig->getInfo($where, $field);
+    }
+
     /**
      * 获取配置列表
      *
@@ -28,8 +43,7 @@ class Config extends BaseLogic
      * @param int $paginate
      * @return mixed
      */
-    public function getConfigList($where = [], $field = true, $order = '', $paginate = 0)
-    {
+    public function getConfigList($where = [], $field = true, $order = '', $paginate = 0){
         return $this->modelConfig->getList($where, $field, $order, $paginate);
     }
 
@@ -41,8 +55,7 @@ class Config extends BaseLogic
      * @param array $data
      * @return array
      */
-    public function settingSave($data = [])
-    {
+    public function settingSave($data = []){
         foreach ($data as $name => $value)
         {
 

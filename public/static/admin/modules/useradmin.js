@@ -19,7 +19,7 @@ layui.define(["table", "form"],
 
         i.render({
             elem: "#app-admin-user-manage",
-            url: "/admin/userList",
+            url: "userList",
             //自定义响应字段
             response: {
                 statusCode: 1 //数据状态一切正常的状态码
@@ -34,31 +34,28 @@ layui.define(["table", "form"],
                     title: "ID",
                     sort: !0
                 }, {
-                    field: "loginname",
+                    field: "username",
                     title: "登录名"
                 }, {
-                    field: "telphone",
-                    title: "手机"
-                }, {
+                    field: "nickname",
+                    title: "昵称"
+                },{
                     field: "email",
                     title: "邮箱"
                 }, {
-                    field: "role",
-                    title: "角色"
-                }, {
-                    field: "jointime",
+                    field: "create_time",
                     title: "加入时间",
                     sort: !0,
                     templet: function(d) {return u.toDateString(d.jointime*1000); }
                 }, {
-                    field: "check",
+                    field: "status",
                     title: "审核状态",
                     templet: "#buttonTpl",
                     minWidth: 80,
                     align: "center"
                 }, {
                     title: "操作",
-                    width: 150,
+                    width: 200,
                     align: "center",
                     fixed: "right",
                     toolbar: "#table-useradmin-admin"
@@ -68,37 +65,85 @@ layui.define(["table", "form"],
         }),
         i.on("tool(app-admin-user-manage)",
             function(e) {
-                e.data;
+                var d = e.data;
                 if ("del" === e.event) layer.prompt({
                         formType: 1,
                         title: "敏感操作，请验证口令"
                     },
-                    function(t, i) {
+                    function(d, i) {
                         layer.close(i),
                             layer.confirm("确定删除此管理员？",
-                                function(t) {
+                                function(d) {
                                     console.log(e),
-                                        e.del(),
-                                        layer.close(t)
+                                        t.ajax({
+                                            url: 'userDel?id='+ e.data.id,
+                                            method:'POST',
+                                            success:function (res) {
+                                                if (res.code == 1){
+                                                    e.del()
+                                                }
+                                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                                layer.close(d); //关闭弹层
+                                            }
+                                        });
                                 })
                     });
-                else if ("edit" === e.event) {
+                else if ("auth" === e.event) {
+                    t(e.tr);
+                    layer.open({
+                        type: 2,
+                        title: "管理授权",
+                        content: "userAuth.html?id="+ d.id,
+                        maxmin: !0,                             area: ['80%','60%'],
+                        btn: ["确定", "取消"],
+                        yes: function(f, t) {
+                            var l = window["layui-layer-iframe" + f],
+                                r = "app-admin-user-auth-submit",
+                                n = t.find("iframe").contents().find("#" + r);
+                            l.layui.form.on("submit("+ r +")",
+                                function(t) {
+                                    var l = t.field;
+                                    layui.$.post("userAuth",l,function (res) {
+                                        if (res.code == 1){
+                                            i.render(),
+                                                layer.close(f)
+                                        }
+                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    });
+                                }),
+                                n.trigger("click")
+                        },
+                        success: function(e, t) {}
+                    })
+                }
+                else  if ("edit" === e.event) {
                     t(e.tr);
                     layer.open({
                         type: 2,
                         title: "编辑管理员",
-                        content: "../../../views/user/administrators/adminform.html",
-                        area: ["420px", "420px"],
+                        content: "userEdit.html?id="+ d.id,
+                        maxmin: !0,                             area: ['80%','60%'],
                         btn: ["确定", "取消"],
-                        yes: function(e, t) {
-                            var l = window["layui-layer-iframe" + e],
-                                r = "LAY-user-back-submit",
+                        yes: function(f, t) {
+                            var l = window["layui-layer-iframe" + f],
+                                r = "app-admin-user-back-submit",
                                 n = t.find("iframe").contents().find("#" + r);
                             l.layui.form.on("submit(" + r + ")",
-                                function(t) {
-                                    t.field;
-                                    i.reload("LAY-user-front-submit"),
-                                        layer.close(e)
+                                function(d) {
+                                    var l = d.field;
+                                    layui.$.post("userEdit",l,function (res) {
+                                        if (res.code == 1){
+                                            //更新数据表
+                                            e.update({
+                                                username: l.username,
+                                                nickname: l.nickname,
+                                                email: l.email,
+                                                status: l.status
+                                            }),i.render(),
+                                                layer.close(f)
+                                        }
+                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    });
                                 }),
                                 n.trigger("click")
                         },
@@ -108,7 +153,7 @@ layui.define(["table", "form"],
             }),
         i.render({
             elem: "#app-admin-user-role",
-            url: "/admin/groupList",
+            url: "groupList",
             //自定义响应字段
             response: {
                 statusCode: 1 //数据状态一切正常的状态码
@@ -124,6 +169,7 @@ layui.define(["table", "form"],
                     sort: !0
                 }, {
                     field: "name",
+                    width: 100,
                     title: "角色名"
                 }, {
                     field: "rules",
@@ -145,30 +191,44 @@ layui.define(["table", "form"],
             function(e) {
                 var d = e.data;
                 if ("del" === e.event) layer.confirm("确定删除此角色？",
-                    function(t) {
-                        e.del(),
-                            layer.close(t)
+                    function(d) {
+                        t.ajax({
+                            url: 'groupDel?id='+ e.data.id,
+                            method:'POST',
+                            success:function (res) {
+                                if (res.code == 1){
+                                    e.del()
+                                }
+                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                layer.close(d); //关闭弹层
+                            }
+                        });
                     });
                 else if ("auth" === e.event) {
                     t(e.tr);
                     layer.open({
                         type: 2,
                         title: "角色授权",
-                        content: "/admin/menuAuth.html?id="+ d.id,
-                        area: ["700px", "650px"],
+                        content: "menuAuth.html?id="+ d.id,
+                        maxmin: !0,                             area: ['80%','60%'],
                         btn: ["确定", "取消"],
-                        yes: function(d, t) {
-                            var l = window["layui-layer-iframe" + d],
-                                i = "app-user-auth-submit",
-                                r = t.find("iframe").contents().find("#" + i);
-                            l.layui.form.on("submit(app-user-auth-submit)",
+                        yes: function(f, t) {
+                            var l = window["layui-layer-iframe" + f],
+                                r = "app-admin-user-role-submit";
+                            n = t.find("iframe").contents().find("#" + r);
+                            l.layui.form.on("submit("+ r +")",
                                 function(t) {
                                     var l = t.field;
-                                    console.log(l);
-                                    e.render(),
-                                        layer.close(e)
+                                    console.log(l)
+                                    layui.$.post("menuAuth",l,function (res) {
+                                        if (res.code == 1){
+                                            i.render(),
+                                                layer.close(f)
+                                        }
+                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    });
                                 }),
-                                r.trigger("click")
+                                n.trigger("click")
                         },
                         success: function(e, t) {}
                     })
@@ -178,19 +238,29 @@ layui.define(["table", "form"],
                     layer.open({
                         type: 2,
                         title: "编辑角色",
-                        content: "/admin/groupEdit.html?id="+ d.id,
-                        area: ["700px", "650px"],
+                        content: "groupEdit.html?id="+ d.id,
+                        maxmin: !0,                             area: ['80%','60%'],
                         btn: ["确定", "取消"],
-                        yes: function(e, t) {
-                            var l = window["layui-layer-iframe" + e],
-                                r = t.find("iframe").contents().find("#LAY-user-role-submit");
-                            l.layui.form.on("submit(app-user-role-submit)",
+                        yes: function(f, t) {
+                            var l = window["layui-layer-iframe" + f],
+                                r = "app-admin-user-role-submit";
+                                n = t.find("iframe").contents().find("#" + r);
+                            l.layui.form.on("submit("+ r +")",
                                 function(t) {
-                                    t.field;
-                                    i.reload("app-user-back-role"),
-                                        layer.close(e)
+                                    var l = t.field;
+                                    layui.$.post("groupEdit",l,function (res) {
+                                        if (res.code == 1){
+                                            //更新数据表
+                                            e.update({
+                                                name: l.name,
+                                                describe: l.describe
+                                            }),i.render(),
+                                                layer.close(f)
+                                        }
+                                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    });
                                 }),
-                                r.trigger("click")
+                                n.trigger("click")
                         },
                         success: function(e, t) {}
                     })

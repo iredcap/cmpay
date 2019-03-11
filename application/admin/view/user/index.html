@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +6,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="__STATIC__/common/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="__STATIC__/common/style/admin.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
 </head>
 <body>
 
@@ -30,13 +28,19 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">日期范围</label>
+                    <label class="layui-form-label">开始时间</label>
                     <div class="layui-input-block">
-                        <input type="text" name="date" class="layui-input" id="app-laydate-range-date" placeholder=" - ">
+                        <input type="text" name="start" class="layui-input app-laydate-item" placeholder="yyyy-MM-dd">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">日期范围</label>
+                    <label class="layui-form-label">结束时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="end" class="layui-input app-laydate-item" placeholder="yyyy-MM-dd">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">商户状态</label>
                     <div class="layui-input-block">
                         <select name="status" lay-filter="status">
                             <option value="">请选择一个状态</option>
@@ -91,6 +95,7 @@
                 {{#  } }}
             </script>
             <script type="text/html" id="table-useradmin-webuser">
+                <a class="layui-btn layui-btn-warm layui-btn-xs"  lay-event="profit"><i class="layui-icon layui-icon-auz"></i>分成</a>
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
             </script>
@@ -98,10 +103,10 @@
     </div>
 </div>
 
-<script src="__STATIC__/common/layui/layui.js"></script>
+<script src="__ADMIN__/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '__STATIC__/common/' //静态资源所在路径
+        base: '__ADMIN__/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'user','form','laydate', 'table'], function(){
@@ -110,12 +115,13 @@
             ,laydate = layui.laydate
             ,table = layui.table;
 
-        laydate.render({
-            elem: '#app-laydate-range-date'
-            ,range: '-'
-            ,trigger: 'click'
-            ,format: 'yyyy/MM/dd'
-            ,btns: ['confirm']
+        //同时绑定多个日期
+        lay('.app-laydate-item').each(function(){
+            laydate.render({
+                elem: this
+                ,value: new Date()
+                ,trigger: 'click'
+            });
         });
 
         //监听搜索
@@ -162,9 +168,9 @@
                 layer.open({
                     type: 2
                     ,title: '添加用户'
-                    ,content: '/user/add'
+                    ,content: 'add'
                     ,maxmin: true
-                    ,area: ['550px', '520px']
+                    ,area: ['80%','60%']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
                         var iframeWindow = window['layui-layer-iframe'+ index]
@@ -177,7 +183,7 @@
 
                             //提交 Ajax 成功后，静态更新表格中的数据
                             $.ajax({
-                                url:'/user/add',
+                                url:'add',
                                 method:'POST',
                                 data:field,
                                 success:function (res) {

@@ -52,7 +52,6 @@ class PrePay extends BaseApi
             $order = $this->logicOrders->createPayOrder($orderData);
 
             //写入订单超时队列
-            Log::notice('写入订单超时队列');
             $this->logicQueue->pushJobDataToQueue('AutoOrderClose' , $order , 'AutoOrderClose');
 
             //提交支付 选择支付路由
@@ -72,9 +71,41 @@ class PrePay extends BaseApi
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param $queryData
+     *
+     * @return mixed
+     * @throws ParameterException
      */
     public function orderQuery($queryData){
+
         // 验证
-        $this->validateQueryorder->gocheck();
+        $this->validateQueryOrder->gocheck();
+
+        try{
+            $order = $this->logicOrders->getOrderInfo([
+                'uid' => $queryData['mchid'],
+                'out_trade_no' => $queryData['out_trade_no'],
+                'channel' => $queryData['channel']
+            ],[
+                'trade_no','out_trade_no','subject','body','extra','amount','channel','currency','client_ip','status'
+            ]);
+            //状态修改  -  可以用模型处理
+            switch ($order['status']){
+                case '0':
+                    $order['status'] = 'CLSOE';
+                    break;
+                case '1':
+                    $order['status'] = 'WAIT';
+                    break;
+                case '2':
+                    $order['status'] = 'SUCCESS';
+                    break;
+            }
+            return $order;
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            throw new ParameterException([
+                'msg'   => 'Query Order Error:[Order Fail].'
+            ]);
+        }
     }
 }

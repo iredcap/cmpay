@@ -219,6 +219,18 @@ layui.define("view",
                         }
                     })
                 },
+                clearcache: function(e) {
+                    layui.$.get('/admin/login/clearCache',function(res){
+                            layer.msg('清除缓存成功！', {
+                                offset: '15px'
+                                ,icon: 1
+                                ,time: 1000
+                            }, function(){
+                                P.refresh(e); //刷新
+                            });
+                        }
+                    );
+                },
                 note: function(e) {
                     var a = F.screen() < 2,
                         i = layui.data(l.tableName).note;

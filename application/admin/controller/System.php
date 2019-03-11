@@ -25,7 +25,7 @@ class System extends BaseAdmin
      */
     public function website(){
         $this->common();
-        $this->assign('list', $this->logicConfig->getConfigList(['group'=>1],true,'sort ace'));
+        $this->assign('list', $this->logicConfig->getConfigList(['group'=> '0'],true,'sort ace'));
         return $this->fetch();
     }
 
@@ -38,7 +38,7 @@ class System extends BaseAdmin
      */
     public function email(){
         $this->common();
-        $this->assign('list', $this->logicConfig->getConfigList(['group'=>2],true,'sort ace'));
+        $this->assign('list', $this->logicConfig->getConfigList(['group'=> '1' ],true,'sort ace'));
         return $this->fetch();
     }
 

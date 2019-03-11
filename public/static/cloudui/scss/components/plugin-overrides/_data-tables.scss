@@ -1,0 +1,62 @@
+/* Data Tables */
+.dataTables_wrapper {
+  padding-left: 0;
+  padding-right: 0;
+
+  label {
+    font-size: 0.8125rem;
+  }
+
+  select {
+    @extend .form-control;
+    padding: 0.4rem;
+  }
+
+  .dataTables_length {
+    select {
+      margin-left: 0.25rem;
+      margin-right: 0.25rem;
+    }
+  }
+
+  .dataTable {
+
+    .btn {
+      padding: 0.1rem 1rem;
+      vertical-align: top;
+    }
+
+    thead {
+      .sorting,
+      .sorting_asc,
+      .sorting_asc_disabled,
+      .sorting_desc,
+      .sorting_desc_disabled {
+        &:after,
+        &:before {
+          line-height: 3.5;
+          font-family: "simple-line-icons";
+          font-size: 0.65rem;
+        }
+
+        &:before {
+          content: "\e607";
+          right: 1.2em;
+        }
+
+        &:after {
+          content: "\e604";
+          right: 0.2em;
+        }
+      }
+    }
+  }
+
+  .dataTables_paginate {
+    margin-top: 20px;
+  }
+
+  .dataTables_info {
+    font-size: $default-font-size;
+  }
+}

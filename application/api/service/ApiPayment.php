@@ -1,66 +1,50 @@
 <?php
 /**
- * +----------------------------------------------------------------------
- *   | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- * +----------------------------------------------------------------------
- *   | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- * +----------------------------------------------------------------------
- *   | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- * +----------------------------------------------------------------------
- *   | Author: Brian Waring <BrianWaring98@gmail.com>
- * +----------------------------------------------------------------------
+ *  +----------------------------------------------------------------------
+ *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
+ *  +----------------------------------------------------------------------
+ *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
+ *  +----------------------------------------------------------------------
+ *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
+ *  +----------------------------------------------------------------------
+ *  | Author: Brian Waring <BrianWaring98@gmail.com>
+ *  +----------------------------------------------------------------------
  */
 
 namespace app\api\service;
 
-use app\api\service\payment\WxScan;
-use app\api\service\payment\QqScan;
 use app\common\library\exception\ParameterException;
+use app\common\logic\Orders;
 
-/**
- * @method static WxScan wx_scan(array $config) 微信扫码支付
- * @method static QqScan qq_scan(array $config) QQ扫码支付
- */
 class ApiPayment
 {
+    /**
+     * 支付配置
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @var array
+     */
     protected $config;
 
     /**
-     * Bootstrap.
-     *
-     * @author yansongda <me@yansongda.cn>
+     * constructor.
      *
      * @param array $config
      */
-    public function __construct(array $config)
+    private function __construct(array $config = [])
     {
         $this->config = $config;
     }
 
     /**
+     * 魔术方法
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @param $method
-     * @return mixed
-     * @throws \Exception
-     */
-    public function create($method){
-        $payment = __NAMESPACE__ . '\\payment\\' . ucwords(camelize($method));
-        if (class_exists($payment)) {
-            return new $payment($this->config);
-        }
-        throw new ParameterException(['msg' => 'Payment [{$method}] Not Exists']);
-    }
-
-
-    /**
-     * Magic static call.
+     * @param string $method
+     * @param array $params
      *
-     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     * @param $method
-     * @param $params
      * @return mixed
      * @throws \Exception
      */
@@ -70,6 +54,27 @@ class ApiPayment
 
         return $app->create($method);
     }
+
+    /**
+     * 构建
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param $method
+     * @return mixed
+     * @throws \Exception
+     */
+    public function create($method){
+
+        $payment = __NAMESPACE__ . '\\payment\\' . ucwords($method);
+
+        if (class_exists($payment)) {
+            return new $payment($this->config);
+        }
+
+        throw new ParameterException(['msg' => 'Payment [{$method}] Not Exists']);
+    }
+
 
     /**
      * curl get
@@ -181,5 +186,36 @@ class ApiPayment
 
         return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA), JSON_UNESCAPED_UNICODE), true);
 
+    }
+
+    /**
+     * 依据订单号获取配置
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param $out_trade_no
+     *
+     * @return mixed
+     */
+    protected function getOrderPayConfig($out_trade_no = ''){
+
+        //获取配置
+        $orderConfig = (new Orders())->getOrderPayConfig($out_trade_no);
+
+        return json_decode($orderConfig['param'], true);
+    }
+
+    /**
+     * 依据订单号获取订单同步地址
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param string $out_trade_no
+     *
+     * @return mixed
+     */
+    protected function getOrder($out_trade_no = ''){
+
+        return (new Orders())->getOrderInfo(['trade_no' => $out_trade_no], 'return_url');
     }
 }

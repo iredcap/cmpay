@@ -15,6 +15,7 @@ namespace app\common\service\worker;
 
 
 use app\common\library\Activation;
+use app\common\library\Mail;
 use think\Log;
 use think\queue\Job;
 
@@ -87,6 +88,10 @@ class AutoEmailWork
             //  注册邮件处理
             case 'register':
                 (new Activation())->sendActiveCode(arr2obj($data));
+                break;
+            // 验证码
+            case 'regcallback':
+                (new Activation())->sendRegCallback(arr2obj($data));
                 break;
             // 验证码
             case 'verify':

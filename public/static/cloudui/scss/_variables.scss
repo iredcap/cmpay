@@ -1,0 +1,287 @@
+
+////////// COLOR SYSTEM //////////
+
+$theme-colors: (
+  primary: #439aff,
+  secondary: #fdbab1,
+  success: #7ed321,
+  info: #4729b7,
+  warning: #f5a623,
+  danger: #ff5e5e,
+  light: #f3f5f6,
+  dark: #090e40
+);
+
+$colors: (
+  blue: $blue,
+  indigo: $indigo,
+  purple: $purple,
+  pink: $pink,
+  red: $red,
+  orange: $orange,
+  yellow: $yellow,
+  green: $green,
+  teal: $teal,
+  cyan: $cyan,
+  white: $white,
+  white-smoke: #f3f5f6,
+  gray: $gray-600,
+  gray-light: #8ba2b5,
+  gray-lightest: #f7f7f9,
+  gray-dark: #292b2c
+);
+
+
+////////// COLOR VARIABLES //////////
+
+$content-bg: #f0f2f7;
+$footer-bg: $content-bg;
+$footer-color: color(dark);
+$border-color: #f2f2f2;
+
+////////// COLOR VARIABLES //////////
+
+
+
+////////// SOCIAL COLORS //////////
+
+$social-colors: (
+  twitter: #1da1f2,
+  facebook: #3b579d,
+  google: #dc4a38,
+  linkedin: #0177b4,
+  pinterest: #cc2127,
+  youtube: #e52d27,
+  github: #333333,
+  behance: #1769ff,
+  dribbble: #ea4c89,
+  reddit: #ff4500
+);
+
+////////// SOCIAL COLORS //////////
+
+////////// FONTS //////////
+
+$type-1 :  'Open Sans', sans-serif;
+
+$default-font-size: .875rem;
+$text-muted: #959595;
+$body-color: $black;
+$title-color: #000000;
+
+////////// FONT VARIABLES //////////
+
+
+///////// HORIZONTAL MENU /////////
+$navbar-brand-wrapper-mini-width: 70px;
+$menu-break-point: 1020px;
+$horizontal-navbar-height: 135px;
+$horizontal-top-menu-bg : theme-color(dark);
+$horizontal-menu-padding: 0 1rem;
+$horizontal-menu-height:  57px;
+$horizontal-menu-color: #242425;
+$horizontal-top-menu-item-color: #c7c7c7;
+$horizontal-bottom-bg: $white;
+$horizontal-bottom-menu-item-color: $horizontal-menu-color;
+$horizontal-bottom-menu-item-icon-color: $horizontal-menu-color;
+$horizontal-bottom-menu-item-active-color: theme-color(primary);
+$horizontal-menu-submenu-color: #202339;
+$horizontal-bottom-menu-item-font-size: .875rem;
+$horizontal-bottom-menu-item-hover-bg: transparent;
+$horizontal-bottom-menu-item-hover-color: theme-color(primary);
+$horizontal-menu-item-padding: .75rem 0;
+$horizontal-menu-icon-font-size: .9375rem;
+$horizontal-menu-submenu-item-padding: .85rem 0;
+///////// HORIZONTAL MENU /////////
+
+///////// NAVBAR ////////
+
+$navbar-height: 60px;
+$navbar-light-color: #202339;
+$navbar-font-size: 14px;
+$navbar-icon-font-size: 1rem;
+
+///////// NAVBAR ////////
+
+
+
+///////// BUTTONS ////////
+
+$button-fixed-width:        120px;
+$btn-padding-y:       0.56rem;
+$btn-padding-x:       1.375rem;
+$btn-line-height:     1;
+
+$btn-padding-y-xs:    .5rem;
+$btn-padding-x-xs:    .75rem;
+
+$btn-padding-y-sm:    0.50rem;
+$btn-padding-x-sm:    0.81rem;
+
+$btn-padding-y-lg:    0.94rem;
+$btn-padding-x-lg:    1.94rem;
+
+$btn-font-size:       .875rem;
+$btn-font-size-xs:    .625rem;
+$btn-font-size-sm:    .875rem;
+$btn-font-size-lg:    .875rem;
+
+$btn-border-radius:         .1875rem;
+$btn-border-radius-xs:      .1875rem;
+$btn-border-radius-sm:      .1875rem;
+$btn-border-radius-lg:      .1875rem;
+
+$social-btn-padding:        13px;
+$social-btn-icon-size:      1rem;
+
+///////// BUTTONS ////////
+
+
+
+/////////  FORMS /////////
+
+$input-bg:                color(white);
+$input-border-radius:     2px;
+$input-placeholder-color: #c9c8c8;
+$input-font-size:         .75rem;
+$input-padding-y:         .56rem;
+$input-padding-x:         1.375rem;
+$input-line-height:       1;
+
+$input-padding-y-sm:      .5rem;
+$input-padding-x-sm:      .81rem;
+$input-line-height-sm:    1;
+
+$input-padding-y-lg:      .94rem;
+$input-padding-x-lg:      1.94rem;
+$input-line-height-lg:    1;
+
+///////// FORMS /////////
+
+////////  DROPDOWNS ///////
+
+$dropdown-border-color: $border-color;
+$dropdown-divider-bg:   $border-color;
+$dropdown-link-color:   $body-color;
+$dropdown-header-color: $body-color;
+////////  DROPDOWNS ///////
+
+//////// TABLES ////////
+
+$table-accent-bg: $content-bg;
+$table-hover-bg:  $content-bg;
+$table-border-color: $border-color;
+
+$table-inverse-bg: #2a2b32;
+$table-inverse-color: color(white);
+
+//////// TABLES ////////
+
+
+
+////////// MEASUREMENT AND PROPERTY VARIABLES //////////
+
+$boxed-container-width: 1200px;
+$border-property: 1px solid $border-color;
+$card-spacing-y: .75rem;
+$card-padding-y: 30px;
+$card-padding-x: 30px;
+$card-border-color: $border-color;
+$card-border-radius: 1px;
+$grid-gutter-width: 12px;
+$action-transition-duration: 0.25s;
+$action-transition-timing-function: ease;
+$footer-height: 60px;
+////////// OTHER VARIABLES //////////
+
+
+
+////////// BREAD CRUMBS VARIABLES //////////
+
+// default styles
+$breadcrumb-padding-y:              0.56rem;
+$breadcrumb-padding-x:              1.13rem;
+$breadcrumb-item-padding:           .5rem;
+$breadcrumb-margin-bottom:          1rem;
+$breadcrumb-font-size:              $default-font-size;
+$breadcrumb-bg:                     transparent;
+$breadcrumb-border-color:           $border-color;
+$breadcrumb-divider-color:          $gray-600;
+$breadcrumb-active-color:           $gray-700;
+$breadcrumb-divider:                ">";
+
+// custom styles
+$breadcrumb-custom-padding-y:       0;
+$breadcrumb-custom-padding-x:       0;
+$breadcrumb-custom-item-padding-y:  0.56rem;
+$breadcrumb-custom-item-padding-x:  10px;
+$breadcrumb-custom-item-color:      $black;
+$breadcrumb-item-bg:                #dbe3e6;
+
+////////// BREAD CRUMBS VARIABLES //////////
+
+
+
+////////// MODALS VARIABLES //////////
+
+$modal-inner-padding:               15px;
+$modal-dialog-margin:               10px;
+$modal-dialog-margin-y-sm-up:       30px;
+$modal-title-line-height:           $line-height-base;
+$modal-content-bg:                  $content-bg;
+$modal-content-box-shadow-xs:       0 3px 9px rgba($black,.5);
+$modal-content-box-shadow-sm-up:    0 5px 15px rgba($black,.5);
+
+$modal-backdrop-bg:                 $black;
+$modal-backdrop-opacity:            .5;
+
+$modal-header-border-color:         $border-color;
+$modal-content-border-color:        $border-color;
+$modal-footer-border-color:         $border-color;
+
+$modal-header-border-width:         $border-width;
+$modal-content-border-width:        $border-width;
+$modal-footer-border-width:         $border-width;
+
+$modal-header-padding-x:              26px;
+$modal-header-padding-y:              25px;
+
+$modal-body-padding-x:                26px;
+$modal-body-padding-y:                35px;
+
+$modal-footer-padding-x:              31px;
+$modal-footer-padding-y:              15px;
+
+$modal-lg:                          90%;
+$modal-md:                          500px;
+$modal-sm:                          300px;
+$modal-transition:                  transform .4s ease;
+
+////////// MODALS VARIABLES //////////
+
+
+////////// TOOLTIP VARIABLES //////////
+
+//default styles
+$tooltip-font-size:     .75rem;
+$tooltip-padding-y:     .4rem;
+$tooltip-padding-x:     .75rem;
+$tooltip-border-radius: .375rem;
+$tooltip-bg:  theme-color(dark);
+$tooltip-arrow-color: $tooltip-bg;
+
+////////// TOOLTIP VARIABLES //////////
+
+
+
+////////// POPOVER VARIABLES //////////
+
+//default styles
+$popover-bg:       #f1f6ff;
+$popover-text-color: $black;
+$popover-border-color:    $border-color;
+$popover-arrow-color:     $popover-bg;
+$popover-arrow-outer-color: $popover-border-color;
+$popover-header-bg:   $popover-bg;
+
+////////// POPOVER VARIABLES //////////

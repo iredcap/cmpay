@@ -35,12 +35,21 @@ class BaseModel extends Model
 
     /**
      * 连接查询
+     *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @var array
      */
     protected $join = [];
 
+    /**
+     * 是否锁
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @var
+     */
+    protected $islock;
 
     /**
      *
@@ -87,7 +96,7 @@ class BaseModel extends Model
 
         $data['update_time'] = time();
 
-        return $this->allowField(true)->save($data, $where);
+        return $this->allowField(true)->isUpdate(true)->save($data, $where);
     }
 
     /**
@@ -173,7 +182,7 @@ class BaseModel extends Model
 
         } else {
 
-            $return_data = $this->setFieldValue($where, 'status', -1);
+            $return_data = $this->setFieldValue($where, 'status', '-1');
         }
 
         return $return_data;
@@ -191,7 +200,7 @@ class BaseModel extends Model
      */
     final protected function getColumn($where = [], $field = '', $key = '')
     {
-        return Db::name($this->name)->where($where)->column($field, $key);
+        return Db::name($this->name)->where($where)->cache(true,300)->column($field, $key);
     }
 
     /**
@@ -201,7 +210,9 @@ class BaseModel extends Model
      *
      * @param array $where
      * @param string $field
+     *
      * @return int|string
+     * @throws \think\Exception
      */
     final protected function getCount($where = [],$field ='*'){
         return Db::name($this->name)->where($where)->count($field);
@@ -238,7 +249,6 @@ class BaseModel extends Model
      */
     final protected function getInfo($where = [], $field = true)
     {
-
         $query = !empty($this->join) ? $this->join($this->join) : $this;
 
         $info = $query->where($where)->field($field)->find();
@@ -282,7 +292,6 @@ class BaseModel extends Model
         $query = $query->where($where)->order($order)->field($field);
 
         !empty($this->group) && $query->group($this->group);
-        !empty($this->cache) && $query->cache($this->cache,300);  //查询缓存 5分钟
 
         if (false === $paginate) {
 
@@ -348,7 +357,6 @@ class BaseModel extends Model
         }
 
         $model = sr($name, $layer);
-
         return VALIDATE_LAYER_NAME == $layer ? validate($model) : model($model, $layer);
     }
 

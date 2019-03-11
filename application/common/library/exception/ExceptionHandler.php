@@ -47,7 +47,7 @@ class ExceptionHandler extends Handle
             }
 
             $this->code = 500;
-            $this->msg = 'System Exception.';
+            $this->msg = 'Error .[There may be a problem with the system.]';
             $this->errorCode = 999999;
             $this->recordErrorLog($e);
         }

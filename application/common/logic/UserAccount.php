@@ -79,25 +79,58 @@ class UserAccount extends BaseLogic
      * @param $data
      * @return array
      */
-    public function editAccount($data){
+    public function saveUserAccount($data){
 
         //TODO  验证数据
-        $validate = $this->validateAccountValidate->check($data);
+        $validate = $this->validateAccountValidate->scene($data['scene'])->check($data);
 
         if (!$validate) {
 
-            return [ CodeEnum::ERROR,$this->validateAccountValidate->getError()];
+            return [ 'code' => CodeEnum::ERROR, 'msg' => $this->validateAccountValidate->getError()];
         }
         //TODO 修改数据
         Db::startTrans();
         try{
+
             $this->modelUserAccount->setInfo($data);
+
+            $action = isset($data['id']) ? '编辑' : '新增';
+
+            action_log($action, $action . '收款账号。uid:'. $data['uid']);
+
             Db::commit();
-            return [ CodeEnum::SUCCESS,'编辑成功'];
+
+            return [ 'code' => CodeEnum::SUCCESS, 'msg' => $action . '账号成功'];
         }catch (\Exception $ex){
             Db::rollback();
             Log::error($ex->getMessage());
-            return [ CodeEnum::ERROR,config('app_debug')?$ex->getMessage():'未知错误'];
+            return [ 'code' => CodeEnum::ERROR, 'msg' => config('app_debug')?$ex->getMessage():'未知错误'];
+        }
+    }
+
+    /**
+     * 删除账户
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param array $where
+     *
+     * @return array
+     */
+    public function delAccount($where = []){
+        Db::startTrans();
+        try{
+
+            $this->modelUserAccount->deleteInfo($where);
+
+            action_log('删除', '删除账户，ID：'. $where['id']);
+
+            Db::commit();
+            return [ 'code' => CodeEnum::SUCCESS, 'msg' => '删除账户成功'];
+        }catch (\Exception $ex){
+            Db::rollback();
+            Log::error($ex->getMessage());
+            return [ 'code' => CodeEnum::ERROR,  'msg' => config('app_debug') ? $ex->getMessage() : '未知错误'];
         }
     }
 }

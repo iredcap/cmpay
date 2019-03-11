@@ -1,0 +1,101 @@
+.calendar-aside {
+  display: block;
+
+  .list {
+    position: relative;
+    padding: 10px 8px;
+    @include display-flex;
+    @include align-items(center);
+    @include border-radius(5px);
+    @include transition-duration($action-transition-duration);
+    @include transition-property(background);
+
+    .user-text {
+      margin-bottom: 0;
+      margin-left: 20px;
+      font-size: $default-font-size;
+    }
+
+    .count {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      @include border-radius(50px);
+      @include transition-duration($action-transition-duration);
+      @include transition-timing-function($action-transition-timing-function);
+      @include transition-property(opacity);
+      @include display-flex;
+      @include align-items(center);
+      @include justify-content(center);
+
+      &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        display: block;
+        height: 10px;
+        width: 10px;
+        margin: auto;
+        @include border-radius(50px);
+        @include transform(translateY(-50%));
+        @include transition-duration($action-transition-duration);
+        @include transition-timing-function($action-transition-timing-function);
+      }
+
+      &.online {
+        &:before {
+          background: theme-color(success);
+        }
+      }
+
+      &.offline {
+        &:before {
+          background: theme-color(danger);
+        }
+      }
+
+      .close {
+        font-size: 15px;
+        margin: auto;
+        opacity: 0;
+        color: theme-color(danger);
+        @include transition-duration($action-transition-duration);
+        @include transition-timing-function($action-transition-timing-function);
+      }
+    }
+
+    &:hover {
+      background: theme-color(light);
+
+      .count {
+        &:before {
+          z-index: 0;
+          height: 20px;
+          width: 20px;
+          background: theme-color(light);
+        }
+
+        .close {
+          z-index: 2;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.card-statistics {
+  .card-statistics-item {
+    padding: 2rem 2.25rem 2rem 1.75rem;
+  }
+}
+
+.card-update {
+  .update-item {
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba($white, .2);
+    }
+  }
+}

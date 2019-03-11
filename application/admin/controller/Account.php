@@ -70,11 +70,31 @@ class Account extends BaseAdmin
      */
     public function edit(){
         // post 是提交数据
-        $this->request->isPost() && $this->result($this->logicUserAccount->editAccount($this->request->post()));
+        $this->request->isPost() && $this->result($this->logicUserAccount->saveUserAccount($this->request->post()));
         //获取商户账户信息
-        $this->assign('bank',$this->logicBank->getBankerList());
+        $this->assign('bank',$this->logicBanker->getBankerList());
         $this->assign('account',$this->logicUserAccount->getAccountInfo(['id' =>$this->request->param('id')]));
 
         return $this->fetch();
+    }
+
+
+    /**
+     * 删除商户账户信息
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     *
+     */
+    public function del(){
+        // post 是提交数据
+        $this->request->isPost() && $this->result(
+            $this->logicUserAccount->delAccount(
+                [
+                    'id' => $this->request->param('id')
+                ])
+        );
+        // get 直接报错
+        $this->error([ CodeEnum::ERROR,'未知错误']);
     }
 }

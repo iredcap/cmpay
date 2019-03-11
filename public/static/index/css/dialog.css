@@ -1,0 +1,141 @@
+﻿
+
+.mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  z-index: 99;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+  transition: opacity .3s,transform .3s;
+}
+.mask.mask-in {
+  visibility: visible;
+  opacity: 1;
+}
+.mask.mask-out {
+  opacity: 0;
+}
+.dialog {
+  width: 15.5rem;
+  text-align: center;
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  margin-left: -6.75rem;
+  margin-top: 0;
+  top: 45%;
+  border-radius: 0.5rem;
+  opacity: 0;
+  background-color: #ffffff;
+  -webkit-transform: translate3d(0, 0, 0) scale(1.2);
+  transform: translate3d(0, 0, 0) scale(1.2);
+  -webkit-transition-property: -webkit-transform, opacity;
+  transition-property: transform, opacity;
+}
+.dialog-header {
+  padding: 0.5rem 0.75rem 0 0.75rem;
+  text-align: center;
+  font-size: 1em;
+  color: #212121;
+}
+.dialog-body {
+  padding: 0.75rem;
+  overflow: hidden;
+  font-size: 0.875em;
+  color: #757575;
+}
+.dialog-body img{
+  height: 40px;
+  width: 160px;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.dialog-body input {
+  border: 1px solid #15b5e9;
+  height: 25px;
+  line-height: 25px;
+  min-height: 1.8rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.dialog-footer {
+  position: relative;
+  font-size: 1em;
+  border-top: 1px solid #15b5e9;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.dialog-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0 0.25rem;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+  color: #FFFFFF;
+  background: #15b5e9;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+}
+.dialog.dialog-in {
+  opacity: 1;
+  -webkit-transition-duration: 300ms;
+  transition-duration: 300ms;
+  -webkit-transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+.dialog.dialog-out {
+  opacity: 0;
+  -webkit-transition-duration: 300ms;
+  transition-duration: 300ms;
+  -webkit-transform: translate3d(0, 0, 0) scale(0.815);
+  transform: translate3d(0, 0, 0) scale(0.815);
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .dialog-footer {
+    border: none;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-image: linear-gradient(#15b5e9, #15b5e9 50%, transparent 50%);
+    background-image: -webkit-linear-gradient(#15b5e9, #15b5e9 50%, transparent 50%);
+  }
+  .dialog-btn {
+    border: none;
+    background-image: -webkit-linear-gradient(0deg, #15b5e9, #15b5e9 50%, transparent 50%);
+    background-image: linear-gradient(270deg, #15b5e9, #15b5e9 50%, transparent 50%);
+    background-size: 1px 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+  }
+  .dialog-btn:last-child {
+    border: none;
+    background-size: 0 100%;
+  }
+  .dialog-body input {
+    border: none;
+    background-image: -webkit-linear-gradient(270deg, #15b5e9, #15b5e9 50%, transparent 50%), -webkit-linear-gradient(180deg, #15b5e9, #15b5e9 50%, transparent 50%), -webkit-linear-gradient(90deg, #15b5e9, #15b5e9 50%, transparent 50%), -webkit-linear-gradient(0, #15b5e9, #15b5e9 50%, transparent 50%);
+    background-image: linear-gradient(180deg, #15b5e9, #15b5e9 50%, transparent 50%), linear-gradient(270deg, #15b5e9, #15b5e9 50%, transparent 50%), linear-gradient(0deg, #15b5e9, #15b5e9 50%, transparent 50%), linear-gradient(90deg, #15b5e9, #15b5e9 50%, transparent 50%);
+    background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+    background-repeat: no-repeat;
+    background-position: top, right top, bottom, left top;
+  }
+}

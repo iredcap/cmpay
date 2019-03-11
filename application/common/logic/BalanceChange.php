@@ -50,37 +50,48 @@ class BalanceChange extends BaseLogic
     }
 
     /**
-     * 变动记录 (默认记录 待结余额 增加)
+     * 变动记录
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     * @module Api
      *
      * @param $uid
      * @param $amount
      * @param string $remarks
-     * @param bool $enable
+     * @param string $field
      * @param bool $setDec
+     *
      * @return bool
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function creatBalanceChange($uid,$amount,$remarks = '未知变动记录',$enable = false,$setDec = false){
+    public function creatBalanceChange($uid,$amount,$remarks = '未知变动记录',$field = 'enable',$setDec = false){
 
-        $user = (new \app\common\model\Balance())->getUserBalance($uid);
+        //事务
+        Db::startTrans();
+
+        $user = (new \app\common\model\Balance())->getUserBalance(['uid' => $uid]);
+
         if(!is_null($user)){
-            $data['uid'] = $uid;
-            $data['type'] =  $enable ? 'enable' :'disable';
-            $data['preinc'] =  $user[$data['type']];
-            $data['increase'] = $setDec ?'0.000': $amount;
-            $data['reduce'] = $setDec ? $amount : '0.000';
-            $data['suffixred'] = $setDec ? $data['preinc'] - $amount : $data['preinc'] + $amount;
-            $data['remarks'] = $remarks;
-            //数据提交
-            Db::startTrans();
-            try{
 
+            $data['uid'] = $uid; //商户UID
+            $data['type'] =  $field; //余额类型
+            $data['preinc'] =  $user[$data['type']]; //改变前金额
+            $data['increase'] = $setDec ?'0.000': $amount; //改变增加金额
+            $data['reduce'] = $setDec ? $amount : '0.000'; //改变减少金额
+
+            $data['suffixred'] = $setDec ? bcsub($data['preinc'], $amount, 3)
+                : bcadd($data['preinc'] , $amount,3); //改变后金额     这里用PHP  bc高精度计算
+
+            $data['remarks'] = $remarks; //改变备注
+
+            //数据提交
+            try{
+                //资金记录
                 (new \app\common\model\BalanceChange())->setInfo($data);
-                (new \app\common\model\Balance())->setIncOrDec(['uid'=>$uid],$setDec ? 'setDec' :'setInc',$enable ? 'enable' :'disable',$amount);
+                //资金增减
+                (new \app\common\model\Balance())->setIncOrDec(['uid'=>$uid],$setDec ? 'setDec' :'setInc', $field, $amount);
+
                 Db::commit();
 
             }catch (\Exception $e) {

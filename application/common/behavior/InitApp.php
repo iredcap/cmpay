@@ -34,7 +34,6 @@ class InitApp
     {
         // 初始化分层名称常量
         $this->initLayerConst();
-
     }
 
     /**

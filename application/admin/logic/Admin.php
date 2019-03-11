@@ -91,10 +91,12 @@ class Admin extends BaseAdmin
 
             $this->modelAdmin->setInfo($data);
 
-            action_log('修改', '修改管理员信息，id：'. $data['id']);
+            $action = isset($data['id']) ? '编辑' : '新增';
+
+            action_log($action, $action . '管理员信息，' . $data['nickname']);
 
             Db::commit();
-            return [ 'code' => CodeEnum::SUCCESS,'msg' => '编辑成功'];
+            return [ 'code' => CodeEnum::SUCCESS,'msg' => $action . '管理员信息成功'];
         }catch (\Exception $ex){
             Db::rollback();
             Log::error($ex->getMessage());
@@ -120,18 +122,18 @@ class Admin extends BaseAdmin
             'repassword' => 'require|confirm:password',
         ];
 
-        $newPwd = data_md5_key($data['oldPassword']);
+        $oldPwd = data_md5_key($data['oldPassword']);
+        $newPwd = data_md5_key($data['password']);
         $user = $this->logicAdmin->getAdminInfo(['id' => is_admin_login()]);
 
         //验证原密码
-        if ( $newPwd == $user['password']) {
+        if ( $oldPwd == $user['password']) {
             $validate = new Validate($rules);;
             if (!$validate->check($data)) {
                 return ['code' => CodeEnum::ERROR, 'msg' => $validate->getError()];
             }
 
             $result = $this->setAdminValue(['id' => is_admin_login()], 'password', $newPwd);
-
             action_log('修改', '管理员ID'. is_admin_login() .'密码修改');
 
             return $result && !empty($result) ? ['code' => CodeEnum::SUCCESS, 'msg' => '修改密码成功']
@@ -231,5 +233,23 @@ class Admin extends BaseAdmin
         }
 
         return $data;
+    }
+
+    /**
+     * 删除管理员
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @param $where
+     *
+     * @return array
+     */
+    public function userDel($where){
+
+        $result = $this->modelAdmin->deleteInfo($where);
+
+        $result && action_log('删除', '删除管理，where：' . http_build_query($where));
+
+        return $result ? ['code' => CodeEnum::SUCCESS, 'msg' =>'删除管理员成功', ''] : ['code' => CodeEnum::ERROR, 'msg' =>$this->modelMember->getError(), ''];
     }
 }

@@ -265,9 +265,11 @@ class Menu extends BaseAdmin
 
         $result = $this->modelMenu->setInfo($data);
 
-        action_log('编辑', '菜单' . $data['name']);
+        $action = isset($data['id']) ? '编辑' : '新增';
 
-        return $result ? ['code' => CodeEnum::SUCCESS, 'msg' =>  '菜单编辑成功'] : ['code' => CodeEnum::ERROR, 'msg' =>  $this->modelMenu->getError()];
+        action_log($action, $action . '菜单,name =>' . $data['name']);
+
+        return $result ? ['code' => CodeEnum::SUCCESS, 'msg' =>  $action . '菜单成功'] : ['code' => CodeEnum::ERROR, 'msg' =>  $this->modelMenu->getError()];
     }
 
     /**
@@ -282,7 +284,7 @@ class Menu extends BaseAdmin
     {
         
         $result = $this->modelMenu->deleteInfo($where);
-
+        action_log('删除', '删除菜单,where:' . http_build_query($where));
         return $result ? ['code' => CodeEnum::SUCCESS, 'msg' =>  '菜单删除成功'] : ['code' => CodeEnum::ERROR, 'msg' =>  $this->modelMenu->getError()];
     }
 

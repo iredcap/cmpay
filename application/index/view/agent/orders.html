@@ -1,0 +1,120 @@
+{extend name="user-layout" /}
+{block name="content"}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">交易记录</h4>
+                    <p class="card-description">
+                        默认加载近一个月的订单 <code>查询其他月份请自主选择</code>
+                    </p>
+                    <form class="forms-sample" action="" method="get">
+                        <div class="form-group row">
+                            <div class="form-group col-xl-4">
+                                <label>订单号:</label>
+                                <input type="text" name="trade_no" class="form-control" value="{$Request.get.trade_no}" placeholder="请输入订单号" >
+                            </div>
+                            <div class="form-group col-xl-4">
+                                <label>开始时间:</label>
+                                <div id="datepicker-order-start" class="input-group date datepicker">
+                                    <input type="text" name="d[start]" value="{$Request.get.d.start}" placeholder="Y-m-d h:i:s" class="form-control">
+                                    <span class="input-group-addon input-group-append border-left">
+                                      <span class="icon-calendar input-group-text"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group col-xl-4">
+                                <label>结束时间:</label>
+                                <div id="datepicker-order-end" class="input-group date datepicker">
+                                    <input type="text" name="d[end]" value="{$Request.get.d.end}" placeholder="Y-m-d h:i:s" class="form-control">
+                                    <span class="input-group-addon input-group-append border-left">
+                                      <span class="icon-calendar input-group-text"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group col-xl-4">
+                                <label>支付方式</label>
+                                <select name="channel" class="form-control">
+                                    <option value="">请选择一个支付方式</option>
+                                    {volist name="code" id="vo"}
+                                    <option {$Request.get.channel == $vo.code ? 'selected' : '' } value="{$vo.code}">{$vo.name}({$vo.code})</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <div class="form-group col-xl-4">
+                                <label>支付状态</label>
+                                <select name="status" class="form-control">
+                                    <option value="">请选择一个状态</option>
+                                    <option {$Request.get.status == '0' ? 'selected' : '' } value="0">关闭订单</option>
+                                    <option {$Request.get.status == '1' ? 'selected' : '' } value="1">等待支付</option>
+                                    <option {$Request.get.status == '2' ? 'selected' : '' } value="2">支付成功</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-submit-orderlist btn-fw">搜索</button>
+                            <button type="button" class="btn btn-warning btn-download-bill btn-fw">下载账单</button>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>订单号</th>
+                                <th>产品</th>
+                                <th class="text-center">金额</th>
+                                <th class="text-center">收入</th>
+                                <th>支付渠道</th>
+                                <th class="text-center">创建时间</th>
+                                <th class="text-center">更新时间</th>
+                                <th class="text-center">状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="list" id="vo"}
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.trade_no}</td>
+                                <td title="{$vo.body}"> <p class="line-limit-length">{$vo.subject}</p></td>
+                                <td class="text-center text-danger">￥{$vo.amount}</td>
+                                <td class="text-center text-danger">￥{$vo.agent_in}</td>
+                                <td>{$vo.channel}</td>
+                                <td class="text-center">{$vo.create_time|date='Y/m/d H:i:s',###}</td>
+                                <td class="text-center">{$vo.update_time|date='Y/m/d H:i:s',###}</td>
+                                <td class="text-center">
+                                    {switch $vo.status}
+                                    {case 0}<label class="badge badge-dark">订单关闭</label>{/case}
+                                    {case 1}<label class="badge badge-warning">等待支付</label>{/case}
+                                    {case 2}<label class="badge badge-success">支付完成</label>{/case}
+                                    {default}<label class="badge badge-info">异常订单</label>{/case}
+                                    {/switch}
+                                </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                    {$list->render()}
+                    {empty name="list"}
+                    <div class="card" id="context-menu-multi">
+                        <div class="card-body">
+                            <p class="card-text text-center text-danger">
+                                <i class="icon-compass"></i>
+                                暂无数据...
+                            </p>
+                        </div>
+                    </div>
+                    {/empty}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="pagejs"}
+<script src="__STATIC__/cloudui/js/formpickers.js"></script>
+{/block}

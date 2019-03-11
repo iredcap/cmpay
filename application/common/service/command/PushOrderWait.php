@@ -1,20 +1,19 @@
 <?php
 /**
- * +----------------------------------------------------------------------
- *   | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- * +----------------------------------------------------------------------
- *   | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- * +----------------------------------------------------------------------
- *   | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- * +----------------------------------------------------------------------
- *   | Author: Brian Waring <BrianWaring98@gmail.com>
- * +----------------------------------------------------------------------
+ *  +----------------------------------------------------------------------
+ *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
+ *  +----------------------------------------------------------------------
+ *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
+ *  +----------------------------------------------------------------------
+ *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
+ *  +----------------------------------------------------------------------
+ *  | Author: Brian Waring <BrianWaring98@gmail.com>
+ *  +----------------------------------------------------------------------
  */
 
 namespace app\common\service\command;
 
-use app\common\logic\BalanceSettle;
-use app\common\logic\Orders;
+
 use app\common\logic\Queue;
 use think\console\Command;
 use think\console\Input;

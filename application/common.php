@@ -13,6 +13,8 @@
  */
 
 use app\common\logic\Log as LogicLog;
+use think\Db;
+
 // 应用公共文件
 
 /**
@@ -468,28 +470,6 @@ function getRandChar($length = '4',$format = 'ALL')
 }
 
 /**
- * 获取相应费率 【测试】
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @param $sum
- * @return float
- */
-function get_settle_fee($sum)
-{
-    if($sum < 5000){
-        $fee = 0.04;
-    }else if($sum >= 10000 && $sum < 100000){
-        $fee = 0.06;
-    }else if($sum > 100000){
-        $fee = 0.08;
-    }else{
-        $fee = 0.04;
-    }
-    return $fee;
-}
-
-/**
  * 月赋值
  *
  * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
@@ -550,4 +530,112 @@ function uncamelize($camelCaps,$separator='_')
 function getMicroTime(){
     list($s1, $s2) = explode(' ', microtime());
      return (float)sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
+}
+
+/**
+ * url参数转化成数组
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param $query
+ *
+ * @return array
+ */
+function convertUrlArray($query)
+{
+    $queryParts = explode('&', $query);
+
+    $params = array();
+    foreach ($queryParts as $param) {
+        $item = explode('=', $param);
+        $params[$item[0]] = $item[1];
+    }
+
+    return $params;
+}
+
+
+// +---------------------------------------------------------------------+
+// | 其他函数
+// +---------------------------------------------------------------------+
+
+/**
+ * 通过类创建逻辑闭包
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param null $object
+ * @param string $method_name
+ * @param array $parameter
+ *
+ * @return Closure
+ */
+function create_closure($object = null, $method_name = '', $parameter = [])
+{
+
+    $func = function() use($object, $method_name, $parameter) {
+
+        return call_user_func_array([$object, $method_name], $parameter);
+    };
+
+    return $func;
+}
+
+/**
+ * 通过闭包控制缓存
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param string $key
+ * @param null $func
+ * @param int $time
+ *
+ * @return mixed
+ */
+function auto_cache($key = '', $func = '', $time = 3)
+{
+
+    $result = cache($key);
+
+    if (empty($result)) {
+
+        $result = $func();
+
+        !empty($result) && cache($key, $result, $time);
+    }
+
+    return $result;
+}
+
+/**
+ * 通过闭包列表控制事务
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param array $list
+ *
+ * @return bool
+ * @throws Exception
+ */
+function closure_list_exe($list = [])
+{
+
+    Db::startTrans();
+
+    try {
+
+        foreach ($list as $closure) {
+
+            $closure();
+        }
+
+        Db::commit();
+
+        return true;
+    } catch (\Exception $e) {
+
+        Db::rollback();
+
+        throw $e;
+    }
 }

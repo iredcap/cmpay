@@ -1,0 +1,201 @@
+﻿ 
+ 
+
+/*开发文档*/
+.docs{
+	height: auto;overflow: hidden;
+}
+.docs-nav{
+	width: 235px; padding-top: 30px; margin-bottom: 160px;float: left;
+}
+.docs-nav li{
+	margin-bottom: 15px;
+}
+
+.docs-nav li a{
+	display: block; height: 65px; color: #4a5875; font-size: 18px; text-align: center; border-radius: 5px;
+	line-height: 65px;
+}
+.docs-nav li a:hover{
+	background-color: #eee;  
+}
+
+.docs-nav li.on a{
+	background: #6e94ff; color:#fff;border-bottom-color: #6e94ff;
+}
+.docs-main{
+	width: 900px; float: right;
+}
+.docs-hd{
+	border-bottom: #dcdcdc solid 1px; padding: 30px 0 20px 0; font-size: 20px; color: #4a5875;
+
+}
+.docs-bd{
+	font-size: 14px; line-height: 35px; padding: 30px 0;
+}
+.docs-bd p{
+	margin-bottom: 160px;
+}
+
+
+
+/*注册*/
+.login1{
+	background: url(../images/tr6.png) no-repeat center bottom;
+	padding: 80px 0;
+	text-align: center;
+}
+.login-wp{
+	display:inline-block; padding: 80px 100px 45px 100px;background: #fff;
+	-webkit-box-shadow: 0 0 5px 5px #f0f4fb;
+	box-shadow: 0 0 5px 5px #f0f4fb;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.login-hd h2{
+	font-size: 30px;line-height: 1;border-left: #6e94ff solid 2px;padding-left: 20px;text-align: left;
+}
+.login-hd p{
+	padding-top: 55px;padding-bottom: 70px; color: #c6cad1;text-align: left;
+}
+.txt{
+	width: 410px; height: 55px;line-height: 55px;padding-left: 5px;margin-top: 25px;border: none;
+	border-bottom: #c6cad1 1px solid;
+    font-size: 14px;
+}
+.txt-code{
+	width: 275px;
+}
+.login-bd img{
+	padding-left: 5px; padding-bottom:15px;margin-top: 20px; border-bottom: #c6cad1 solid 1px;vertical-align: bottom;
+	cursor: pointer;
+}
+.login-bd p{
+	text-align: left;padding-top: 40px;padding-bottom: 60px;
+    font-size:14px;
+}
+.login-bd p a{
+	color: #6e94ff;
+}
+.login-btn{
+	margin-top: 20px;
+}
+.btn{
+	margin-bottom: 45px;
+	height: 70px;
+	width: 408px;
+	line-height: 70px;
+	background: #6e94ff;color: #fff;font-size:30px;border: 1px;border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: 0px 20px 30px 0px rgba(41, 59, 236, 0.3); 
+	box-shadow: 0px 20px 30px 0px rgba(41, 59, 236, 0.3); 
+}
+.btn:hover{
+	background-color: #6189ff;cursor: pointer;
+}
+.login-ft{
+	float: right;
+    font-size: 14px;
+}
+.login-ft a{
+	color: #6e94ff;
+    font-size: 14px;
+}
+
+/*登录、找回密码、找回密码提示*/
+.login2{
+	background: url(../images/tr7.png) no-repeat;text-align: center;padding: 80px 0;
+}
+.login-bd{
+	margin-top: 20px;
+}
+.txt-gt{
+	margin-bottom: 100px;
+}
+.gtpwd{
+	height: 90px;line-height: 90px;
+}
+.gtpwd-l{
+	float: left;
+	position: relative;
+	
+}
+.gtpwd-l > label{
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	padding-left: 10px;
+}
+.checkbox1+label{
+	width: 16px;
+	height: 16px;
+	background: none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: 2px solid #6e94ff;
+}
+.checkbox1+label:before{
+	content: '';
+	display: none;
+	position: absolute;
+	left: 3px;
+	top: 0;
+	width: 4px;
+	height: 8px;
+	background: none;
+	border: 0;
+	border-right: 2px solid #fff;
+	border-bottom: 2px solid #fff;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.gtpwd-l .checkbox1{
+	background: none;
+	
+	opacity: 0;
+}
+.gtpwd-l .checkbox1,.checkbox1+label{
+	position: absolute;
+	top: 50%;
+	left: 0;
+	margin-top: -12px;
+}
+.gtpwd-l input[type="checkbox"]:checked+label{
+	background: #6e94ff;
+}
+.gtpwd-l input[type="checkbox"]:checked+label:before{
+	display: block;
+	background: #6e94ff;
+}
+.gtpwd-r{
+	float: right;
+}
+.checkbox1{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+}
+.gtpwd-r{
+	display: inline-block;
+}
+.btn-gt{
+	margin-bottom: 90px;
+}
+.gtpwd-tip{
+	text-align: center;
+}
+ 
+.gtpwd-txt{
+	color: #c6cad1;
+}
+.gtpwd-txt h2{
+	font-size: 28px;padding-top: 50px;padding-bottom: 90px;
+}
+.gtpwd-txt p{
+	font-size: 20px;padding-bottom: 80px;
+}

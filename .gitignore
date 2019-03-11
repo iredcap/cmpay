@@ -1,9 +1,6 @@
 .idea
-application/extra
-data/cret
-data/runtime
-thinkphp
-vendor
+data/conf/database.php
+runtime
+install.lock
 composer.lock
 *.log
-.env

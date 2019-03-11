@@ -14,6 +14,7 @@
 
 namespace app\api\service\request;
 use app\common\library\exception\ParameterException;
+use app\common\library\HttpHeader;
 use think\Log;
 use think\Request;
 
@@ -39,18 +40,18 @@ class CheckAppkey extends ApiCheck
 
         // 获取app key Map
         $appKeyMap = (array)$this->logicApi->getAppKeyMap();
-        if (!in_array(self::get('authentication'),$appKeyMap)) {
+        if (!in_array(self::get(HttpHeader::X_CA_AUTH),$appKeyMap)) {
             throw new ParameterException([
-                'msg'=>'Invalid Request.[ Authentication Key Does Not Exist.]',
+                'msg'=>'Invalid Request.[ Auth Key No permission or nexistencet.]',
                 'errorCode'=> 400003
             ]);
         }
 
         //支付方式判断
         $appCodeMap = (array)$this->logicPay->getAppCodeMap();
-        if (!in_array(self::get('payload')['channel'],$appCodeMap)) {
+        if (empty(self::get('payload')['channel']) ?: !in_array(self::get('payload')['channel'],$appCodeMap)) {
             throw new ParameterException([
-                'msg'=>'Invalid Request.[ Pay Code Does Not Allowed.]',
+                'msg'=>'Invalid Request.[ Payment Code Does Not Allowed.]',
                 'errorCode'=> 400003
             ]);
         }

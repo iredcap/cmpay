@@ -1,4 +1,4 @@
-Cmpay_2018v1.0.0_Beta(测试版本)
+Cmpay_v20181220(测试版本)
 ===============
 
 ### 项目介绍
@@ -35,6 +35,12 @@ project                             应用部署目录
 │  ├─route.php                      路由配置文件
 │  └─...
 ├─data                              数据存储目录
+│  ├─cret                           证书文件
+│  ├─crond                          Cron定时文件
+│  ├─extend                         拓展类库
+│  ├─runtime                        系统运行runtime目录
+│  ├─supervisord                    supervisord配置目录
+│  └─...
 ├─public                            Web 部署目录（对外访问目录）
 │  ├─static                         静态资源存放目录(css,js,image)
 │  ├─upload                         系统文件上传存放目录
@@ -50,11 +56,10 @@ project                             应用部署目录
 
 ## **在线演示**
 
-后台 ：https://crm.iredcap.cn  (nouser 123456) 
+后台 ：https://pay.iredcap.cn/admin  (nouser nouser) 
 
-前台 ：https://www.iredcap.cn (nouser@iredcap.cn 123456) 
+前台 ：https://pay.iredcap.cn (nouser@iredcap.cn nouser) 
 
-提　示：演示站点暂停访问
 
 ## **运营截图**
 
@@ -76,6 +81,9 @@ project                             应用部署目录
 
 版本 |日期 |描述
 ------- | ------- | -------
+V1.0.3 | 2018-12-22 | 更改支付接入方式，修复部分BUG
+V1.0.2 | 2018-12-15 | 更新SDK接入，修复部分BUG
+V1.0.1 | 2018-12-10 | 更新部分，修复BUG
 V1.0.0 |2018-11-12 |更换前端页面，完善部分功能，商户端开发进行中...
 V1.0.0 |2018-11-06 |修复部分Bug,完善后台权限管理，数据统计，其他
 V1.0.0 |2018-10-23 |最初版本
@@ -95,7 +103,7 @@ V1.0.0 |2018-10-23 |最初版本
 
 在使用中有任何问题，请使用以下联系方式联系我们
 
-QQ群: [939417065](//shang.qq.com/wpa/qunwpa?idkey=0227fdd4ca96fb4feb57aad9542824ab76189089eb4f4fa0f8e3bd96dbf504f6) ![加入QQ群](http://pub.idqqimg.com/wpa/images/group.png) (交流群 暗号：Caomao)
+QQ群: [939417065](//shang.qq.com/wpa/qunwpa?idkey=0227fdd4ca96fb4feb57aad9542824ab76189089eb4f4fa0f8e3bd96dbf504f6) ![加入QQ群](http://pub.idqqimg.com/wpa/images/group.png) (交流群 暗号：Cmpay)
 
 Email: me@iredcap.cn
 
@@ -127,3 +135,8 @@ All rights reserved。
 ## 若对您有帮助，支持下吧
 
 ![赞赏](https://sirhe.cn/wp-content/uploads/2018/06/打赏.jpg)
+
+称呼 | 方式 | 金额
+------- | ------- | -------
+*二云 | 支付宝收款码 |￥200.00
+*丽 | 支付宝收款码 |￥68.00

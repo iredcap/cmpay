@@ -89,7 +89,6 @@ class Log extends BaseLogic
      */
     public function logDel($where = [])
     {
-
         return $this->modelActionLog->deleteInfo($where) ? ['code' => CodeEnum::SUCCESS, 'msg' =>'日志删除成功', '']
             : ['code' => CodeEnum::ERROR, 'msg' => '删除操作日志失败'];
     }

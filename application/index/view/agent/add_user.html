@@ -1,0 +1,108 @@
+{extend name="user-layout" /}
+{block name="content"}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">新增下级商户</h4>
+                    <form class="layui-form forms-sample" action="" method="post">
+                        <input name="u[puid]" value="{$user_info.uid}" hidden disabled readonly >
+                        <input type="text" hidden disabled name="u[scene]" value="add">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">商户邮箱</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="u[account]" value="" required lay-verify="required" class="form-control" placeholder="商户邮箱">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">商户户名</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="u[username]" value="" required lay-verify="required" class="form-control" placeholder="商户户名">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">登录密码</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="u[password]" value="123456" required lay-verify="required" class="form-control" placeholder="登录密码">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">商户站点</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="u[siteurl]" value="https://www.baidu.com" required lay-verify="required|url" class="form-control" placeholder="商户站点">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">站点名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="u[sitename]" value="百度" required lay-verify="required" class="form-control" placeholder="站点名称">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">联系手机</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="u[phone]" value="18888889999" required lay-verify="required|phone" class="form-control" placeholder="联系手机">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">联系QQ</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="u[qq]" value="100000" required lay-verify="required" class="form-control" placeholder="联系QQ">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">手机验证码</label>
+                            <div class="col-sm-9">
+                                <div class="input-group col-xs-12">
+                                    <input type="text" name="u[vercode]" required lay-verify="required" maxlength="6" class="form-control file-upload-info" placeholder="手机验证码">
+                                    <span class="input-group-append">
+                                        <button type="button" id="sendVerCode" class="file-upload-browse btn-show-vercode btn btn-primary">发送</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-primary btn-user-submit btn-fw" lay-submit lay-filter="app-user-submit">提交修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="pagejs"}
+<script src="__STATIC__/common/layui/layui.js"></script>
+<script>
+    layui.use(['form'], function(){
+        let $ = layui.$
+            ,form = layui.form
+            , verBtn = $("#sendVerCode")
+            , countdown = 60; // 验证码限制时间
+
+        //监听搜索
+        form.on('submit(app-user-submit)', function(data){
+            let field = data.field;
+            console.log(field)
+            //提交
+            $.ajax({
+                url:'{:url(\'index/Agent/addUser\')}',
+                method:"POST",
+                data:field, success:function (res) {
+                    if (res.code == 1){
+                        setTimeout(
+                            location.href = '{:url(\'index/Agent/index\')}'
+                            ,3000);
+                    }
+                    showToast(res);
+                }
+            });
+        });
+    });
+</script>
+{/block}

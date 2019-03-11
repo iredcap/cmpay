@@ -15,6 +15,8 @@
 namespace app\api\service\response;
 
 
+use app\common\library\HttpHeader;
+
 class BuildEncrypt extends ApiSend
 {
 
@@ -29,8 +31,8 @@ class BuildEncrypt extends ApiSend
     public function doBuild($chargeRespose)
     {
         //记录本次上下文数据
-        self::set('noncestr',$noncestr  =  self::createUniqid());
-        self::set('timestamp',$timestamp =  self::getMicroTime());
+        self::set(HttpHeader::X_CA_NONCE_STR,  self::createUniqid());
+        self::set(HttpHeader::X_CA_TIMESTAMP,  self::getMicroTime());
     }
 
 }

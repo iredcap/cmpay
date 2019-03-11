@@ -67,13 +67,12 @@ class Jpush extends Driver
         $response = [];
         try{
             $response = $this->handler->sendCode($whom, $this->options['temp_id']);
-            Log::notice("Jpush Sms Send:" . json_encode($response));
             //写入存储
             $this->jpushCache($whom,$response['body']['msg_id'] ?? '' );
         }catch (\Exception $e){
             Log::error("Jpush Sms Send Fail:" . $e->getMessage());
         }
-        return $response && $response['http_code'] == 200 ? $response : false;
+        return $response && $response['http_code'] == 200 ? true : false;
 
     }
 

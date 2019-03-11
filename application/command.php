@@ -13,7 +13,5 @@
  */
 
 return [
-    // 每日定时结算
-    'app\\common\\service\\command\\AutoOrderSettle',
     'app\\common\\service\\command\\PushOrderWait'
 ];

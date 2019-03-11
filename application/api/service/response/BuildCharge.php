@@ -15,6 +15,9 @@
 namespace app\api\service\response;
 
 
+use app\common\library\HttpHeader;
+use think\Log;
+
 class BuildCharge extends ApiSend
 {
     /**
@@ -23,27 +26,38 @@ class BuildCharge extends ApiSend
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param $chargeRespose
+     *
      * @return mixed|void
+     * @throws \app\common\library\exception\ParameterException
      */
     public function doBuild($chargeRespose)
     {
         //从请求上下文取出商户支付申请数据
         $payload = self::get('payload');
-        $ApiResposeData = [
-            'channel'=>$payload['channel'],
-            'order_no'=>$payload['out_trade_no'],
-            'client_ip'=>$payload['client_ip'],
-            'amount'=>(string)$payload['amount'],
-            'currency'=>$payload['currency'],
-            'subject'=>$payload['subject'],
-            'body'=>$payload['body'],
-            'extparam'=>!empty($payload['extparam']) ?$payload['extparam']:[],
-            'credential'=>[
-                'prepay_id'=>$chargeRespose['prepay_id'],
-                'order_qr'=>$chargeRespose['code_url']
-            ]
-        ];
 
+        //判断请求方式
+        if ( md5(self::get(HttpHeader::X_CA_REST_URL)) ==  md5('/pay/orderquery')){
+            $ApiResposeData= $chargeRespose;
+            if (empty($chargeRespose)){
+                $ApiResposeData = [];
+            }
+        }else{
+            $ApiResposeData = [
+                'channel'   =>  $payload['channel'],
+                'out_trade_no'  =>  $payload['out_trade_no'],
+                'client_ip'   =>  $payload['client_ip'],
+                'amount'    =>  (string)$payload['amount'],
+                'currency'    =>  $payload['currency'],
+                'subject'    =>  $payload['subject'],
+                'body'    =>  $payload['body'],
+                'extparam' => !empty($payload['extparam']) ? $payload['extparam']:[],
+                'credential' => []
+            ];
+            if (!empty($chargeRespose)){
+                $ApiResposeData['credential'] = $chargeRespose;
+            }
+
+        }
         // 设置上下文支付包
         self::set('ApiResposeData',$ApiResposeData);
     }

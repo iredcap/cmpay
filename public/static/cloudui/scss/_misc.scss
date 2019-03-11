@@ -1,0 +1,99 @@
+/* Miscellanoeous */
+body,
+html {
+  overflow-x: hidden;
+  padding-right: 0; // resets padding right added by Bootstrap modal
+}
+
+*:-moz-full-screen,
+*:-webkit-full-screen,
+*:fullscreen *:-ms-fullscreen {
+  overflow: auto;
+}
+
+.page-body-wrapper {
+  background: $content-bg;
+  padding-left: 0;
+  padding-right: 0;
+
+  &.full-page-wrapper {
+    .content-wrapper {
+      max-width: 100%;
+    }
+    min-height: 100vh;
+  }
+}
+
+.main-panel {
+  @include media-breakpoint-down(md) {
+    padding-top: 60px;
+  }
+}
+
+.content-wrapper {
+  padding: 1.5rem 0;
+  @include make-container();
+  @include make-container-max-widths();
+  min-height: calc(100vh - #{$horizontal-navbar-height} - #{$footer-height});
+  @include flex-grow(1);
+}
+
+.container-scroller {
+  overflow: hidden;
+}
+
+.scroll-container {
+  position: relative;
+
+  &.horizontally {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  &.vertically {
+    overflow-y: hidden;
+    height: 100%;
+    max-height: 100%;
+  }
+}
+
+pre {
+  background: color(gray-lighter);
+  padding: 15px;
+  font-size: 14px;
+}
+
+.fade {
+  &.show,&.in {
+    opacity: 1;
+  }
+}
+
+.page-header {
+  margin: 0 0 1.125rem 0;
+  .page-title {
+    color: $black;
+    margin-bottom: 0;
+    .page-title-icon {
+      background: theme-color(primary);
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      text-align: center;
+      box-shadow: 10px 8px 16px -6px rgba(36, 101, 247, 0.69);
+      -webkit-box-shadow: 10px 8px 16px -6px rgba(36, 101, 247, 0.69);
+      -moz-box-shadow: 10px 8px 16px -6px rgba(36, 101, 247, 0.69);
+      margin-right: 1rem;
+      i {
+        line-height: 36px;
+        color: $white;
+      }
+    }
+  }
+  .btn-header-dropdown {
+    border: 1px solid rgba($text-muted, 0.2);
+    color: theme-color(dark);
+  }
+}

@@ -50,13 +50,13 @@ layui.define(function(e) {
                     type: "value",
                     name: "订单量",
                     axisLabel: {
-                        formatter: "{value} 万"
+                        formatter: "{value}"
                     }
                 }, {
                     type: "value",
                     name: "交易额",
                     axisLabel: {
-                        formatter: "{value} 万"
+                        formatter: "{value}"
                     }
                 }],
                 series: []

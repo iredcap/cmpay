@@ -33,6 +33,26 @@ class Api extends BaseLogic
     }
 
     /**
+     * 获取所有支持的商户请求识标
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @return mixed
+     */
+    public function getallowedIpMap(){
+
+        $allowedIpMap =  $this->modelApi->getColumn([], 'id,auth_ips');
+        $checkAllowedIpMap = [];
+        foreach ($allowedIpMap as $v) {
+            $allowedIp = explode(',',$v);
+            for ($i=0;$i< count($allowedIp);$i++){
+                $checkAllowedIpMap[] = $allowedIp[$i];
+            }
+        }
+        return $checkAllowedIpMap;
+    }
+
+    /**
      * 获取商户API列表
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
@@ -83,43 +103,30 @@ class Api extends BaseLogic
     public function editApi($data){
 
         //TODO  验证数据
-        $validate = $this->validateApi->scene('edit')->check($data);
+        $validate = $this->validateApiValidate->scene('edit')->check($data);
 
         if (!$validate) {
 
-            return [ 'code' => CodeEnum::ERROR, 'msg' => $this->validateApi->getError()];
+            return [ 'code' => CodeEnum::ERROR, 'msg' => $this->validateApiValidate->getError()];
         }
+
         //TODO 修改数据
         Db::startTrans();
         try{
             //加密KEY
             $data['key']    = data_md5_key($data['secretkey']);
-            //应该写入文件  文件名为key 内容为pem内容
-            $this->saveRsaPublickKey($data);
             //提交保存
             $this->modelApi->setInfo($data);
+
             Db::commit();
+
+            action_log('修改', '修改接口信息，接口公钥修改');
+
             return [ 'code' => CodeEnum::SUCCESS, 'msg' => '编辑成功'];
         }catch (\Exception $ex){
             Db::rollback();
             Log::error($ex->getMessage());
-            return [ 'code' => CodeEnum::ERROR , 'msg' => '未知错误'];
+            return [ 'code' => CodeEnum::ERROR , config('app_debug') ? $ex->getMessage() : '未知错误'];
         }
-    }
-
-    /**
-     * 保存上传的key
-     *
-     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     * @param $data
-     */
-    public function saveRsaPublickKey($data){
-        $pem = chunk_split($data['secretkey'],64,"\n");//转换为pem格式的公钥
-        $content = "-----BEGIN PUBLIC KEY-----".PHP_EOL
-            .$pem."-----END PUBLIC KEY-----".PHP_EOL;
-        //return [ CodeEnum::SUCCESS ,CRET_PATH.$data['key'],$content];
-        if (!is_dir(CRET_PATH . $data['key'])) mkdir(CRET_PATH . $data['key'], 0777);
-        file_put_contents(CRET_PATH."{$data['key']}/rsa_public_key.pem",$content);
     }
 }

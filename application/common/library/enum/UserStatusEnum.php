@@ -26,10 +26,12 @@ class UserStatusEnum
     // 删除
     const DELETE = -1;
 
-    // 禁用
-    const DISABLE = 0;
+    // 等待激活
+    const WAIT = 0;
 
     // 可用
     const ENABLE = 1;
 
+    // 禁用
+    const DISABLE = 2;
 }

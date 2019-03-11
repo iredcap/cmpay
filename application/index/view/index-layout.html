@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=yes">
+    <link href="/favicon.ico" rel="shortcut icon" />
+    <title>{$site.seo_title|default="聚合支付"} - 支付技术服务商，让支付简单、专业、快捷！</title>
+    <link rel="stylesheet" href="__INDEX__/css/qietu.css">
+    <link rel="stylesheet" href="__INDEX__/css/iconfont.css">
+    <link rel="stylesheet" href="__INDEX__/css/animate.min.css">
+    {block name="pagecss"}
+    <!-- css for this page -->
+    <!-- End css for this page -->
+    {/block}
+    <link rel="stylesheet" href="__INDEX__/css/style.css">
+    <link rel="stylesheet" href="__INDEX__/css/responsive.css">
+
+</head>
+<body>
+<!--头部-->
+<div class="header bj-3d7bf8">
+    <div class="wrapper">
+        <div class="logo">
+            <a href="/">
+                <img src="__COMMON__/logo.png" />
+            </a>
+        </div>
+        <div class="nav-wrap">
+            <div class="nav">
+                <ul>
+                    <li class="home_index">
+                        <strong>
+                            <a href="/">
+                                首页
+                            </a>
+                        </strong>
+                    </li>
+                    <li>
+                        <strong>
+                            <a href="#">
+                                产品中心
+                                <i class="iconfont icon-jiantou8">
+                                </i>
+                            </a>
+                        </strong>
+                        <dl>
+                            <dd>
+                                <a href="{:url('index/Index/products')}#pro1">
+                                    聚合收款
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="{:url('index/Index/products')}#pro4">
+                                    二维码支付
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <strong>
+                            <a href="#">
+                                开发者中心
+                                <i class="iconfont icon-jiantou8">
+                                </i>
+                            </a>
+                        </strong>
+                        <dl>
+                            <dd>
+                                <a href="{:url('index/Index/demo')}">
+                                    DEMO体验
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="{:url('index/Index/introduce')}">
+                                    接入指南
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="{:url('index/Index/document')}">
+                                    开发文档
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="{:url('index/Index/sdk')}">
+                                    SDK下载
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <strong>
+                            <a href="{:url('index/Index/about')}">
+                                关于我们
+                            </a>
+                        </strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="btns">
+                <ul>
+                    {if is_login()}
+                    <li class="">
+                        <a href="{:url('index/User/index')}">
+                            用户中心
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{:url('index/Login/logout')}">
+                            退出
+                        </a>
+                    </li>
+                    {else /}
+                    <li class="">
+                        {if $Request.action == 'login'}
+                        <a href="{:url('index/login/register')}">
+                            注册
+                        </a>
+                        {else /}
+                        <a href="{:url('index/Login/login')}">
+                            登录
+                        </a>
+                        {/if}
+                    </li>
+                    {/if}
+                </ul>
+            </div>
+        </div>
+        <div class="gh">
+            <a href="#">
+            </a>
+        </div>
+    </div>
+</div>
+<!--内容-->
+{block name="content"}
+
+{/block}
+<!--底部-->
+<div class="footer">
+    <div class="wrapper">
+        <dl class="s">
+            <dt>
+                联系我们
+            </dt>
+            <dd>
+                <a href="">
+                联系方式
+                <p> QQ:702154416</p>
+                <p> Email:me@iredcap.cn</p>
+                </a>
+            </dd>
+            <dd>
+                <img src="__COMMON__/logo.png" style="width: 120px" />
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                产品项目
+            </dt>
+            <dd>
+                <a href="{:url('index/index/products')}#pro1">
+                    聚合收款
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/products')}#pro2">
+                    商户系统
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/products')}#pro3">
+                    代付系统
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/products')}#pro4">
+                    二维码支付
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                关于公司
+            </dt>
+            <dd>
+                <a href="{:url('index/index/about')}">
+                    关于我们
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/partner')}">
+                    接口合作
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/partner')}">
+                    流量合作
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                开发者
+            </dt>
+            <dd>
+                <a href="{:url('index/index/demo')}">
+                    DEMO体验
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/introduce')}">
+                    接入指南
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/document')}">
+                    API开发文档
+                </a>
+            </dd>
+            <dd>
+                <a href="{:url('index/index/sdk')}">
+                    SDK下载
+                </a>
+            </dd>
+        </dl>
+        <dl class="s">
+            <dt>
+                扫一扫
+            </dt>
+            <dd>
+                <img src="__COMMON__/qr-pub.jpg" style="width: 109px;" />
+            </dd>
+        </dl>
+    </div>
+</div>
+<div class="copyright">
+    <div class="wrapper">
+        {$site.app_copyright|default="© 2018 Caomao. "} <a href="https://www.iredcap.cn" style="color: #fff;" target="_blank">小红帽科技</a> · {$site.seo_title|default="草帽聚合支付"} · 桂ICP备180004251号
+    </div>
+</div>
+<div class="sidebar">
+    <ul>
+        <!--<li><a href="#"><i class="iconfont icon-liaotian"></i></a></li>-->
+        <li class="sidebar-scroll">
+            <a href="#">
+                <i class="iconfont icon-shang">
+                </i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js">
+</script>
+<script type="text/javascript" src="__INDEX__/js/jquery.glide.js">
+</script>
+<script type="text/javascript" src="__INDEX__/js/wow.min.js">
+</script>
+<script type="text/javascript" src="__INDEX__/js/script.js">
+</script>
+<script src="__COMMON__/js/copyright.js"></script>
+<!--Layui-->
+<script type="text/javascript" src="__LAYUI__/layui.js">
+</script>
+{block name="pagejs"}
+<script type="text/javascript">
+    $(function() {
+        //$(".home_index").addClass("on");
+        $('.sidebar-scroll').click(function() {
+            $('html ,body').animate({
+                scrollTop: 0
+            }, 1000);
+            return false
+        });
+        var glide = $('.list-wrper').glide({
+            arrows: false
+        }).data('api_glide');
+        $(".hpart-prev").click(function() {
+            glide.prev()
+        });
+        $(".hpart-next").click(function() {
+            glide.next()
+        })
+    })
+</script>
+{/block}
+</body>
+
+</html>
