@@ -1,22 +1,21 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\logic;
 
-
-use app\common\library\enum\CodeEnum;
+use enum\CodeEnum;
 use think\Db;
-use think\Log;
+use Log;
 use think\Validate;
 
 class Admin extends BaseAdmin
@@ -30,11 +29,15 @@ class Admin extends BaseAdmin
      * @param bool $field
      * @param string $order
      * @param int $paginate
-     * @return mixed
+     *
+     * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getAdminList($where = [], $field = true, $order = '', $paginate = 0)
     {
-        return $this->modelAdmin->getList($where, $field, $order, $paginate);
+        return $this->getList($where, $field, $order, $paginate);
     }
 
     /**
@@ -46,7 +49,7 @@ class Admin extends BaseAdmin
      * @return mixed
      */
     public function getAdminCount($where = []){
-        return $this->modelAdmin->getCount($where);
+        return $this->getCount($where);
     }
 
     /**
@@ -56,11 +59,15 @@ class Admin extends BaseAdmin
      *
      * @param array $where
      * @param bool $field
-     * @return mixed
+     *
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getAdminInfo($where = [], $field = true)
     {
-        return $this->modelAdmin->getInfo($where, $field);
+        return $this->getInfo($where, $field);
     }
 
 
@@ -89,7 +96,7 @@ class Admin extends BaseAdmin
                 $data['password'] = data_md5_key($data['password']);
             }
 
-            $this->modelAdmin->setInfo($data);
+            $this->setInfo($data);
 
             $action = isset($data['id']) ? '编辑' : '新增';
 
@@ -113,6 +120,9 @@ class Admin extends BaseAdmin
      * @param $data
      *
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function changeAdminPwd($data){
         //数据验证'repassword'=>'require|confirm:password'
@@ -124,7 +134,7 @@ class Admin extends BaseAdmin
 
         $oldPwd = data_md5_key($data['oldPassword']);
         $newPwd = data_md5_key($data['password']);
-        $user = $this->logicAdmin->getAdminInfo(['id' => is_admin_login()]);
+        $user = $this->getAdminInfo(['id' => is_admin_login()]);
 
         //验证原密码
         if ( $oldPwd == $user['password']) {
@@ -155,7 +165,7 @@ class Admin extends BaseAdmin
      */
     public function setAdminValue($where = [], $field = '', $value = '')
     {
-        return $this->modelAdmin->setFieldValue($where, $field, $value);
+        return $this->setFieldValue($where, $field, $value);
     }
 
     /**
@@ -175,7 +185,7 @@ class Admin extends BaseAdmin
 
         $where = ['uid' => ['in', $data['id']]];
 
-        $this->modelAuthGroupAccess->deleteInfo($where, true);
+        $this->logicAuthGroupAccess->deleteAuthGroupAccessInfo($where, true);
 
         if (empty($data['role_ids'])) {
 

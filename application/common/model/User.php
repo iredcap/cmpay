@@ -18,6 +18,10 @@ namespace app\common\model;
 class User extends BaseModel
 {
     /**
+     * @var string
+     */
+    protected $pk = 'uid';
+    /**
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *

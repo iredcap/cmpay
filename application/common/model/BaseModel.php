@@ -1,21 +1,19 @@
 <?php
-
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\common\model;
 
 use think\Db;
-use think\Log;
 use think\Model;
 
 /**
@@ -43,6 +41,22 @@ class BaseModel extends Model
     protected $join = [];
 
     /**
+     * 连接查询
+     *
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
+     * @var array
+     */
+    protected $limit = null;
+
+    /**
+     * 配合join记录alias
+     *
+     * @var string|array
+     */
+    protected $alias = null;
+
+    /**
      * 是否锁
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
@@ -68,7 +82,7 @@ class BaseModel extends Model
 
             $this->allowField(true)->save($data, $where);
 
-            return $this->getQuery()->getLastInsID();
+            return $this->buildQuery()->getLastInsID();
 
         } else {
 
@@ -107,7 +121,10 @@ class BaseModel extends Model
      * @param array $where
      * @param string $stat_type
      * @param string $field
+     *
      * @return mixed
+     * @throws \think\Exception
+     * @throws \think\exception\DbException
      */
     final public function stat($where = [], $stat_type = 'count', $field = 'id')
     {
@@ -122,8 +139,11 @@ class BaseModel extends Model
      * @param array $where
      * @param string $action_type
      * @param string $field
-     * @param string $value
+     * @param $value
+     *
      * @return mixed
+     * @throws \think\Exception
+     * @throws \think\exception\DbException
      */
     final protected function setIncOrDec($where = [], $action_type = 'setInc', $field = 'amount',$value)
     {
@@ -137,7 +157,8 @@ class BaseModel extends Model
      *
      * @param array $data_list
      * @param bool $replace
-     * @return array|false
+     *
+     * @return \think\Collection
      * @throws \Exception
      */
     final protected function setList($data_list = [], $replace = false)
@@ -156,11 +177,11 @@ class BaseModel extends Model
      * @param array $where
      * @param string $field
      * @param string $value
+     *
      * @return false|int
      */
     final protected function setFieldValue($where = [], $field = '', $value = '')
     {
-
         return $this->updateInfo($where, [$field => $value]);
     }
 
@@ -171,7 +192,10 @@ class BaseModel extends Model
      *
      * @param array $where
      * @param bool $is_true
+     *
      * @return false|int
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     final protected function deleteInfo($where = [], $is_true = false)
     {
@@ -196,11 +220,12 @@ class BaseModel extends Model
      * @param array $where
      * @param string $field
      * @param string $key
+     *
      * @return array
      */
     final protected function getColumn($where = [], $field = '', $key = '')
     {
-        return Db::name($this->name)->where($where)->cache(true,300)->column($field, $key);
+        return Db::name($this->name)->where($where)->column($field, $key);
     }
 
     /**
@@ -211,8 +236,7 @@ class BaseModel extends Model
      * @param array $where
      * @param string $field
      *
-     * @return int|string
-     * @throws \think\Exception
+     * @return float|string
      */
     final protected function getCount($where = [],$field ='*'){
         return Db::name($this->name)->where($where)->count($field);
@@ -223,16 +247,27 @@ class BaseModel extends Model
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @param array $where
-     * @param string $field
-     * @param null $default
-     * @param bool $force
+     * @param array $where 查询条件
+     * @param string $field 获取字段
+     * @param null $default 设置默认值
      * @return mixed
      */
-    final protected function getValue($where = [], $field = '', $default = null, $force = false)
+    final protected function getValue($where = [], $field = '', $default = null)
     {
 
-        return Db::name($this->name)->where($where)->value($field, $default, $force);
+        return Db::name($this->name)->where($where)->value($field, $default);
+    }
+
+    /**
+     * 记录alias和join一起拼装使用
+     *
+     * @param array|string $alias
+     *
+     * @return Model|void
+     */
+    final public function alias($alias)
+    {
+        $this->alias = $alias;
     }
 
     /**
@@ -240,8 +275,8 @@ class BaseModel extends Model
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @param array $where
-     * @param bool $field
+     * @param array $where 查询条件
+     * @param bool|string $field 字段
      * @return array|false|\PDOStatement|string|Model
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -251,12 +286,17 @@ class BaseModel extends Model
     {
         $query = !empty($this->join) ? $this->join($this->join) : $this;
 
+        !empty($this->alias) && $query->alias($this->alias);
+
         $info = $query->where($where)->field($field)->find();
 
+        $this->alias = null;
         $this->join = [];
 
         return $info;
     }
+
+
 
     /**
      * 获取列表数据
@@ -264,10 +304,10 @@ class BaseModel extends Model
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
-     * @param array $where
-     * @param bool $field
-     * @param string $order
-     * @param int $paginate
+     * @param array $where 查询条件
+     * @param bool|string $field 查询字段
+     * @param string|bool $order 排序
+     * @param int|bool $paginate 分页
      * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -275,8 +315,6 @@ class BaseModel extends Model
      */
     final protected function getList($where = [], $field = true, $order = '', $paginate = 0)
     {
-
-        empty($this->join) && !isset($where['status']) && $where['status'] = ['neq', -1];
 
         if (empty($this->join)) {
 
@@ -287,6 +325,9 @@ class BaseModel extends Model
         } else {
 
             $query = $this->join($this->join);
+
+            !empty($this->alias) && $query->alias($this->alias);
+
         }
 
         $query = $query->where($where)->order($order)->field($field);
@@ -305,7 +346,7 @@ class BaseModel extends Model
             $list = $query->paginate(input('list_rows', $list_rows), false, ['query' => request()->param()]);
         }
 
-        $this->join = []; $this->limit = []; $this->group = [];
+        $this->alias = null; $this->join = []; $this->limit = []; $this->group = [];
 
         return $list;
     }

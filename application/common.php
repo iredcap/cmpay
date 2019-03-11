@@ -1,21 +1,22 @@
 <?php
+// +----------------------------------------------------------------------
+// | ThinkPHP [ WE CAN DO IT JUST THINK ]
+// +----------------------------------------------------------------------
+// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
+// +----------------------------------------------------------------------
+// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+// +----------------------------------------------------------------------
+// | Author: 流年 <liu21st@gmail.com>
+// +----------------------------------------------------------------------
 
-/**
- *  +----------------------------------------------------------------------
- *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
- *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
- *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
- */
-
-use app\common\logic\Log as LogicLog;
-use think\Db;
 
 // 应用公共文件
+use think\Db;
+use app\common\logic\ActionLog;
+
+// +---------------------------------------------------------------------+
+// | 用户函数
+// +---------------------------------------------------------------------+
 
 /**
  * 检测管理用户是否登录
@@ -107,66 +108,44 @@ function data_auth_sign($data)
 
 /**
  * 记录行为日志
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param string $name
+ * @param string $describe
+ *
  */
 function action_log($name = '', $describe = '')
 {
 
-    $logLogic = get_sington_object('logLogic', LogicLog::class);
+    $logLogic = get_sington_object('logLogic', ActionLog::class);
 
     $logLogic->logAdd($name, $describe);
 }
 
-
 /**
  * 获取单例对象
- */
-function get_sington_object($object_name = '', $class = null)
-{
-
-    $request = request();
-
-    $request->__isset($object_name) ?: $request->bind($object_name, new $class());
-
-    return $request->__get($object_name);
-}
-
-/**
- * 使用上面的函数与系统加密KEY完成字符串加密
- * @param  string $str 要加密的字符串
- * @return string
- */
-function data_md5_key($str, $key = 'Iredcap')
-{
-
-    if (is_array($str)) {
-
-        ksort($str);
-
-        $data = http_build_query($str);
-
-    } else {
-
-        $data = (string) $str;
-    }
-
-    return empty($key) ? data_md5($data,config('secret.data_salt')) : data_md5($data, $key);
-}
-
-/**
- * 系统非常规MD5加密方法
  *
  * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
  *
- * @param  string $str 要加密的字符串
- * @param string $key
- * @return string
+ * @param string $object_name
+ * @param null $class
+ *
+ * @return object
  */
-function data_md5($str, $key = 'Iredcap')
+function get_sington_object($object_name = '', $class = null)
 {
+    $container = app();
 
-    return '' === $str ? '' : md5(sha1($str) . $key);
+    $container->has($object_name) ?: $container->bindTo($object_name, $class);
+
+    return $container->make($object_name);
 }
 
+
+// +---------------------------------------------------------------------+
+// | 数组函数
+// +---------------------------------------------------------------------+
 
 /**
  * 把返回的数据集转换成Tree
@@ -275,20 +254,9 @@ function array_extract($array = [], $key = 'id')
  * @param  string $glue 分割符
  * @return string
  */
-function arr2str($arr, $glue = ',')
+function arr_to_str($arr, $glue = ',')
 {
     return implode($glue, $arr);
-}
-
-/**
- * 字符串转换为数组，主要用于把分隔符调整到第二个参数
- * @param  string $str  要分割的字符串
- * @param  string $glue 分割符
- * @return array
- */
-function str2arr($str, $glue = ',')
-{
-    return explode($glue, preg_replace('/[ ]/', '', $str));
 }
 
 /**
@@ -297,17 +265,45 @@ function str2arr($str, $glue = ',')
  * @param array $arr 数组
  * @return object
  */
-function arr2obj($arr) {
+function arr_to_obj($arr) {
     if (gettype($arr) != 'array') {
         return;
     }
     foreach ($arr as $k => $v) {
         if (gettype($v) == 'array' || getType($v) == 'object') {
-            $arr[$k] = (object)arr2obj($v);
+            $arr[$k] = (object)arr_to_obj($v);
         }
     }
 
     return (object)$arr;
+}
+
+// +---------------------------------------------------------------------+
+// | 字符串函数
+// +---------------------------------------------------------------------+
+
+
+/**
+ * 获取随机字符
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param string $length 长度
+ * @param bool $num 获取数字
+ * @return null|string
+ */
+function get_rand_char($length = '32', $num = false)
+{
+    $str = null;
+    $strPol = !$num ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz'
+        : "0123456789";
+    $max = strlen($strPol) - 1;
+    for ($i = 0;
+         $i < $length;
+         $i++) {
+        $str .= $strPol[rand(0, $max)];
+    }
+    return $str;
 }
 
 /**
@@ -330,6 +326,54 @@ function obj2arr($obj) {
     return $obj;
 }
 
+/**
+ * 字符串转换为数组，主要用于把分隔符调整到第二个参数
+ * @param  string $str  要分割的字符串
+ * @param  string $glue 分割符
+ * @return array
+ */
+function str2arr($str, $glue = ',')
+{
+    return explode($glue, preg_replace('/[ ]/', '', $str));
+}
+
+/**
+ * 使用上面的函数与系统加密KEY完成字符串加密
+ * @param  string $str 要加密的字符串
+ * @param  string $salt 加密盐
+ * @return string
+ */
+function data_md5_key($str, $salt = '')
+{
+
+    if (is_array($str)) {
+
+        ksort($str);
+
+        $data = http_build_query($str);
+
+    } else {
+
+        $data = (string) $str;
+    }
+
+    return empty($salt) ? data_md5($data,config('secret.data_salt')) : data_md5($data, $salt);
+}
+
+/**
+ * 系统非常规MD5加密方法
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param  string $str 要加密的字符串
+ * @param string $key 加密KEY
+ * @return string
+ */
+function data_md5($str, $key = '')
+{
+
+    return '' === $str ? '' : md5(sha1($str) . $key);
+}
 /**
  * 字符串替换
  *
@@ -361,203 +405,10 @@ function str_prefix($str, $prefix)
     return strpos($str, $prefix) === 0 ? true : false;
 }
 
-/**
- * 生成支付订单号
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @return string
- */
-function create_order_no()
-{
-    $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
-    $orderSn =
-        $yCode[intval(date('Y')) - 2018] . date('YmdHis') . strtoupper(dechex(date('m')))
-        . date('d') . sprintf('%02d', rand(0, 999));
-    return $orderSn;
-}
-
-/**
- * 生成唯一的订单号 20110809111259232312
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @return string
- */
-function create_general_no() {
-    list($usec, $sec) = explode(" ", microtime());
-    $usec = substr(str_replace('0.', '', $usec), 0 ,4);
-    $str  = rand(10,99);
-    return date("YmdHis").$usec.$str;
-}
-
-/**
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @param $url
- * @param $rawData
- * @param string $target
- * @param int $retry
- * @param int $sleep
- * @param int $second
- * @return mixed
- */
-function curl_post_raw($url, $rawData, $target = 'FAIL', $retry=6, $sleep = 3 ,$second = 30)
-{
-    $ch = curl_init();
-    //设置超时
-    curl_setopt($ch, CURLOPT_TIMEOUT, $second);
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $rawData);
-    curl_setopt(
-        $ch, CURLOPT_HTTPHEADER,
-        array(
-            'Content-Type: text'
-        )
-    );
-    //运行curl
-    $output = curl_exec($ch);
-    while (strpos($output, $target) !== false && $retry--) {
-        //检查$targe是否存在
-        sleep($sleep); //阻塞3s
-        $sleep += 2;
-        $output = curl_exec($ch);
-    }
-    curl_close($ch);
-    return $output;
-}
-
-/**
- * 获取随机字符
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @param string $length
- * @param $format
- * @return null|string
- */
-function getRandChar($length = '4',$format = 'ALL')
-{
-    switch($format){
-        case 'ALL':
-            $strPol='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            break;
-        case 'CHAR':
-            $strPol='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            break;
-        case 'NUM':
-            $strPol='0123456789';
-            break;
-        default :
-            $strPol='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            break;
-    }
-    $str = null;
-    //$strPol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
-    $max = strlen($strPol) - 1;
-    for ($i = 0;
-         $i < $length;
-         $i++) {
-        $str .= $strPol[rand(0, $max)];
-    }
-    return $str;
-}
-
-/**
- * 月赋值
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @param $array
- * @param $key
- * @return array
- */
-function get_order_month_stat($array,$key){
-    $month = 12;
-    $newArr = [];
-    for($i = 1; $i <= $month; $i++) {
-        $newArr[$i] = 0;
-    }
-    foreach ($array as $v){
-        $newArr[$v['month']] = (float)$v[$key];
-    }
-    return ($newArr);
-}
-
-/**
- * 下划线转驼峰
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @param $uncamelized_words
- * @param string $separator
- * @return string
- */
-function camelize($uncamelized_words,$separator='_'){
-
-    $uncamelized_words = $separator. str_replace($separator, " ", strtolower($uncamelized_words));
-    return ltrim(str_replace(" ", "", ucwords($uncamelized_words)), $separator );
-}
-
-
-/**
- * 驼峰命名转下划线命名
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @param $camelCaps
- * @param string $separator
- * @return string
- */
-function uncamelize($camelCaps,$separator='_')
-{
-    return strtolower(preg_replace('/([a-z])([A-Z])/', "$1" . $separator . "$2", $camelCaps));
-}
-
-/**
- * 获取到微秒
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @return float
- */
-function getMicroTime(){
-    list($s1, $s2) = explode(' ', microtime());
-     return (float)sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
-}
-
-/**
- * url参数转化成数组
- *
- * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
- *
- * @param $query
- *
- * @return array
- */
-function convertUrlArray($query)
-{
-    $queryParts = explode('&', $query);
-
-    $params = array();
-    foreach ($queryParts as $param) {
-        $item = explode('=', $param);
-        $params[$item[0]] = $item[1];
-    }
-
-    return $params;
-}
-
-
 // +---------------------------------------------------------------------+
 // | 其他函数
 // +---------------------------------------------------------------------+
+
 
 /**
  * 通过类创建逻辑闭包
@@ -638,4 +489,58 @@ function closure_list_exe($list = [])
 
         throw $e;
     }
+}
+
+
+/**
+ * 生成支付订单号
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @return string
+ */
+function create_order_no()
+{
+    $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+    $orderSn =
+        $yCode[intval(date('Y')) - 2018] . date('YmdHis') . strtoupper(dechex(date('m')))
+        . date('d') . sprintf('%02d', rand(0, 999));
+    return $orderSn;
+}
+
+/**
+ * 生成唯一的订单号 20110809111259232312
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @return string
+ */
+function create_general_no() {
+    list($usec, $sec) = explode(" ", microtime());
+    $usec = substr(str_replace('0.', '', $usec), 0 ,4);
+    $str  = rand(10,99);
+    return date("YmdHis").$usec.$str;
+}
+
+/**
+ * 月赋值
+ *
+ * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+ *
+ * @param $array
+ * @param $key
+ * @return array
+ */
+function get_order_month_stat($array,$key){
+    $monthArr = [];
+    for($i = 0; $i < 12; $i++) {
+        $monthArr[] =  0;
+    }
+
+    foreach ($array as $v){
+        $monthArr[$v['month'] - 1] = (integer)$v[$key];
+    }
+    ksort($monthArr);
+
+    return $monthArr;
 }

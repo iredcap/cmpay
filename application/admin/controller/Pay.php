@@ -1,20 +1,19 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
 
-
-use app\common\library\enum\CodeEnum;
+use enum\LayEnum;
 
 class Pay extends BaseAdmin
 {
@@ -84,14 +83,14 @@ class Pay extends BaseAdmin
 
         $count = $this->logicPay->getCodeCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -119,14 +118,14 @@ class Pay extends BaseAdmin
 
         $count = $this->logicPay->getChannelCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -156,14 +155,14 @@ class Pay extends BaseAdmin
 
         $count = $this->logicPay->getAccountCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -187,14 +186,14 @@ class Pay extends BaseAdmin
 
         $count = $this->logicBanker->getBankerCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data

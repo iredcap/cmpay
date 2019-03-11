@@ -15,33 +15,10 @@
 namespace app\api\controller;;
 
 use app\api\service\ApiPayment;
-use app\common\controller\BaseApi;
-use app\common\library\exception\ForbiddenException;
-use app\common\library\exception\OrderException;
-use app\common\model\Orders;
-use think\Log;
+use app\common\controller\Common;
 
-class Notify extends BaseApi
+class Notify extends Common
 {
-
-    /**
-     * 个人收款配置 【等待开发】
-     *
-     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     */
-    public function person($channel = 'wxpay'){
-
-        $apiurl = $this->request->request("apiurl");
-        $sign = $this->request->request("sign");
-
-        //验证签名
-        if ($sign != md5(md5($apiurl))) {
-            $this->result("签名密钥不正确");
-        }
-        $this->result("配置成功");
-        echo $channel;
-    }
 
     /**
      * 同步回调 【不做数据处理 获取商户回调地址返回就行了】
@@ -51,13 +28,12 @@ class Notify extends BaseApi
      * @param string $channel
      *
      */
-    public function callback($channel = 'wxpay'){
-        //默认跳转
-        $result['return_url'] = "https://www.iredcap.cn";
-        //支付分发
-        $result = ApiPayment::$channel()->callback();
+    public function callback($channel = 'wx_native'){
 
-        $this->redirect($result['return_url']);
+        //支付分发
+        $return_url = ApiPayment::$channel()->callback();
+
+        $this->redirect(!empty($return_url) ? $return_url: config('site.domain'));
     }
 
     /**
@@ -68,7 +44,7 @@ class Notify extends BaseApi
      * @param string $channel
      *
      */
-    public function notify($channel = 'wxpay'){
+    public function notify($channel = 'wx_native'){
 
          //支付分发
         $result = ApiPayment::$channel()->notify();

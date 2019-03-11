@@ -16,15 +16,15 @@ return [
     // 数据库类型
     'type'            => '[type]',
     // 服务器地址
-    'hostname'        => '[hostname]',
+    'hostname'        => env('db_host', '[hostname]'),
     // 数据库名
-    'database'        => '[database]',
+    'database'        => env('db_name', '[database]'),
     // 用户名
-    'username'        => '[username]',
+    'username'        => env('db_user', '[username]'),
     // 密码
-    'password'        => '[password]',
+    'password'        => env('db_password', '[password]'),
     // 端口
-    'hostport'        => '[hostport]',
+    'hostport'        => '',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数
@@ -43,6 +43,8 @@ return [
     'master_num'      => 1,
     // 指定从服务器序号
     'slave_no'        => '',
+    // 自动读取主库数据
+    'read_master'     => false,
     // 是否严格检查字段是否存在
     'fields_strict'   => true,
     // 数据集返回类型
@@ -52,5 +54,13 @@ return [
     // 时间字段取出后的默认时间格式
     'datetime_format' => false,
     // 是否需要进行SQL性能分析
-    'sql_explain'     => true
+    'sql_explain'     => true,
+    // Builder类
+    'builder'         => '',
+    // Query类
+    'query'           => '\\tool\\Query',
+    // 是否需要断线重连
+    'break_reconnect' => false,
+    // 断线标识字符串
+    'break_match_str' => [],
 ];

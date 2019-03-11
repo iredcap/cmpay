@@ -17,28 +17,28 @@ layui.define(["form", "upload"], function(t) {
     }), n.on("submit(set_website)", function(t) {
         //这里是基本信息
         i.post("website",t.field,function (res) {
-            return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
+            return e.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500},function () {
                 window.location.reload()
             })
         });
     }), n.on("submit(set_system_email)", function(t) {
         //这里是基本信息
         i.post("email",t.field,function (res) {
-            return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
+            return e.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500},function () {
                 window.location.reload()
             })
         });
     }), n.on("submit(setmyinfo)", function(t) {
         //这里是基本信息
         i.post("profile",t.field,function (res) {
-            return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
+            return e.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500},function () {
                 window.location.reload()
             })
         });
     }),n.on("submit(setmypass)", function(t) {
         //修改管理密码
         i.post("changePwd",t.field,function (res) {
-            return e.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500},function () {
+            return e.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500},function () {
                 window.location.reload()
             })
         });

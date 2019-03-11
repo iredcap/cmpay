@@ -111,10 +111,10 @@
                                 method:'POST',
                                 data:l,
                                 success:function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         table.reload('app-admin-menu-list'); //数据刷新
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                      layer.close(f); //关闭弹层
                                 }
                             });

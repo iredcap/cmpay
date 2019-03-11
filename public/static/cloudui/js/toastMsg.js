@@ -37,10 +37,10 @@
   };
   showToast = function(e){
     switch (e.code){
-        case 1:
+        case 200:
           showSuccessToast(e);
           break;
-        case 0:
+        case 400:
           showDangerToast(e);
           break;
         default:

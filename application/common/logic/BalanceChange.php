@@ -14,7 +14,7 @@
 namespace app\common\logic;
 
 use think\Db;
-use think\Log;
+use Log;
 
 class BalanceChange extends BaseLogic
 {

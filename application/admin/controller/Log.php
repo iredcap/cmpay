@@ -1,20 +1,19 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
 
-
-use app\common\library\enum\CodeEnum;
+use enum\LayEnum;
 
 class Log extends BaseAdmin
 {
@@ -51,18 +50,18 @@ class Log extends BaseAdmin
         //时间搜索  时间戳搜素
         $where['create_time'] = $this->parseRequestDate();
 
-        $data = $this->logicLog->getLogList($where, true, 'create_time desc', false);
+        $data = $this->logicActionLog->getActionLogList($where, true, 'create_time desc', false);
 
-        $count = $this->logicLog->getLogCount($where);
+        $count = $this->logicActionLog->getActionLogCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -75,7 +74,7 @@ class Log extends BaseAdmin
      */
     public function logDel($id = 0)
     {
-        $this->result($this->logicLog->logDel(['id' => $id]));
+        $this->result($this->logicActionLog->logDel(['id' => $id]));
     }
 
     /**
@@ -83,7 +82,7 @@ class Log extends BaseAdmin
      */
     public function logClean()
     {
-        $this->result($this->logicLog->logDel(['status' => '1']));
+        $this->result($this->logicActionLog->logDel(['status' => '1']));
     }
 
 }

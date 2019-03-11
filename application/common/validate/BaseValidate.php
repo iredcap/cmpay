@@ -1,24 +1,22 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 namespace app\common\validate;
 
-use app\common\library\exception\ParameterException;
-use app\common\library\exception\UserException;
-use app\common\service\Code;
-use app\common\model\User as UserModel;
-use think\Log;
-use think\Request;
+use app\common\exception\ParameterException;
+use app\common\exception\UserException;
+use app\common\logic\User as UserLogic;
+use think\facade\Request;
 use think\Validate;
 
 class BaseValidate extends Validate
@@ -38,7 +36,7 @@ class BaseValidate extends Validate
     public function goCheck()
     {
         //必须设置contetn-type:application/json
-        $params = Request::instance()->param();
+        $params = Request::param();
         if (!$this->check($params)) {
             throw new ParameterException([
                     'msg'   => is_array($this->error)
@@ -87,28 +85,6 @@ class BaseValidate extends Validate
     }
 
     /**
-     * 验证码检查
-     *
-     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
-     *
-     * @param $value
-     * @param string $rule
-     * @param array $data
-     * @param string $field
-     * @return bool
-     * @throws \think\Exception
-     */
-    protected function checkCode($value, $rule='', $data = [], $field=''){
-        $phone = !empty($data['phone']) ? $data['phone']
-            : session('user_info')['phone'];
-        if ( Code::valid($phone, $value) ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * 用户状态检测
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
@@ -124,7 +100,7 @@ class BaseValidate extends Validate
     protected function checkId($value, $rule='', $data = [], $field='')
     {
         //用户是否存在
-        $User =(new UserModel())->getUser($value);
+        $User =(new UserLogic())->getUserInfo(['uid' => $value]);
         if(!$User){
             if ($User && $User['status'] !== 1){
                 throw new UserException([

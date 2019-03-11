@@ -1,28 +1,26 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\api\service;
 
-use app\common\controller\BaseApi;
-use app\common\library\exception\ParameterException;
-use app\common\library\exception\SignatureException;
-use app\common\library\RsaUtils;
-use app\common\model\Api;
-use app\common\model\Config;
-use think\Db;
 
-class Rest extends BaseApi
+use app\common\controller\Common;
+use app\common\exception\ParameterException;
+use app\common\exception\SignatureException;
+use tool\RsaUtils;
+
+class Rest extends Common
 {
     /**
      * 请求参数
@@ -149,7 +147,9 @@ class Rest extends BaseApi
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
+     *
      * @return mixed
+     * @throws ParameterException
      */
     public static function getServer()
     {
@@ -163,7 +163,9 @@ class Rest extends BaseApi
      *
      * @param $name
      * @param $params
+     *
      * @return mixed
+     * @throws ParameterException
      */
     public static function getBean($name, &$params)
     {
@@ -219,12 +221,12 @@ class Rest extends BaseApi
      * @return string
      * @throws SignatureException
      */
-    public static function sign($to_sign_data){
+    public function sign($to_sign_data){
         if (is_array($to_sign_data)){
             $to_sign_data = json_encode($to_sign_data);
         }
         //读取平台数据私钥
-        $certificate = (new Config())->where(['name'  => 'rsa_private_key'])
+        $certificate = $this->logicConfig->where(['name'  => 'rsa_private_key'])
             ->cache('rsa_private_key','300')->value('value');
         if(!empty($certificate)){
             $rsaUtils = new RsaUtils('', $certificate);
@@ -249,13 +251,13 @@ class Rest extends BaseApi
      * @return bool
      * @throws SignatureException
      */
-    public static function verify($data, $sign, $key){
+    public function verify($data, $sign, $key){
         if (is_array($data)){
             $data = json_encode($data);
         }
 
         //读取用户数据公钥
-        $certificate = (new Api())->where(['key'  => $key])
+        $certificate = $this->logicUserApp->where(['key'  => $key])
             ->cache($key,'300')->value('secretkey');
         //没有数据
         if(!empty($certificate)){

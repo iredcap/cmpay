@@ -82,8 +82,8 @@
                                 <td class="text-center text-danger">￥{$vo.amount}</td>
                                 <td class="text-center text-danger">￥{$vo.agent_in}</td>
                                 <td>{$vo.channel}</td>
-                                <td class="text-center">{$vo.create_time|date='Y/m/d H:i:s',###}</td>
-                                <td class="text-center">{$vo.update_time|date='Y/m/d H:i:s',###}</td>
+                                <td class="text-center">{$vo.create_time|date='Y/m/d H:i:s'}</td>
+                                <td class="text-center">{$vo.update_time|date='Y/m/d H:i:s'}</td>
                                 <td class="text-center">
                                     {switch $vo.status}
                                     {case 0}<label class="badge badge-dark">订单关闭</label>{/case}

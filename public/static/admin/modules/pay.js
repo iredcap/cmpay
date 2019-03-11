@@ -20,10 +20,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-pay-code-list",
             url: "getCodeList",
-            //自定义响应字段
-            response: {
-                statusCode: 1 //数据状态一切正常的状态码
-            },
             cols: [
                 [{
                     type: "checkbox",
@@ -70,10 +66,10 @@ layui.define(["table", "form"],
                                 url: 'delCode?id='+ e.data.id,
                                 method:'POST',
                                 success:function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         e.del()
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     layer.close(d); //关闭弹层
                                 }
                             });
@@ -96,7 +92,7 @@ layui.define(["table", "form"],
                                         var l = r.field;
                                         //提交修改
                                         t.post("editCode",l,function (res) {
-                                            if (res.code == 1){
+                                            if (res.code == 200){
                                                 //更新数据表
                                                 e.update({
                                                     name: l.name,
@@ -108,7 +104,7 @@ layui.define(["table", "form"],
                                                 n.render(),
                                                 layer.close(d);
                                             }
-                                            layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                            layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                         });
                                     }),
                                     r.trigger("click")
@@ -121,13 +117,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-pay-channel-list",
             url: 'getChannelList',
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[{
                 type: "checkbox",
                 fixed: "left"
@@ -185,10 +174,10 @@ layui.define(["table", "form"],
                                 url: 'delChannel?id='+ e.data.id,
                                 method:'POST',
                                 success:function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         e.del()
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     layer.close(d); //关闭弹层
                                 }
                             });
@@ -224,7 +213,7 @@ layui.define(["table", "form"],
                                         var l = r.field;
                                         //提交修改
                                         t.post("editChannel",l,function (res) {
-                                            if (res.code == 1){
+                                            if (res.code == 200){
                                                 //更新数据表
                                                 s.update({
                                                     name: l.name,
@@ -238,7 +227,7 @@ layui.define(["table", "form"],
                                                 n.render(),
                                                 layer.close(e);
                                             }
-                                            layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                            layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                         });
                                     }),
                                     o.trigger("click")
@@ -255,13 +244,6 @@ layui.define(["table", "form"],
             //添加请求字段
             where: {
                 cnl_id:  t("input[ name='cnl_id' ] ").val()
-            },
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
             },
             cols: [[{
                 type: "checkbox",
@@ -333,10 +315,10 @@ layui.define(["table", "form"],
                                 url: 'delAccount?id='+ e.data.id,
                                 method:'POST',
                                 success:function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         e.del()
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     layer.close(d); //关闭弹层
                                 }
                             });
@@ -359,7 +341,7 @@ layui.define(["table", "form"],
                                         var l = r.field;
                                         //提交修改
                                         t.post("editAccount",l,function (res) {
-                                            if (res.code == 1){
+                                            if (res.code == 200){
                                                 //更新数据表
                                                 s.update({
                                                     name: l.name,
@@ -373,7 +355,7 @@ layui.define(["table", "form"],
                                                     n.render(),
                                                     layer.close(e);
                                             }
-                                            layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                            layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                         });
                                     }),
                                     o.trigger("click")
@@ -386,13 +368,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-pay-bank-list",
             url: 'getBankList',
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[{
                 type: "checkbox",
                 fixed: "left"
@@ -453,10 +428,10 @@ layui.define(["table", "form"],
                                 url: 'delBank?id='+ e.data.id,
                                 method:'POST',
                                 success:function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         e.del()
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     layer.close(d); //关闭弹层
                                 }
                             });
@@ -479,7 +454,7 @@ layui.define(["table", "form"],
                                         var l = r.field;
                                         //提交修改
                                         t.post("editBank",l,function (res) {
-                                            if (res.code == 1){
+                                            if (res.code == 200){
                                                 //更新数据表
                                                 s.update({
                                                     name: l.name,
@@ -493,7 +468,7 @@ layui.define(["table", "form"],
                                                 n.render(),
                                                 layer.close(e);
                                             }
-                                            layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                            layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                         });
                                     }),
                                     o.trigger("click")

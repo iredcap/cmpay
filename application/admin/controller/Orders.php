@@ -1,20 +1,20 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\controller;
 
-use app\common\library\enum\CodeEnum;
-use app\common\library\enum\OrderStatusEnum;
+use enum\LayEnum;
+use enum\OrderStatusEnum;
 
 class Orders extends BaseAdmin
 {
@@ -40,7 +40,7 @@ class Orders extends BaseAdmin
      *
      */
     public function getList(){
-
+        $where = [];
         //状态
         $where['status'] = ['eq', $this->request->param('status',OrderStatusEnum::PAID)];
 
@@ -61,14 +61,14 @@ class Orders extends BaseAdmin
 
         $count = $this->logicOrders->getOrdersCount($where);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -159,17 +159,17 @@ class Orders extends BaseAdmin
 
         $data = $this->logicOrders->getOrderUserStat($where);
 
-        //$this->result($data || !empty($data) ? [CodeEnum::SUCCESS,'',$data] : [CodeEnum::ERROR,'暂无数据','']);
+        //$this->result(!$data->isEmpty() ? [LayEnum::SUCCESS,'',$data] : [LayEnum::ERROR,'暂无数据','']);
         $count = count($data);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data
@@ -207,14 +207,14 @@ class Orders extends BaseAdmin
 
         $count = count($data);
 
-        $this->result($data || !empty($data) ?
+        $this->result(!$data->isEmpty() ?
             [
-                'code' => CodeEnum::SUCCESS,
+                'code' => LayEnum::SUCCESS,
                 'msg'=> '',
                 'count'=>$count,
                 'data'=>$data
             ] : [
-                'code' => CodeEnum::ERROR,
+                'code' => LayEnum::ERROR,
                 'msg'=> '暂无数据',
                 'count'=>$count,
                 'data'=>$data

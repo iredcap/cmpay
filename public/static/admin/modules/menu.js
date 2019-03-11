@@ -86,10 +86,10 @@ layui.define(["treeGrid","table", "form"],
                                 url: 'menuDel?id='+ e.data.id,
                                 method:'POST',
                                 success:function (res) {
-                                    if (res.code == 1){
+                                    if (res.code == 200){
                                         e.del()
                                     }
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                     layer.close(d); //关闭弹层
                                 }
                             });
@@ -111,11 +111,11 @@ layui.define(["treeGrid","table", "form"],
                                             var l = t.field;
                                             console.log(l)
                                             layui.$.post("menuAdd",l,function (res) {
-                                                if (res.code == 1){
+                                                if (res.code == 200){
                                                     b.render('app-admin-menu-list'),
                                                         layer.close(f)
                                                 }
-                                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                                layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                             });
                                         }),
                                     n.trigger("click")
@@ -139,7 +139,7 @@ layui.define(["treeGrid","table", "form"],
                                     function(t) {
                                         var l = t.field;
                                         layui.$.post("menuEdit",l,function (res) {
-                                            if (res.code == 1){
+                                            if (res.code == 200){
                                                 //更新数据表
                                                 e.update({
                                                     pid: l.pid,
@@ -151,7 +151,7 @@ layui.define(["treeGrid","table", "form"],
                                                     b.render('app-admin-menu-list'),
                                                     layer.close(f)
                                             }
-                                            layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                            layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                         });
                                     }),
                                     n.trigger("click")

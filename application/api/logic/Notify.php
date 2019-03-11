@@ -1,15 +1,15 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 
@@ -17,10 +17,11 @@ namespace app\api\logic;
 
 use think\Db;
 use think\Exception;
-use think\Log;
-use app\common\library\enum\OrderStatusEnum;
+use think\facade\Log;
+use enum\OrderStatusEnum;
+use app\common\logic\BaseLogic;
 
-class Notify extends BaseApi
+class Notify extends BaseLogic
 {
 
     /**

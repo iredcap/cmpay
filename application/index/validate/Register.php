@@ -1,21 +1,23 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\index\validate;
 
 
-class Register extends Base
+use app\common\validate\BaseValidate;
+
+class Register extends BaseValidate
 {
     /**
      * 验证规则
@@ -26,10 +28,10 @@ class Register extends Base
      */
     protected $rule =   [
 
-        'account'  => 'require|email',
+        'account'   => 'require|email',
         'password'  => 'require|length:6,12',
         'phone'     => 'require|number|length:11',
-        'vercode'      => 'require|length:4,6|checkCode'
+        //'vercode'      => 'require|length:4,6|checkCode'
     ];
 
     /**

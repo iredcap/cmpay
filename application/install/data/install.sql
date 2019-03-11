@@ -46,30 +46,30 @@ CREATE TABLE `cm_admin` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for cm_api
+-- Table structure for cm_user_app
 -- ----------------------------
-DROP TABLE IF EXISTS `cm_api`;
-CREATE TABLE `cm_api` (
+DROP TABLE IF EXISTS `cm_user_app`;
+CREATE TABLE `cm_user_app` (
   `id` bigint(10) NOT NULL AUTO_INCREMENT,
   `uid` mediumint(8) DEFAULT '0' COMMENT '商户id',
   `key` varchar(32) DEFAULT '' COMMENT 'API验证KEY',
-  `sitename` varchar(30) NOT NULL DEFAULT '',
+  `sitename` varchar(30) NOT NULL DEFAULT '' COMMENT '站点名称',
   `domain` varchar(100) NOT NULL DEFAULT '' COMMENT '商户验证域名',
   `daily` decimal(12,3) NOT NULL DEFAULT '20000.000' COMMENT '日限访问（超过就锁）',
   `secretkey` text COMMENT '商户请求RSA私钥',
-  `auth_ips` text,
+  `auth_ips` text COMMENT '请求授权IP',
   `role` int(4) NOT NULL DEFAULT '0' COMMENT '角色1-普通商户,角色2-特约商户',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商户API状态,0-禁用,1-锁,2-正常',
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `api_domain_unique` (`id`,`domain`,`uid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='商户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='商户信息表';
 
 -- ----------------------------
--- Records of cm_api
+-- Records of cm_user_app
 -- ----------------------------
-INSERT INTO `cm_api` VALUES ('1', '100001', '772ae1d32322f49508307b2f31a0107f', '小红帽', 'https://www.redcap.cn', '20000.000', 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJKWdvG8MDILqwcoR721+pTT8ClC+5vq60pfXQAFsoIt8E6oQsDgMIdvp6FP2YjCeTJrr9MjQoC7t8yXO+liau70bMNbds/wg8arh+8jIHYDNIu4nFHlDTdk9y72xWAQixnGT3F/zSoLWv8LvrmfOHDSByD+/RPeiS04/GwVr/SLlbxSp+Rf7ano//5CD9XjD6jVz7IwBcurmqrqenRujNBDAZOncKbKhWfs3AdWhj4iQZeptYtHo3NXc+s3ehdqgEt6qukAENBApx1ROYAyZG6O2b4okzWW+rrJeDWdNKeixyw4nQjtINR/t82cH8xMTSky41N3N7L2eB0tAc/PhQIDAQAB', '192.168.31.239,127.0.0.1,47.107.247.7', '2', '1', '1541787044', '1544368481');
+INSERT INTO `cm_user_app` VALUES ('1', '100001', '772ae1d32322f49508307b2f31a0107f', '小红帽', 'https://www.redcap.cn', '20000.000', 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJKWdvG8MDILqwcoR721+pTT8ClC+5vq60pfXQAFsoIt8E6oQsDgMIdvp6FP2YjCeTJrr9MjQoC7t8yXO+liau70bMNbds/wg8arh+8jIHYDNIu4nFHlDTdk9y72xWAQixnGT3F/zSoLWv8LvrmfOHDSByD+/RPeiS04/GwVr/SLlbxSp+Rf7ano//5CD9XjD6jVz7IwBcurmqrqenRujNBDAZOncKbKhWfs3AdWhj4iQZeptYtHo3NXc+s3ehdqgEt6qukAENBApx1ROYAyZG6O2b4okzWW+rrJeDWdNKeixyw4nQjtINR/t82cH8xMTSky41N3N7L2eB0tAc/PhQIDAQAB', '192.168.31.239,127.0.0.1,47.107.247.7', '2', '1', '1541787044', '1544368481');
 
 -- ----------------------------
 -- Table structure for cm_article
@@ -151,7 +151,7 @@ CREATE TABLE `cm_balance` (
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `cash_index` (`id`,`uid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='商户资产表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='商户资产表';
 
 -- ----------------------------
 -- Records of cm_balance
@@ -173,7 +173,7 @@ CREATE TABLE `cm_balance_cash` (
   `update_time` int(10) unsigned NOT NULL COMMENT '处理时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `cash_index` (`id`,`uid`,`cash_no`,`status`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商户账户取现记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商户账户取现记录';
 
 -- ----------------------------
 -- Records of cm_balance_cash
@@ -197,7 +197,7 @@ CREATE TABLE `cm_balance_change` (
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `change_index` (`id`,`uid`,`type`,`status`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商户资产变动记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商户资产变动记录表';
 
 -- ----------------------------
 -- Records of cm_balance_change
@@ -216,7 +216,7 @@ CREATE TABLE `cm_banker` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='系统支持银行列表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='系统支持银行列表';
 
 -- ----------------------------
 -- Records of cm_banker
@@ -395,7 +395,7 @@ CREATE TABLE `cm_notice` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='公告表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='公告表';
 
 -- ----------------------------
 -- Records of cm_notice
@@ -431,7 +431,7 @@ CREATE TABLE `cm_orders` (
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_no_index` (`out_trade_no`,`trade_no`,`uid`,`channel`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1000000001 DEFAULT CHARSET=utf8mb4 COMMENT='交易订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000001 DEFAULT CHARSET=utf8 COMMENT='交易订单表';
 
 -- ----------------------------
 -- Records of cm_orders
@@ -451,7 +451,7 @@ CREATE TABLE `cm_orders_notify` (
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='交易订单通知表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易订单通知表';
 
 -- ----------------------------
 -- Records of cm_orders_notify
@@ -479,7 +479,7 @@ CREATE TABLE `cm_pay_account` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='支付渠道账户表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='支付渠道账户表';
 
 -- ----------------------------
 -- Records of cm_pay_account
@@ -509,7 +509,7 @@ CREATE TABLE `cm_pay_channel` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='支付渠道表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='支付渠道表';
 
 -- ----------------------------
 -- Records of cm_pay_channel
@@ -535,7 +535,7 @@ CREATE TABLE `cm_pay_code` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='交易方式表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='交易方式表';
 
 -- ----------------------------
 -- Records of cm_pay_code
@@ -564,7 +564,7 @@ CREATE TABLE `cm_transaction` (
   `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `transaction_index` (`order_no`,`platform`,`uid`,`amount`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='交易流水表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易流水表';
 
 -- ----------------------------
 -- Records of cm_transaction
@@ -581,22 +581,26 @@ CREATE TABLE `cm_user` (
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '商户名称',
   `auth_code` varchar(32) DEFAULT NULL COMMENT '8位安全码，注册时发送跟随邮件',
   `password` varchar(50) NOT NULL DEFAULT '' COMMENT '商户登录密码',
-  `phone` varchar(250) NOT NULL DEFAULT '' COMMENT '手机号',
-  `qq` varchar(250) NOT NULL DEFAULT '' COMMENT 'QQ',
+  `phone` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
+  `qq` varchar(10) NOT NULL DEFAULT '' COMMENT 'QQ',
   `is_agent` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '代理商',
   `is_verify` tinyint(1) NOT NULL  DEFAULT '0' COMMENT '验证账号',
   `is_verify_phone` tinyint(1) NOT NULL DEFAULT '0' COMMENT '验证手机',
+  `last_login_ip` varchar(32) NOT NULL DEFAULT '' COMMENT '最后登录IP',
+  `last_login_time`  int(10) unsigned NOT NULL COMMENT '最后登录时间',
+  `reg_ip` varchar(24) NOT NULL DEFAULT '' COMMENT '注册IP',
+  `reg_salt` varchar(32) NOT NULL DEFAULT '9ftFMQnnPWhDrXAPhUUoB4SMJFBRJ9iq' COMMENT '注册加密盐',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商户状态,0-未激活,1-使用中,2-禁用',
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `user_name_unique` (`account`,`uid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=100002 DEFAULT CHARSET=utf8mb4 COMMENT='商户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=100002 DEFAULT CHARSET=utf8 COMMENT='商户信息表';
 
 -- ----------------------------
 -- Records of cm_user
 -- ----------------------------
-INSERT INTO `cm_user` VALUES ('100001', '0', 'nouser@iredcap.cn', 'Nouser', '8f421396f3ad805ed015b68323a6b2fd', '7a563bd96286403ca906e99727283cd5', '18078687485', '702154416', '1', '1', '1', '1', '1541787044', '1545300565');
+INSERT INTO `cm_user` VALUES ('100001', '0', 'nouser@iredcap.cn', 'Nouser', '8f421396f3ad805ed015b68323a6b2fd', '7a563bd96286403ca906e99727283cd5', '18078687485', '702154416', '1', '1', '1','117.181.163.101','1541787044','117.181.163.101','9ftFMQnnPWhDrXAPhUUoB4SMJFBRJ9iq', '1', '1541787044', '1545300565');
 
 -- ----------------------------
 -- Table structure for cm_user_account
@@ -614,7 +618,7 @@ CREATE TABLE `cm_user_account` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='商户结算账户表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='商户结算账户表';
 
 -- ----------------------------
 -- Records of cm_user_account
@@ -635,7 +639,7 @@ CREATE TABLE `cm_user_auth` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='商户认证信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='商户认证信息表';
 
 -- ----------------------------
 -- Records of cm_user_auth
@@ -656,4 +660,4 @@ CREATE TABLE `cm_user_profit` (
   `create_time` int(10) unsigned NOT NULL COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商户分润表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商户分润表';

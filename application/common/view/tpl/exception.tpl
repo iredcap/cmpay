@@ -79,17 +79,15 @@ return implode(', ', $result);
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php echo \think\Lang::get('System Error'); ?></title>
+    <title>系统发生错误</title>
     <meta name="robots" content="noindex,nofollow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <style>
         /* Base */
         body {
             color: #333;
-            font: 14px Verdana, "Helvetica Neue", helvetica, Arial, 'Microsoft YaHei', sans-serif;
+            font: 16px Verdana, "Helvetica Neue", helvetica, Arial, 'Microsoft YaHei', sans-serif;
             margin: 0;
             padding: 0 20px 20px;
-            word-break: break-word;
         }
         h1{
             margin: 10px 0 0;
@@ -104,11 +102,6 @@ return implode(', ', $result);
             margin: 6px 0 0;
             font-size: 18px;
             border-bottom: 1px solid #eee;
-        }
-        h3.subheading {
-            color: #4288ce;
-            margin: 6px 0 0;
-            font-weight: 400;
         }
         h3{
             margin: 12px;
@@ -150,27 +143,7 @@ return implode(', ', $result);
             padding: 0;
             margin: 0;
         }
-        /* Layout */
-        .col-md-3 {
-            width: 25%;
-        }
-        .col-md-9 {
-            width: 75%;
-        }
-        [class^="col-md-"] {
-            float: left;
-        }
-        .clearfix {
-            clear:both;
-        }
-        @media only screen
-        and (min-device-width : 375px)
-        and (max-device-width : 667px) {
-            .col-md-3,
-            .col-md-9 {
-                width: 100%;
-            }
-        }
+
         /* Exception Info */
         .exception {
             margin-top: 20px;
@@ -313,7 +286,7 @@ return implode(', ', $result);
 <div class="echo">
     <?php echo $echo;?>
 </div>
-<?php if(\think\App::$debug) { ?>
+<?php if(\think\facade\App::isDebug()) { ?>
 <div class="exception">
     <div class="message">
 
@@ -340,10 +313,10 @@ return implode(', ', $result);
                     // Show Function
                     if($value['function']){
                         echo sprintf(
-                            'at %s%s%s(%s)',
+                            'at %s%s%s(%s)', 
                             isset($value['class']) ? parse_class($value['class']) : '',
-                            isset($value['type'])  ? $value['type'] : '',
-                            $value['function'],
+                            isset($value['type'])  ? $value['type'] : '', 
+                            $value['function'], 
                             isset($value['args'])?parse_args($value['args']):''
                         );
                     }
@@ -358,29 +331,35 @@ return implode(', ', $result);
     </ol>
 </div>
 </div>
+
+<div class="copyright">
+    <a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a>
+    <span>V<?php echo \think\facade\App::version(); ?></span>
+    <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
+</div>
+
 <?php } else { ?>
 <div class="exception">
 
-    <!---<div class="info"><h1><?php echo htmlentities($message); ?></h1></div>--->
-    <body style="background-color: #f7f9fa;">
-    <div style="margin: -15px; padding: 8vh 0 2vh;color: #a6aeb3; background-color: #f7f9fa; text-align: center; font-family:NotoSansHans-Regular,'Microsoft YaHei',Arial,sans-serif; -webkit-font-smoothing: antialiased;">
+    <div style="margin: -15px; padding: 8vh 0 2vh;color: #a6aeb3; background-color: #ffffff; text-align: center; font-family:NotoSansHans-Regular,'Microsoft YaHei',Arial,sans-serif; -webkit-font-smoothing: antialiased;">
         <div style="width: 750px; max-width: 85%; margin: 0 auto; background-color: #fff; -webkit-box-shadow: 0 2px 16px 0 rgba(118,133,140,0.22);-moz-box-shadow: 0 2px 16px 0 rgba(118,133,140,0.22);box-shadow: 0 2px 16px 0 rgba(118,133,140,0.22);">
             <div style="padding: 20px 10%; text-align: center; font-size: 16px;line-height: 16px;">
-                <a href="/" style="vertical-align: top;"> <img style="margin:32px auto; max-width: 95%; color: #0e2026;" src="/static/common/logo-color.png" /> </a>
+                <a href="https://www.iredcap.cn" style="vertical-align: top;" target="_blank"> <img style="margin:32px auto; max-width: 95%; color: #0e2026;" src="/static/common/logo-color.png" /> </a>
             </div>
-            <table style="background-color:#fff;margin:0 auto;" cellpadding="0" cellspacing="0">
+            <table width="600" style="background-color:#fff;margin:0 auto;" cellpadding="0" cellspacing="0">
                 <tbody><tr>
                     <td>
-                        <table style="background-color:#fff;margin:0 auto;" cellpadding="0" cellspacing="0">
+                        <table width="600" style="background-color:#fff;margin:0 auto;" cellpadding="0" cellspacing="0">
                             <tbody>
+                            <tr>
+                                <td colspan="3" style="height:40px;">&nbsp;</td>
+                            </tr>
                             <tr>
                                 <td width="40">&nbsp;</td>
                                 <td width="520" style="line-height:20px;">
                                     <p style="text-align:center;margin:0;padding:0;">
-                                        <img src="/static/common/images/icon/wrong.png" width="32" height="32" style="margin:0 12px;vertical-align:top;">
-                                        <span style="font-size:24px;line-height:32px;color:red;"><?php echo htmlentities($message); ?></span>
-                                    </p>
-                                    <p style="color:#7d7d7d;margin:10px 0px 24px 0px;font-size:14px;line-height:22px;padding:0 40px;text-align:center">
+                                        <img src="/static/common/images/icon/wrong.png" width="28" height="28" style="margin:0 12px;vertical-align:top;">
+                                        <span style="font-size:28px;line-height:28px;color:red"><?php echo htmlentities($message); ?></span>
                                     </p>
                                 </td>
                                 <td width="40">&nbsp;</td>
@@ -392,30 +371,21 @@ return implode(', ', $result);
                         </table>
                     </td>
                 </tr>
-                </tbody></table>
+                </tbody>
+            </table>
             <div style="padding-bottom: 40px;font-size: 14px;">
                 <div style="padding-bottom: 40px;font-size: 14px;">
                     <div style="width: 420px; max-width: 90%;margin: 10px auto;">
                         彻底告别繁琐的支付接入流程 一次接入所有主流支付渠道和分期渠道，99.99% 系统可用性，满足你丰富的交易场景需求,为你的用户提供完美支付体验。
                     </div>
-                    <div style="margin: 30px 0 0 0;">
-                        扫码加入CmPay开源交流群
-                    </div>
-                    <div style="margin: 16px 0 32px;">
-                        <img height="119" src="/static/common/qr-qun.jpg" width="119" />
-                    </div>
                     <div>
                         <span style="color: #76858c;">服务咨询请联系：</span>
-                        <a href="mailto:me@iredcap.cn" style="color:#35c8e6; text-decoration: none;" target="_blank"> me@iredcap.cn </a>
+                        <a href="me@iredcap.cn" style="color:#35c8e6; text-decoration: none;" target="_blank"> me@iredcap.cn </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="/static/common/js/copyright.js"></script>
-    </body>
-</html>
-
 </div>
 <?php } ?>
 
@@ -434,9 +404,9 @@ return implode(', ', $result);
             <td><?php echo htmlentities($key); ?></td>
             <td>
                 <?php
-                            if(is_array($val) || is_object($val)){
+                            if(is_array($val) || is_object($val)){ 
                                 echo htmlentities(json_encode($val, JSON_PRETTY_PRINT));
-                            } else if(is_bool($val)) {
+                            } else if(is_bool($val)) { 
                                 echo $val ? 'true' : 'false';
                             } else if(is_scalar($val)) {
                                 echo htmlentities($val);
@@ -458,23 +428,20 @@ return implode(', ', $result);
 <div class="exception-var">
     <h2>Environment Variables</h2>
     <?php foreach ((array) $tables as $label => $value) { ?>
-    <div>
+    <table>
         <?php if(empty($value)){ ?>
-        <div class="clearfix">
-            <div class="col-md-3"><strong><?php echo $label; ?></strong></div>
-            <div class="col-md-9"><small>empty</small></div>
-        </div>
+        <caption><?php echo $label; ?><small>empty</small></caption>
         <?php } else { ?>
-        <h3 class="subheading"><?php echo $label; ?></h3>
-        <div>
-            <?php foreach ((array) $value as $key => $val) { ?>
-            <div class="clearfix">
-                <div class="col-md-3"><strong><?php echo htmlentities($key); ?></strong></div>
-                <div class="col-md-9"><small>
-                        <?php
-                            if(is_array($val) || is_object($val)){
+        <caption><?php echo $label; ?></caption>
+        <tbody>
+        <?php foreach ((array) $value as $key => $val) { ?>
+        <tr>
+            <td><?php echo htmlentities($key); ?></td>
+            <td>
+                <?php
+                            if(is_array($val) || is_object($val)){ 
                                 echo htmlentities(json_encode($val, JSON_PRETTY_PRINT));
-                            } else if(is_bool($val)) {
+                            } else if(is_bool($val)) { 
                                 echo $val ? 'true' : 'false';
                             } else if(is_scalar($val)) {
                                 echo htmlentities($val);
@@ -482,17 +449,17 @@ return implode(', ', $result);
                                 echo 'Resource';
                             }
                         ?>
-                    </small></div>
-            </div>
-            <?php } ?>
-        </div>
+            </td>
+        </tr>
         <?php } ?>
-    </div>
+        </tbody>
+        <?php } ?>
+    </table>
     <?php } ?>
 </div>
 <?php } ?>
 
-<?php if(\think\App::$debug) { ?>
+<?php if(\think\facade\App::isDebug()) { ?>
 <script>
     var LINE = <?php echo $line; ?>;
 

@@ -17,7 +17,7 @@ namespace app\common\model;
 
 use app\common\library\exception\OrderException;
 use think\Db;
-use think\Log;
+use Log;
 
 class Orders extends BaseModel
 {

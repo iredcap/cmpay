@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
@@ -13,5 +12,5 @@
  */
 
 return [
-    'app\\common\\service\\command\\PushOrderWait'
+    'app\\common\\command\\PushOrderWait'
 ];

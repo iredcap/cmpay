@@ -15,42 +15,48 @@
 namespace app\common\logic;
 
 
-use app\common\library\exception\OrderException;
 use think\Db;
-use think\Log;
+use think\facade\Log;
 
 class OrdersNotify extends BaseLogic
 {
 
     /**
-     *
      * 获取订单通知列表
      *
-     * @author 勇敢的小笨羊
+     * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
+     *
      * @param array $where
      * @param bool $field
      * @param string $order
      * @param int $paginate
-     * @return mixed
+     *
+     * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public function getOrderList($where = [], $field = true, $order = 'create_time desc', $paginate = 15)
+    public function getOrdersNotifyList($where = [], $field = true, $order = 'create_time desc', $paginate = 15)
     {
-        $this->modelOrdersNotify->limit = !$paginate;
-        return $this->modelOrdersNotify->getList($where, $field, $order, $paginate);
+        $this->limit = !$paginate;
+        return $this->getList($where, $field, $order, $paginate);
     }
 
     /**
-     * 获取订单通知信息
+     * 获取订单异步信息
      *
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param array $where
      * @param bool $field
      *
-     * @return mixed
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public function getOrderInfo($where = [], $field = true){
-        return $this->modelOrdersNotify->getInfo($where, $field);
+    public function getOrdersNotifyInfo($where = [], $field = true){
+        return $this->getInfo($where, $field);
     }
 
     /**
@@ -61,8 +67,8 @@ class OrdersNotify extends BaseLogic
      * @param $where
      * @return mixed
      */
-    public function getOrdersCount($where = []){
-        return $this->modelOrdersNotify->getCount($where);
+    public function getOrdersNotifyCount($where = []){
+        return $this->getCount($where);
     }
 
     /**
@@ -80,7 +86,7 @@ class OrdersNotify extends BaseLogic
         //数据提交
         try{
 
-            $this->modelOrdersNotify->setInfo([ 'order_id'   => $order['id']]);
+            $this->setInfo([ 'order_id'   => $order['id']]);
 
             Db::commit();
 

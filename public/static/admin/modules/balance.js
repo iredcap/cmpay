@@ -19,13 +19,6 @@ layui.define(["table", "form"],
         i.render({
             elem: "#app-balance-list",
             url: "getList",
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[
                 {
                     field: "id",
@@ -106,13 +99,6 @@ layui.define(["table", "form"],
             where: {
                 uid:  t("input[ name='uid' ] ").val()
             },
-            //自定义响应字段
-            response: {
-                statusName: 'code' //数据状态的字段名称
-                ,statusCode: 1 //数据状态一切正常的状态码
-                ,msgName: 'msg' //状态信息的字段名称
-                ,dataName: 'data' //数据详情的字段名称
-            },
             cols: [[{
                 field: "type",
                 templet: "#buttonType",
@@ -162,13 +148,6 @@ layui.define(["table", "form"],
         i.render({
                 elem: "#app-order-paid-list",
                 url: 'paidList',
-                //自定义响应字段
-                response: {
-                    statusName: 'code' //数据状态的字段名称
-                    ,statusCode: 1 //数据状态一切正常的状态码
-                    ,msgName: 'msg' //状态信息的字段名称
-                    ,dataName: 'data' //数据详情的字段名称
-                },
                 cols: [[{
                     type: "checkbox",
                     fixed: "left"
@@ -252,7 +231,7 @@ layui.define(["table", "form"],
                         layer.close(f),
                             layer.confirm("确定审核吗？", function(d) {
                                 t.post("deal",{cash_id:e.data.id},function (res) {
-                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                    layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                                         layer.close(d); //关闭弹层
                                     i.reload('app-order-paid-list')
                                 });
@@ -260,7 +239,7 @@ layui.define(["table", "form"],
                     });
                 else if ("rebut" === e.event) {
                     t.post("rebut",{cash_id:e.data.id},function (res) {
-                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                        layer.msg(res.msg, {icon: res.code == 200 ? 1: 2,time: 1500});
                         i.reload('app-order-paid-list')
                     });
                 }

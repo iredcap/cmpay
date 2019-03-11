@@ -1,14 +1,14 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\logic;
@@ -25,7 +25,11 @@ class AuthGroupAccess extends BaseAdmin
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param int $uid
+     *
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getAuthMenuList($uid = 0)
     {
@@ -33,7 +37,6 @@ class AuthGroupAccess extends BaseAdmin
         $sort = 'sort';
         
         if (is_admin_login() == 1) {
-            
             return $this->logicMenu->getMenuList([], true, $sort);
         }
         
@@ -82,12 +85,16 @@ class AuthGroupAccess extends BaseAdmin
      * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
      *
      * @param int $uid
-     * @return mixed
+     *
+     * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getUserGroupInfo($uid = 0)
     {
         
-        $this->modelAuthGroupAccess->alias('a');
+        $this->alias('a');
         
         is_array($uid) ? $where['a.uid'] = ['in', $uid] : $where['a.uid'] = $uid;
 
@@ -98,9 +105,9 @@ class AuthGroupAccess extends BaseAdmin
                     [ 'auth_group g', 'a.group_id = g.id'],
                 ];
         
-        $this->modelAuthGroupAccess->join = $join;
+        $this->join = $join;
         
-        return $this->modelAuthGroupAccess->getList($where, $field, '', false);
+        return $this->getList($where, $field, '', false);
     }
 
     /**
@@ -112,11 +119,15 @@ class AuthGroupAccess extends BaseAdmin
      * @param string $field
      * @param string $order
      * @param bool $paginate
-     * @return mixed
+     *
+     * @return false|\PDOStatement|string|\think\Collection|\think\Paginator
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getAuthGroupAccessList($where = [], $field = 'uid,group_id', $order = 'uid', $paginate = false)
     {
         
-        return $this->modelAuthGroupAccess->getList($where, $field, $order, $paginate);
+        return $this->getList($where, $field, $order, $paginate);
     }
 }

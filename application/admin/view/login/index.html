@@ -1,4 +1,16 @@
 {__NOLAYOUT__}<!DOCTYPE html>
+<!--
+  ~ +----------------------------------------------------------------------
+  ~  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
+  ~ +----------------------------------------------------------------------
+  ~  | Copyright (c) 2019 知行信息科技. All rights reserved.
+  ~ +----------------------------------------------------------------------
+  ~  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
+  ~ +----------------------------------------------------------------------
+  ~  | Author: Brian Waring <BrianWaring98@gmail.com>
+  ~ +----------------------------------------------------------------------
+  -->
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -87,14 +99,14 @@
         form.on('submit(app-user-login-submit)', function(obj){
             //请求登入接口
             $.post("{:url('login')}",obj.field,function (res) {
-                    if (res.code == 1){
+                    if (res.code == 200){
                         //请求成功后，写入 access_token
                         layui.data(setter.tableName, {
                             key: setter.request.tokenName
                             ,value: res.data.access_token
                         });
                         layer.msg('登入成功', {icon: 1,time: 1500}, function(){
-                            location.href = "/admin.html"; //后台主页
+                            location.href = "{:url('admin/Index/index')}"; //后台主页
                         });
                     }else {
                         $("#app-user-get-vercode").click();

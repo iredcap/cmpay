@@ -1,22 +1,21 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\api\service\response;
 
 
-use app\common\library\HttpHeader;
-use think\Log;
+use tool\HttpHeader;
 
 class BuildCharge extends ApiSend
 {
@@ -28,7 +27,7 @@ class BuildCharge extends ApiSend
      * @param $chargeRespose
      *
      * @return mixed|void
-     * @throws \app\common\library\exception\ParameterException
+     * @throws \app\common\exception\ParameterException
      */
     public function doBuild($chargeRespose)
     {

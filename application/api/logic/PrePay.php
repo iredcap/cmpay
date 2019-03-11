@@ -1,21 +1,22 @@
 <?php
 
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
+
 namespace app\api\logic;
-use app\common\library\exception\ParameterException;
-use app\common\library\exception\OrderException;
-use app\common\library\exception\UserException;
-use think\Log;
+
+use app\common\exception\ParameterException;
+use app\common\logic\BaseLogic;
+use think\facade\Log;
 
 /**
  * 下单处理
@@ -23,7 +24,7 @@ use think\Log;
  * @author 勇敢的小笨羊 <brianwaring98@gmail.com>
  *
  */
-class PrePay extends BaseApi
+class PrePay extends BaseLogic
 {
     /**
      *
@@ -91,13 +92,13 @@ class PrePay extends BaseApi
             //状态修改  -  可以用模型处理
             switch ($order['status']){
                 case '0':
-                    $order['status'] = 'CLSOE';
+                    $order['status'] = 'close';
                     break;
                 case '1':
-                    $order['status'] = 'WAIT';
+                    $order['status'] = 'unpaid';
                     break;
                 case '2':
-                    $order['status'] = 'SUCCESS';
+                    $order['status'] = 'paid';
                     break;
             }
             return $order;

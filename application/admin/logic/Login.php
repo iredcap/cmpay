@@ -1,20 +1,20 @@
 <?php
 /**
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | 草帽支付系统 [ WE CAN DO IT JUST THINK ]
- *  +----------------------------------------------------------------------
- *  | Copyright (c) 2018 http://www.iredcap.cn All rights reserved.
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
+ *  | Copyright (c) 2019 知行信息科技. All rights reserved.
+ * +----------------------------------------------------------------------
  *  | Licensed ( https://www.apache.org/licenses/LICENSE-2.0 )
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  *  | Author: Brian Waring <BrianWaring98@gmail.com>
- *  +----------------------------------------------------------------------
+ * +----------------------------------------------------------------------
  */
 
 namespace app\admin\logic;
 
 
-use app\common\library\enum\CodeEnum;
+use enum\CodeEnum;
 
 class Login extends BaseAdmin
 {
@@ -46,7 +46,7 @@ class Login extends BaseAdmin
 
             $auth = ['id' => $admin['id'], 'update_time'  =>  time()];
 
-            session('admin_info', $admin);
+            session('admin_info', $admin->toArray());
             session('admin_auth', $auth);
             session('admin_auth_sign', data_auth_sign($auth));
 
@@ -85,7 +85,7 @@ class Login extends BaseAdmin
     public function clearCache()
     {
 
-        \think\Cache::clear();
+        \think\facade\Cache::clear();
 
         return [ 'code' => CodeEnum::ERROR, 'msg' =>  '清理成功'];
     }
